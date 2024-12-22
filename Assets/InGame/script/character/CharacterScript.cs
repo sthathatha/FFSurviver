@@ -44,10 +44,20 @@ public class CharacterScript : MonoBehaviour
         UpdateCharacter();
     }
 
+    /// <summary>
+    /// Updateより後にフレームごと1回
+    /// </summary>
+    private void LateUpdate()
+    {
+        UpdateCharacter2();
+    }
+
     /// <summary>派生初期化処理</summary>
     protected virtual IEnumerator InitCharacter() { yield break; }
     /// <summary>派生更新処理</summary>
     protected virtual void UpdateCharacter() { }
+    /// <summary>派生更新後処理</summary>
+    protected virtual void UpdateCharacter2() { }
 
     #endregion
 

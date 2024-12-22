@@ -39,8 +39,16 @@ public class PlayerScript : CharacterScript
         if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
 
         MoveControl();
-        CameraControl();
         UpdateAnim();
+    }
+
+    /// <summary>
+    /// å„Ç≈ëñÇÈçXêV
+    /// </summary>
+    protected override void UpdateCharacter2()
+    {
+        if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
+        CameraControl();
     }
 
     #endregion
