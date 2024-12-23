@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 /// <summary>
 /// ゲーム管理
@@ -104,7 +105,6 @@ public class GameMainSystem : MainScriptBase
     private void RefreshFieldCell(bool init = false)
     {
         var manager = ManagerSceneScript.GetInstance();
-        if (manager.IsLoadingSubScene()) return;
 
         if (init || (playerScript == null))
         {
@@ -136,6 +136,9 @@ public class GameMainSystem : MainScriptBase
             fld.ReleaseField();
         }
 
+        // ローディング中のもの
+        var loadingSubList = manager.GetSubSceneLoadingList();
+
         // 現在の位置から距離１までのフィールドを読み込み
         var createLocList = FieldUtil.GetAroundLocations(player_loc);
         //var createLocList = new List<Vector2Int>();
@@ -146,6 +149,9 @@ public class GameMainSystem : MainScriptBase
             if (subList.Any(sub =>
                 sub is GameFieldSystem && (sub as GameFieldSystem).fieldCell == loc)
             )
+                continue;
+            if (loadingSubList.Any(sub => sub.prmList.Count == 2 &&
+                sub.prmList[0] == loc.x && sub.prmList[1] == loc.y))
                 continue;
 
             // 読み込み
