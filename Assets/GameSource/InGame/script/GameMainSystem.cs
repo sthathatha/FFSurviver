@@ -36,6 +36,9 @@ public class GameMainSystem : MainScriptBase
     }
     public GameState state { get; private set; } = GameState.Loading;
 
+    /// <summary>雑魚敵を持つ空オブジェクト</summary>
+    public Transform smallEnemyParent;
+
     #endregion
 
     #region 基底
@@ -172,7 +175,10 @@ public class GameMainSystem : MainScriptBase
                 continue;
 
             // 読み込み
-            manager.LoadSubScene("GameSceneField1", loc.x, loc.y);
+            if (init)
+                manager.LoadSubScene("GameSceneField01", loc.x, loc.y);
+            else
+                manager.LoadSubScene("GameSceneField02", loc.x, loc.y);
         }
     }
 

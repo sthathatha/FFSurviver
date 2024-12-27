@@ -8,7 +8,7 @@ using UnityEngine;
 public class FieldUtil
 {
     /// <summary>フィールドの半径サイズ</summary>
-    public const float FIELD_CELL_R = 2f;
+    public const float FIELD_CELL_R = 5f;
 
     private static readonly Vector2Int NORMAL_RIGHT = new Vector2Int(1, 0);
     private static readonly Vector2Int NORMAL_RIGHTUP = new Vector2Int(1, 1);

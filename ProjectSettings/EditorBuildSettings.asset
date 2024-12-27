@@ -12,9 +12,13 @@ EditorBuildSettings:
     path: Assets/GameSource/Scenes/GameSceneMain.unity
     guid: 1195a02029da5d041a8e318312c14b8d
   - enabled: 1
-    path: Assets/GameSource/Scenes/field/GameSceneField1.unity
-    guid: e276461ad1f04594ab541460ef759350
-  - enabled: 1
     path: Assets/GameSource/Scenes/character/GameSceneDrows.unity
     guid: 9d63d4388c691ab4499f0fdbdbd71727
+  - enabled: 1
+    path: Assets/GameSource/Scenes/field/GameSceneField01.unity
+    guid: e276461ad1f04594ab541460ef759350
+  - enabled: 1
+    path: Assets/GameSource/Scenes/field/GameSceneField02.unity
+    guid: d63d2cef4dcce7c47bace3624db05d91
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

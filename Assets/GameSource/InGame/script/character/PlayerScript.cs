@@ -61,7 +61,7 @@ public class PlayerScript : CharacterScript
     private void MoveControl()
     {
         // Y速度は保持
-        var vy = rigid.velocity.y;
+        var vy = rigid.linearVelocity.y;
 
         var keyboard = Keyboard.current;
         var gamepad = Gamepad.current;
@@ -74,7 +74,7 @@ public class PlayerScript : CharacterScript
         else if (keyboard.sKey.isPressed) stick.y = -1f;
         if (stick.magnitude < 0.1f)
         {
-            rigid.velocity = new Vector3(0, vy, 0);
+            rigid.linearVelocity = new Vector3(0, vy, 0);
             return;
         }
 
@@ -85,7 +85,7 @@ public class PlayerScript : CharacterScript
         // スティック値をカメラ回転と合成
         var move = new Vector3(stick.x, 0, stick.y);
         move = Quaternion.Euler(0, camRot, 0) * move * run_speed;
-        rigid.velocity = new Vector3(move.x, vy, move.z);
+        rigid.linearVelocity = new Vector3(move.x, vy, move.z);
 
         // キャラの向き
         var chrRot = Quaternion.LookRotation(move, new Vector3(0, 1f, 0));
@@ -133,7 +133,7 @@ public class PlayerScript : CharacterScript
     /// </summary>
     private void UpdateAnim()
     {
-        var v = rigid.velocity;
+        var v = rigid.linearVelocity;
         v.y = 0f;
         var spd = v.magnitude / 4f;
         anim?.SetFloat("Speed", spd);
