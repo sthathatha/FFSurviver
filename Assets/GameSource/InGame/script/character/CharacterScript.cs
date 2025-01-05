@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using UnityEngine;
 
 /// <summary>
@@ -20,6 +21,9 @@ public class CharacterScript : MonoBehaviour
     /// <summary>モデルアニメーション</summary>
     protected Animator anim;
 
+    /// <summary>Start処理が終わるまでUpdateは呼ばない</summary>
+    private bool started = false;
+
     #endregion
 
     #region 基底
@@ -34,6 +38,7 @@ public class CharacterScript : MonoBehaviour
         yield return new WaitWhile(() => ManagerSceneScript.GetInstance() == null);
 
         yield return InitCharacter();
+        started = true;
     }
 
     /// <summary>
@@ -41,7 +46,10 @@ public class CharacterScript : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        UpdateCharacter();
+        if (started)
+        {
+            UpdateCharacter();
+        }
     }
 
     /// <summary>
@@ -49,7 +57,10 @@ public class CharacterScript : MonoBehaviour
     /// </summary>
     private void LateUpdate()
     {
-        UpdateCharacter2();
+        if (started)
+        {
+            UpdateCharacter2();
+        }
     }
 
     /// <summary>派生初期化処理</summary>

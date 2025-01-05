@@ -87,45 +87,26 @@ public class FieldUtil
     }
 
     /// <summary>
-    /// 方向の左右を取得
+    /// ベクトルを回転させたい時の近い回転方向を計算
+    /// Y座標は0としてY軸回転
     /// </summary>
-    /// <param name="_normal"></param>
-    /// <returns></returns>
-    public static List<Vector2Int> GetLRWingLocations(Vector2Int _normal)
+    /// <param name="own"></param>
+    /// <param name="target"></param>
+    /// <returns>1:左回り　-1:右周り</returns>
+    public static int CalcNearRotation(Vector3 own, Vector3 target)
     {
-        var ret = new List<Vector2Int>();
+        own.y = 0;
+        target.y = 0;
 
-        if (_normal.Equals(NORMAL_RIGHT))
-        {
-            ret.Add(NORMAL_RIGHTUP);
-            ret.Add(NORMAL_RIGHTDOWN);
-        }
-        else if (_normal.Equals(NORMAL_RIGHTDOWN))
-        {
-            ret.Add(NORMAL_RIGHT);
-            ret.Add(NORMAL_LEFTDOWN);
-        }
-        else if (_normal.Equals(NORMAL_LEFTDOWN))
-        {
-            ret.Add(NORMAL_RIGHTDOWN);
-            ret.Add(NORMAL_LEFT);
-        }
-        else if (_normal.Equals(NORMAL_LEFT))
-        {
-            ret.Add(NORMAL_LEFTDOWN);
-            ret.Add(NORMAL_LEFTUP);
-        }
-        else if (_normal.Equals(NORMAL_LEFTUP))
-        {
-            ret.Add(NORMAL_LEFT);
-            ret.Add(NORMAL_RIGHTUP);
-        }
-        else if (_normal.Equals(NORMAL_RIGHTUP))
-        {
-            ret.Add(NORMAL_LEFTUP);
-            ret.Add(NORMAL_RIGHT);
-        }
+        var vY = new Vector3(0, 1, 0);
+        var ownRot = Quaternion.LookRotation(own, vY).eulerAngles.y;
+        var targetRot = Quaternion.LookRotation(target, vY).eulerAngles.y;
 
-        return ret;
+        // 自分のほうが小さい角度にする
+        if (targetRot < ownRot) targetRot += 360f;
+
+        var rot = targetRot - ownRot;
+        // 180度以下なら左回りで
+        return rot <= 180f ? 1 : -1;
     }
 }

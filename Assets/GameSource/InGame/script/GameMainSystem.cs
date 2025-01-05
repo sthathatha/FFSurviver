@@ -178,7 +178,18 @@ public class GameMainSystem : MainScriptBase
             if (init)
                 manager.LoadSubScene("GameSceneField01", loc.x, loc.y);
             else
-                manager.LoadSubScene("GameSceneField02", loc.x, loc.y);
+            {
+                var randomScenes = new List<string>()
+                {
+                    //"GameSceneField_polygon1",
+                    //"GameSceneField_eye1",
+                    "GameSceneField_bakyura1",
+                    "GameSceneField_willy1",
+                };
+
+                var idx = Util.RandomInt(0, randomScenes.Count - 1);
+                manager.LoadSubScene(randomScenes[idx], loc.x, loc.y);
+            }
         }
     }
 

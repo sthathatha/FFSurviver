@@ -16,6 +16,7 @@ public class SimpleEnemyScript : CharacterScript
 
     public float float_height = 0.6f;
     public float move_speed = 5f;
+    public float check_interval = MOVE_CHECK_INTERVAL;
 
     /// <summary>移動方向判定タイマー</summary>
     private float checkTimer = -1f;
@@ -34,14 +35,23 @@ public class SimpleEnemyScript : CharacterScript
 
         if (checkTimer < 0f)
         {
-            checkTimer = MOVE_CHECK_INTERVAL;
+            checkTimer = check_interval;
             // rigidBody使わない
 
             // プレイヤー位置
             var pPos = main.playerScript.transform.position;
             var dist = pPos - transform.position;
             dist.y = 0;
-            if (dist.sqrMagnitude < 0.1f) return;   // 充分近い時は何もしない
+            if (dist.sqrMagnitude < 1f)
+            {
+                // 充分近い時は何もしない
+                moveVector = Vector3.zero;
+                return;
+            }
+
+            // ランダム回転幅±30度
+            var randRot = Quaternion.Euler(0, Util.RandomFloat(-30f, 30f), 0);
+            dist = randRot * dist;
 
             // 単位ベクトル
             dist = dist.normalized;
@@ -60,6 +70,5 @@ public class SimpleEnemyScript : CharacterScript
 
         // 移動
         transform.position += moveVector * Time.deltaTime;
-
     }
 }
