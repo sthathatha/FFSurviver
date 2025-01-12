@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// ウイリー
 /// </summary>
-public class WillyScript : CharacterScript
+public class WillyScript : EnemyScriptBase
 {
     #region 定数
 
@@ -60,7 +60,7 @@ public class WillyScript : CharacterScript
 
         // 転回中はプレイヤー位置まで回転する
         var main = GameMainSystem.Instance;
-        var pPos = main.playerScript.transform.position;
+        var pPos = main.GetPlayerCenter();
         var dist = pPos - transform.position;
         dist.y = 0f;
 
@@ -72,11 +72,15 @@ public class WillyScript : CharacterScript
 
     #endregion
 
+    #region 基底
+
     /// <summary>
     /// 更新
     /// </summary>
     protected override void UpdateCharacter()
     {
+        var manager = ManagerSceneScript.GetInstance();
+        var dt = manager.validDeltaTime;
         var main = GameMainSystem.Instance;
 
         if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
@@ -89,7 +93,7 @@ public class WillyScript : CharacterScript
             if (phase == MovePhase.Dash)
             {
                 // プレイヤー位置
-                var pPos = main.playerScript.transform.position;
+                var pPos = main.GetPlayerCenter();
                 var dist = pPos - transform.position;
                 dist.y = 0;
 
@@ -102,7 +106,7 @@ public class WillyScript : CharacterScript
             }
             else if (phase == MovePhase.Dash2)
             {
-                var pPos = main.playerScript.transform.position;
+                var pPos = main.GetPlayerCenter();
                 var dist = pPos - transform.position;
                 dist.y = 0;
 
@@ -117,25 +121,25 @@ public class WillyScript : CharacterScript
 
             if (phase == MovePhase.Dash || phase == MovePhase.Dash2)
             {
-                checkTimer -= Time.deltaTime;
+                checkTimer -= dt;
                 // ひたすら直進
                 // ある程度まで加速
                 var spd = moveVector.magnitude;
 
                 if (spd < MOVE_MAX_SPEED)
                 {
-                    var newSpd = spd + MOVE_ACCEL * Time.deltaTime;
+                    var newSpd = spd + MOVE_ACCEL * dt;
                     moveVector *= newSpd / spd;
                 }
             }
             else
             {
                 // 転回中はプレイヤー位置まで回転する
-                var pPos = main.playerScript.transform.position;
+                var pPos = main.GetPlayerCenter();
                 var dist = pPos - transform.position;
 
                 // 間の角度が小さければ突進モードになる
-                var rotDelta = brakeRot * Time.deltaTime;
+                var rotDelta = brakeRot * dt;
                 var rotQuat = Quaternion.Euler(0, rotDelta, 0);
                 var nextVector = rotQuat * moveVector;
                 if (FieldUtil.CalcNearRotation(moveVector, dist) != FieldUtil.CalcNearRotation(nextVector, dist))
@@ -148,7 +152,7 @@ public class WillyScript : CharacterScript
                 var spd = nextVector.magnitude;
                 if (spd > MOVE_MAX_SPEED / 5f)
                 {
-                    var newSpd = spd - MOVE_ACCEL * Time.deltaTime;
+                    var newSpd = spd - MOVE_ACCEL * dt;
                     nextVector *= newSpd / spd;
                 }
 
@@ -160,6 +164,17 @@ public class WillyScript : CharacterScript
         }
 
         // 移動
-        transform.position += moveVector * Time.deltaTime;
+        transform.position += moveVector * dt;
     }
+
+    /// <summary>
+    /// 死亡時
+    /// </summary>
+    protected override void DamageDeath()
+    {
+        base.DamageDeath();
+        Destroy(gameObject);
+    }
+
+    #endregion
 }

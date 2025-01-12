@@ -73,12 +73,14 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 /Assets/GameResource/
-/Assets/TextMesh Pro/
-/Assets/StarterAssets/
-/Assets/UniGLTF/
-/Assets/VRM10/
 /Assets/GameResource.meta
+/Assets/TextMesh Pro/
 /Assets/TextMesh Pro.meta
+/Assets/StarterAssets/
 /Assets/StarterAssets.meta
+/Assets/UniGLTF/
 /Assets/UniGLTF.meta
+/Assets/VRM10/
 /Assets/VRM10.meta
+/Assets/JMO Assets/
+/Assets/JMO Assets.meta

@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// 単純に近づいてくるだけの敵
 /// </summary>
-public class SimpleEnemyScript : CharacterScript
+public class SimpleEnemyScript : EnemyScriptBase
 {
     #region 定数
 
@@ -29,6 +29,10 @@ public class SimpleEnemyScript : CharacterScript
     /// </summary>
     protected override void UpdateCharacter()
     {
+        base.UpdateCharacter();
+
+        var manager = ManagerSceneScript.GetInstance();
+        var dt = manager.validDeltaTime;
         var main = GameMainSystem.Instance;
 
         if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
@@ -36,10 +40,9 @@ public class SimpleEnemyScript : CharacterScript
         if (checkTimer < 0f)
         {
             checkTimer = check_interval;
-            // rigidBody使わない
 
             // プレイヤー位置
-            var pPos = main.playerScript.transform.position;
+            var pPos = main.GetPlayerCenter();
             var dist = pPos - transform.position;
             dist.y = 0;
             if (dist.sqrMagnitude < 1f)
@@ -64,11 +67,32 @@ public class SimpleEnemyScript : CharacterScript
         }
         else
         {
-            checkTimer -= Time.deltaTime;
+            checkTimer -= dt;
         }
 
 
         // 移動
-        transform.position += moveVector * Time.deltaTime;
+        transform.position += moveVector * dt;
+    }
+
+    /// <summary>
+    /// プレイヤーから離れすぎた時
+    /// </summary>
+    /// <param name="playerCenter"></param>
+    protected override void TooFarPlayer(Vector3 playerCenter)
+    {
+        base.TooFarPlayer(playerCenter);
+
+        // 消える
+        Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// 死亡時
+    /// </summary>
+    protected override void DamageDeath()
+    {
+        base.DamageDeath();
+        Destroy(gameObject);
     }
 }

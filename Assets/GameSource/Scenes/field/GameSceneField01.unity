@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectParent: {fileID: 1157133700}
+  smallEnemies: {fileID: 0}
 --- !u!1 &1157133700
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,7 +209,8 @@ GameObject:
   - component: {fileID: 1511088861}
   - component: {fileID: 1511088860}
   - component: {fileID: 1511088859}
-  m_Layer: 0
+  - component: {fileID: 1511088862}
+  m_Layer: 6
   m_Name: ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,6 +307,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511088857}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1511088862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511088857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37178948cb4918d4587a87b0f639e7bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

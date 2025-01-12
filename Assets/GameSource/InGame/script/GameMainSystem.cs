@@ -20,8 +20,15 @@ public class GameMainSystem : MainScriptBase
 
     #region 変数・メンバー
 
+    #region UI
+
+    /// <summary>HPゲージ</summary>
+    public UIHpGauge ui_hp;
+
     /// <summary>FPS表示</summary>
     public TMP_Text txt_fps;
+
+    #endregion
 
     private Vector2Int player_loc;
     /// <summary>プレイヤー</summary>
@@ -38,6 +45,12 @@ public class GameMainSystem : MainScriptBase
 
     /// <summary>雑魚敵を持つ空オブジェクト</summary>
     public Transform smallEnemyParent;
+
+    /// <summary>攻撃を持つ空オブジェクト</summary>
+    public Transform attackParent;
+
+    /// <summary>開始時刻</summary>
+    private float startTime;
 
     #endregion
 
@@ -83,8 +96,15 @@ public class GameMainSystem : MainScriptBase
 
         //todo:x秒毎にFPS表示
         StartCoroutine(Test_DisplayFPS());
+
+        // 開始時刻
+        startTime = Time.time;
     }
 
+    /// <summary>
+    /// FPS表示てすと
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Test_DisplayFPS()
     {
         while (true)
@@ -181,8 +201,9 @@ public class GameMainSystem : MainScriptBase
             {
                 var randomScenes = new List<string>()
                 {
-                    //"GameSceneField_polygon1",
-                    //"GameSceneField_eye1",
+                    "GameSceneField01",
+                    "GameSceneField_polygon1",
+                    "GameSceneField_eye1",
                     "GameSceneField_bakyura1",
                     "GameSceneField_willy1",
                 };
@@ -191,6 +212,48 @@ public class GameMainSystem : MainScriptBase
                 manager.LoadSubScene(randomScenes[idx], loc.x, loc.y);
             }
         }
+    }
+
+    #endregion
+
+    #region 取得系
+
+    public Vector3 GetPlayerCenter()
+    {
+        if (playerScript) return playerScript.gameObject.transform.position;
+
+        return Vector3.zero;
+    }
+
+    /// <summary>
+    /// 敵の強さレート
+    /// </summary>
+    /// <returns></returns>
+    public float GetEnemyRate()
+    {
+        var interval = Time.time - startTime; // 経過秒数
+
+        //todo:正式な敵の強さ計算
+        // 60秒間は固定
+        if (interval <= 60f) return 1f;
+
+        // 300秒で＋100％
+        return 1f + (interval - 60f) / 300f;
+    }
+
+    /// <summary>
+    /// ボスの強さレート
+    /// </summary>
+    /// <returns></returns>
+    public float GetBossRate()
+    {
+        var interval = Time.time - startTime; // 経過秒数
+
+        // 300秒間は固定
+        if (interval <= 300f) return 2f;
+
+        // 500秒で＋100％
+        return 2f + (interval - 300f) / 500f;
     }
 
     #endregion
