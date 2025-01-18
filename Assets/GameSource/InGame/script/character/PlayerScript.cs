@@ -26,7 +26,7 @@ public class PlayerScript : CharacterScript
     /// <summary>接地判定用Ray</summary>
     private Ray ground_ray;
 
-    /// <summary>プレイヤー</summary>
+    /// <summary>プレイヤー状態</summary>
     public enum PlayerState
     {
         /// <summary>立ち</summary>
@@ -89,8 +89,8 @@ public class PlayerScript : CharacterScript
         if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
 
         AttackControl();
-        GroundControl();
         MoveControl();
+        GroundControl();
         UpdateAnim();
     }
 
@@ -136,16 +136,15 @@ public class PlayerScript : CharacterScript
     /// <summary>
     /// 地面検索
     /// </summary>
+    /// <param name="threathold">上方向の猶予</param>
     /// <param name="hitGround"></param>
     /// <param name="hitInfo"></param>
     /// <returns></returns>
-    private bool GroundSearch(out GameGround hitGround, out RaycastHit hitInfo)
+    private bool GroundSearch(float threathold, out GameGround hitGround, out RaycastHit hitInfo)
     {
         hitGround = null;
 
         // Ray更新
-        // 判定猶予
-        var threathold = -y_speed * ManagerSceneScript.GetInstance().validDeltaTime;
         if (threathold < 0.2f) threathold = 0.2f;
         ground_ray.origin = transform.position + new Vector3(0, threathold, 0);
 
@@ -172,12 +171,12 @@ public class PlayerScript : CharacterScript
     {
         var manager = ManagerSceneScript.GetInstance();
         var dt = manager.validDeltaTime;
-
-        // Ray判定
-        var groundHit = GroundSearch(out GameGround ground, out RaycastHit hitInfo);
+        var old_y = transform.position.y;
 
         if (state == PlayerState.Stand)
         {
+            var groundHit = GroundSearch(0f, out GameGround ground, out RaycastHit hitInfo);
+
             // ジャンプ
             if (GameInput.IsPress(GameInput.Buttons.Jump))
             {
@@ -186,6 +185,7 @@ public class PlayerScript : CharacterScript
             else if (!groundHit)
             {
                 // 地面が無くなったら落下
+                jump_count = 1;
                 y_speed = 0f;
                 state = PlayerState.Jump;
                 anim?.SetBool("Jump", false);
@@ -195,24 +195,7 @@ public class PlayerScript : CharacterScript
         }
         else if (state == PlayerState.Jump)
         {
-            // 上昇中は着地しない
-            if (groundHit)
-            {
-                if (y_speed > 0f) groundHit = false;
-            }
-
-            // 物を踏んだら着地
-            if (groundHit)
-            {
-                jump_count = 0;
-                y_speed = 0f;
-                transform.position = hitInfo.point;
-                state = PlayerState.Stand;
-                anim?.SetBool("Jump", false);
-                anim?.SetBool("FreeFall", false);
-                anim?.SetBool("Grounded", true);
-            }
-            else if (GameInput.IsPress(GameInput.Buttons.Jump))
+            if (GameInput.IsPress(GameInput.Buttons.Jump))
             {
                 // スペースキーで二段ジャンプ
                 Jump();
@@ -222,11 +205,26 @@ public class PlayerScript : CharacterScript
                 // 下に加速
                 y_speed -= FALL_G * dt;
                 if (y_speed < FALL_MAX) y_speed = FALL_MAX;
+
                 var newPos = transform.position + new Vector3(0, y_speed * dt, 0);
                 // 落ち過ぎたら上に出る
                 if (newPos.y < -20f) newPos.y = 20f;
-
                 transform.position = newPos;
+
+                // 地面判定
+                var groundHit = GroundSearch(old_y - newPos.y, out GameGround ground, out RaycastHit hitInfo);
+
+                // 物を踏んだら着地
+                if (groundHit)
+                {
+                    jump_count = 0;
+                    y_speed = 0f;
+                    transform.position = hitInfo.point;
+                    state = PlayerState.Stand;
+                    anim?.SetBool("Jump", false);
+                    anim?.SetBool("FreeFall", false);
+                    anim?.SetBool("Grounded", true);
+                }
             }
         }
     }
