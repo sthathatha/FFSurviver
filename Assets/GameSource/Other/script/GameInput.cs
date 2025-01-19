@@ -12,8 +12,12 @@ public class GameInput
         NormalAttack,
         Avoid,
         Menu,
-        OK,
-        Cancel,
+        MenuOK,
+        MenuCancel,
+        MenuUp,
+        MenuDown,
+        MenuRight,
+        MenuLeft,
     }
 
     /// <summary>
@@ -39,13 +43,28 @@ public class GameInput
             case Buttons.Menu:
                 return keyboard?.backspaceKey.wasPressedThisFrame == true ||
                     gamepad?.buttonNorth.wasPressedThisFrame == true;
-            case Buttons.OK:
+            case Buttons.MenuOK:
                 return keyboard?.enterKey.wasPressedThisFrame == true ||
                     gamepad?.buttonSouth?.wasPressedThisFrame == true;
-            case Buttons.Cancel:
+            case Buttons.MenuCancel:
                 return keyboard?.backspaceKey.wasPressedThisFrame == true ||
                     gamepad?.buttonEast.wasPressedThisFrame == true;
-
+            case Buttons.MenuUp:
+                return keyboard?.upArrowKey.wasPressedThisFrame == true ||
+                    gamepad?.dpad.up.wasPressedThisFrame == true ||
+                    gamepad?.leftStick.up.wasPressedThisFrame == true;
+            case Buttons.MenuDown:
+                return keyboard?.downArrowKey.wasPressedThisFrame == true ||
+                    gamepad?.dpad.down.wasPressedThisFrame == true ||
+                    gamepad?.leftStick.down.wasPressedThisFrame == true;
+            case Buttons.MenuRight:
+                return keyboard?.rightArrowKey.wasPressedThisFrame == true ||
+                    gamepad?.dpad.right.wasPressedThisFrame == true ||
+                    gamepad?.leftStick.right.wasPressedThisFrame == true;
+            case Buttons.MenuLeft:
+                return keyboard?.leftArrowKey.wasPressedThisFrame == true ||
+                    gamepad?.dpad.left.wasPressedThisFrame == true ||
+                    gamepad?.leftStick.left.wasPressedThisFrame == true;
         }
 
         return false;
