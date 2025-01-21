@@ -9,7 +9,7 @@ public class UILotteryWindow : AppearUIBase
 {
     #region ƒƒ“ƒo[
 
-    public Animator cursor;
+    public RuntimeAnimatorController cursor;
     public TMP_Text txtCost;
 
     /// <summary>ˆø‚­</summary>

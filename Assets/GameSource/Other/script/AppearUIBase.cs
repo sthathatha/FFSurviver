@@ -68,16 +68,22 @@ public class AppearUIBase : MonoBehaviour
     /// <returns></returns>
     public IEnumerator Open(bool _immediate = false)
     {
+        var manager = ManagerSceneScript.GetInstance();
+        var rect = GetComponent<RectTransform>();
+        var basePos = rect.anchoredPosition;
+
         // Å‰”ñ•\¦‚Ìê‡Start‚ª‘–‚Á‚Ä‚È‚¢ê‡‚ª‚ ‚é‚Ì‚Å
         if (!isInitialized)
         {
+            // Active‚Å‚È‚¢‚Æ‚Å‚«‚È‚¢‰Šú‰»ˆ—‚ª‚ ‚è‚¦‚é‚Ì‚ÅAÁ‚¦‚½êŠ‚Éİ’è‚µ‚Ä‹N“®ó‘Ô‚É‚µ‚Ä‚¨‚­
+            basePos.x = hide_X;
+            rect.anchoredPosition = basePos;
+            gameObject.SetActive(true);
+
             Initialize();
             yield return null;
         }
 
-        var manager = ManagerSceneScript.GetInstance();
-        var rect = GetComponent<RectTransform>();
-        var basePos = rect.anchoredPosition;
         isActive = true;
 
         if (_immediate)

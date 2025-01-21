@@ -25,8 +25,15 @@ public class UIMaterialBase : MonoBehaviour
     {
         if (cursor == null) return;
 
-        cursor.gameObject.SetActive(true);
-        cursor.SetInteger("state", 0);
+        // ”ñActive‚©‚çActive‚É‚·‚é‚Æ‰Šú‰»‚³‚ê‚Ä‚é‚©‚çŒx‚ªo‚é
+        if (cursor.gameObject.activeInHierarchy)
+        {
+            cursor.SetInteger("state", 0);
+        }
+        else
+        {
+            cursor.gameObject.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -36,7 +43,6 @@ public class UIMaterialBase : MonoBehaviour
     {
         if (cursor == null) return;
 
-        cursor.gameObject.SetActive(true);
         cursor.SetInteger("state", 1);
     }
 }

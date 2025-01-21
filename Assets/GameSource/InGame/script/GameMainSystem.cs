@@ -25,6 +25,9 @@ public class GameMainSystem : MainScriptBase
     /// <summary>HPゲージ</summary>
     public UIHpGauge ui_hp;
 
+    /// <summary>Exp</summary>
+    public TMP_Text txt_exp;
+
     /// <summary>FPS表示</summary>
     public TMP_Text txt_fps;
 
@@ -32,6 +35,11 @@ public class GameMainSystem : MainScriptBase
     public UIInGameMenu inGameMenu;
 
     #endregion
+
+    /// <summary>ゲームパラメータ</summary>
+    public GameParameter prm_Game { get; private set; }
+    /// <summary>プレイヤーパラメータ</summary>
+    public PlayerParameter prm_Player { get; private set; }
 
     private Vector2Int player_loc;
     /// <summary>プレイヤー</summary>
@@ -74,6 +82,12 @@ public class GameMainSystem : MainScriptBase
     {
         yield return base.BeforeInitFadeIn();
         var manager = ManagerSceneScript.GetInstance();
+
+        // パラメータ作成
+        prm_Game = new GameParameter();
+        prm_Game.InitParam();
+        prm_Player = new PlayerParameter();
+        prm_Player.Init();
 
         // 初期配置フィールド読み込み
         RefreshFieldCell(true);
