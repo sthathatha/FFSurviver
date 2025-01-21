@@ -136,11 +136,11 @@ public class CharacterScript : MonoBehaviour
     /// </summary>
     private void DamageControl()
     {
-        var manager = ManagerSceneScript.GetInstance();
+        var manager = ManagerSceneScript.GetInstance().GetComponent<OriginManager>();
 
         foreach (var h in atkHistories)
         {
-            h.intTime -= manager.validDeltaTime;
+            h.intTime -= manager.inGameDeltaTime;
         }
 
         // ‹‚È‚­‚È‚Á‚Ä‚¢‚½‚çíœ

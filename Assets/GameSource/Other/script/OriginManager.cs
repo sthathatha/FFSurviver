@@ -11,6 +11,11 @@ public class OriginManager : MonoBehaviour
     /// <summary>オプション</summary>
     public OptionUI optionUI;
 
+    /// <summary>ゲーム内有効時間</summary>
+    public float inGameDeltaTime { get; private set; } = 0f;
+    /// <summary>ゲーム内時間速度</summary>
+    public float inGameTimeSpeed = 1f;
+
     #endregion
 
     /// <summary>
@@ -19,5 +24,16 @@ public class OriginManager : MonoBehaviour
     private void Start()
     {
         optionUI.Close(true);
+    }
+
+    /// <summary>
+    /// 更新
+    /// </summary>
+    private void Update()
+    {
+        var manager = GetComponent<ManagerSceneScript>();
+
+        if (inGameTimeSpeed > 0f) inGameDeltaTime = inGameTimeSpeed * manager.validDeltaTime;
+        else inGameDeltaTime = 0f;
     }
 }

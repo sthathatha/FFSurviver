@@ -13,7 +13,7 @@ public class AppearUIBase : MonoBehaviour
     /// <summary>アクティブX座標</summary>
     public float show_X = 100f;
     /// <summary>表示時間</summary>
-    public float show_time = 0.3f;
+    public float show_time = 0.15f;
 
     /// <summary>移動座標</summary>
     private DeltaFloat moveX;
@@ -21,17 +21,41 @@ public class AppearUIBase : MonoBehaviour
     /// <summary>瞬時表示</summary>
     protected bool isImmediate;
 
+    /// <summary>初期化処理済み</summary>
+    private bool isInitialized = false;
+
+    /// <summary>稼働中</summary>
+    public bool isActive { get; private set; } = false;
+
     #endregion
 
     #region 基底
 
     /// <summary>
-    /// 表示
+    /// 初期化
     /// </summary>
     private void Start()
     {
-        moveX = new DeltaFloat();
+        if (!isInitialized)
+        {
+            Initialize();
+        }
     }
+
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    private void Initialize()
+    {
+        moveX = new DeltaFloat();
+        InitStart();
+        isInitialized = true;
+    }
+
+    /// <summary>
+    /// 必ず１回やる初期化処理
+    /// </summary>
+    virtual protected void InitStart() { }
 
     #endregion
 
@@ -44,21 +68,30 @@ public class AppearUIBase : MonoBehaviour
     /// <returns></returns>
     public IEnumerator Open(bool _immediate = false)
     {
+        // 最初非表示の場合Startが走ってない場合があるので
+        if (!isInitialized)
+        {
+            Initialize();
+            yield return null;
+        }
+
         var manager = ManagerSceneScript.GetInstance();
-        var basePos = transform.localPosition;
+        var rect = GetComponent<RectTransform>();
+        var basePos = rect.anchoredPosition;
+        isActive = true;
 
         if (_immediate)
         {
             // すぐ出てくる
             basePos.x = show_X;
-            transform.localPosition = basePos;
+            rect.anchoredPosition = basePos;
             gameObject.SetActive(true);
         }
         else
         {
             // 移動
             isImmediate = _immediate;
-            InitMenu();
+            InitOpen();
             gameObject.SetActive(true);
 
             moveX.Set(hide_X);
@@ -67,7 +100,7 @@ public class AppearUIBase : MonoBehaviour
             {
                 moveX.Update(manager.validDeltaTime);
                 basePos.x = moveX.Get();
-                transform.localPosition = basePos;
+                rect.anchoredPosition = basePos;
 
                 yield return null;
             }
@@ -84,13 +117,14 @@ public class AppearUIBase : MonoBehaviour
     public IEnumerator Close(bool _immediate = false)
     {
         var manager = ManagerSceneScript.GetInstance();
-        var basePos = transform.localPosition;
+        var rect = GetComponent<RectTransform>();
+        var basePos = rect.anchoredPosition;
 
         if (_immediate)
         {
             // すぐ消える
             basePos.x = hide_X;
-            transform.localPosition = basePos;
+            rect.anchoredPosition = basePos;
         }
         else
         {
@@ -103,19 +137,20 @@ public class AppearUIBase : MonoBehaviour
             {
                 moveX.Update(manager.validDeltaTime);
                 basePos.x = moveX.Get();
-                transform.localPosition = basePos;
+                rect.anchoredPosition = basePos;
 
                 yield return null;
             }
         }
 
+        isActive = false;
         gameObject.SetActive(false);
     }
 
     /// <summary>
     /// 開く前の表示更新
     /// </summary>
-    virtual protected void InitMenu() { }
+    virtual protected void InitOpen() { }
 
     /// <summary>
     /// 開ききったあとの更新コルーチン

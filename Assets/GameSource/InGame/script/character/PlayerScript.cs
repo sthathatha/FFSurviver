@@ -88,6 +88,9 @@ public class PlayerScript : CharacterScript
         base.UpdateCharacter();
         if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
 
+        // メニュー処理中は下の処理をしない
+        if (!MenuControl()) return;
+
         AttackControl();
         MoveControl();
         GroundControl();
@@ -102,6 +105,28 @@ public class PlayerScript : CharacterScript
         base.UpdateCharacter2();
         if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
         CameraControl();
+    }
+
+    #endregion
+
+    #region メニュー操作
+
+    /// <summary>
+    /// メニュー操作
+    /// </summary>
+    /// <returns>false:以降の処理を無視</returns>
+    private bool MenuControl()
+    {
+        if (GameInput.IsPress(GameInput.Buttons.Menu))
+        {
+            // 物理は止められないのでXZ速度止める
+            var vy = rigid.linearVelocity.y;
+            rigid.linearVelocity = new Vector3(0, vy, 0);
+            GameMainSystem.Instance.OpenMenu();
+            return false;
+        }
+
+        return true;
     }
 
     #endregion
@@ -170,7 +195,7 @@ public class PlayerScript : CharacterScript
     private void GroundControl()
     {
         var manager = ManagerSceneScript.GetInstance();
-        var dt = manager.validDeltaTime;
+        var dt = manager.GetComponent<OriginManager>().inGameDeltaTime;
         var old_y = transform.position.y;
 
         if (state == PlayerState.Stand)
@@ -234,10 +259,10 @@ public class PlayerScript : CharacterScript
     /// </summary>
     private void Jump()
     {
-        var manager = ManagerSceneScript.GetInstance();
         if (jump_count < jump_count_max)
         {
-            var dt = manager.validDeltaTime;
+            var manager = ManagerSceneScript.GetInstance().GetComponent<OriginManager>();
+            var dt = manager.inGameDeltaTime;
             jump_count++;
             y_speed = JUMP_V0;
             state = PlayerState.Jump;

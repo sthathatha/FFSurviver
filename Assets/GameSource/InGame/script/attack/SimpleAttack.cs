@@ -24,18 +24,11 @@ public class SimpleAttack : AttackParameter
     #region UnityŠù’è
 
     /// <summary>
-    /// ‰Šú‰»
-    /// </summary>
-    void Start()
-    {
-    }
-
-    /// <summary>
     /// XV
     /// </summary>
     void Update()
     {
-        var dt = ManagerSceneScript.GetInstance().validDeltaTime;
+        var dt = ManagerSceneScript.GetInstance().GetComponent<OriginManager>().inGameDeltaTime;
         valid_time -= dt;
         if (valid_time <= 0f)
         {

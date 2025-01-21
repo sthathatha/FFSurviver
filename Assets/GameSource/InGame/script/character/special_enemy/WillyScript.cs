@@ -80,7 +80,7 @@ public class WillyScript : EnemyScriptBase
     protected override void UpdateCharacter()
     {
         var manager = ManagerSceneScript.GetInstance();
-        var dt = manager.validDeltaTime;
+        var dt = manager.GetComponent<OriginManager>().inGameDeltaTime;
         var main = GameMainSystem.Instance;
 
         if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;

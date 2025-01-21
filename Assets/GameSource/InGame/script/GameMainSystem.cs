@@ -28,6 +28,9 @@ public class GameMainSystem : MainScriptBase
     /// <summary>FPS表示</summary>
     public TMP_Text txt_fps;
 
+    /// <summary>メニュー</summary>
+    public UIInGameMenu inGameMenu;
+
     #endregion
 
     private Vector2Int player_loc;
@@ -39,6 +42,7 @@ public class GameMainSystem : MainScriptBase
     {
         Loading = 0,
         Active,
+        Menu,
         Exiting,
     }
     public GameState state { get; private set; } = GameState.Loading;
@@ -254,6 +258,31 @@ public class GameMainSystem : MainScriptBase
 
         // 500秒で＋100％
         return 2f + (interval - 300f) / 500f;
+    }
+
+    #endregion
+
+    #region その他
+
+    /// <summary>
+    /// メニューを開く
+    /// </summary>
+    public void OpenMenu()
+    {
+        state = GameState.Menu;
+        inGameMenu.Open();
+
+        StartCoroutine(WaitMenu());
+    }
+
+    /// <summary>
+    /// メニュー閉じ待ち
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator WaitMenu()
+    {
+        yield return new WaitWhile(() => inGameMenu.isActive);
+        state = GameState.Active;
     }
 
     #endregion
