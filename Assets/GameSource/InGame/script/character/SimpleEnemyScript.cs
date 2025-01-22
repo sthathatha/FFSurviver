@@ -93,6 +93,8 @@ public class SimpleEnemyScript : EnemyScriptBase
     protected override void DamageDeath()
     {
         base.DamageDeath();
+
+
         Destroy(gameObject);
     }
 }

@@ -21,8 +21,8 @@ public class GameParameter
     /// <summary>ボス撃破フラグ５</summary>
     public bool Defeated_Boss5 { get; set; }
 
-    /// <summary>くじ引き回数</summary>
-    public int LotteryCount { get; set; }
+    /// <summary>くじ引きコスト</summary>
+    public int LotteryCost { get; set; }
 
     #endregion
 
@@ -37,7 +37,15 @@ public class GameParameter
         Defeated_Boss3 = false;
         Defeated_Boss4 = false;
         Defeated_Boss5 = false;
-        LotteryCount = 0;
+        LotteryCost = 20;
     }
 
+    /// <summary>
+    /// くじ引いて次コストアップ
+    /// </summary>
+    public void LotteryCostUp()
+    {
+        //todo:コストアップ計算
+        LotteryCost += 100;
+    }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// ロトリー
@@ -11,9 +12,10 @@ public class UILotteryWindow : AppearUIBase
 
     public RuntimeAnimatorController cursor;
     public TMP_Text txtCost;
+    public Image btnGet;
 
     /// <summary>引く</summary>
-    public bool isGetLottery {  get; private set; }
+    public bool isGetLottery { get; private set; }
 
     #endregion
 
@@ -26,9 +28,14 @@ public class UILotteryWindow : AppearUIBase
     {
         base.InitOpen();
         isGetLottery = false;
+        var game = GameMainSystem.Instance.prm_Game;
 
-        //todo:コスト表示
-        txtCost.SetText("1");
+        // コスト表示
+        txtCost.SetText(game.LotteryCost.ToString());
+        if (game.Exp >= game.LotteryCost)
+            btnGet.color = GameConstant.ButtonEnableColor;
+        else
+            btnGet.color = GameConstant.ButtonDisableColor;
     }
 
     #endregion
@@ -40,14 +47,23 @@ public class UILotteryWindow : AppearUIBase
     protected override IEnumerator UpdateMenu()
     {
         yield return base.UpdateMenu();
+        var game = GameMainSystem.Instance.prm_Game;
+        //var expUI = GameMainSystem.Instance.txt_exp
 
         while (true)
         {
             if (GameInput.IsPress(GameInput.Buttons.MenuOK))
             {
-                //todo:コスト足りていれば引く
-                isGetLottery = true;
-                break;
+                // コスト足りていれば引く
+                if (game.Exp >= game.LotteryCost)
+                {
+                    game.Exp -= game.LotteryCost;
+                    GameMainSystem.Instance.UpdateExpUI();
+                    game.LotteryCostUp();
+
+                    isGetLottery = true;
+                    break;
+                }
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuCancel))
             {

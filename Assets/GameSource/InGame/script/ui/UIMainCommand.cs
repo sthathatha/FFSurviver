@@ -56,6 +56,8 @@ public class UIMainCommand : AppearUIBase
     protected override void InitOpen()
     {
         base.InitOpen();
+
+        commands.MoveReset();
         UpdateCursor();
     }
 

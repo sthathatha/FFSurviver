@@ -52,8 +52,6 @@ public class CharacterScript : MonoBehaviour
     /// <summary>ƒ_ƒ[ƒWŠÇ—</summary>
     protected List<AttackHistory> atkHistories;
 
-    /// <summary>Å‘åHP</summary>
-    protected int hp_max;
     /// <summary>HP</summary>
     protected int hp;
 

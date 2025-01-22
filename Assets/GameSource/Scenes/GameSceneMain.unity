@@ -900,6 +900,7 @@ MonoBehaviour:
   cursor: {fileID: 987887918}
   txtValue: {fileID: 1798442780}
   txtCost: {fileID: 756326572}
+  btnUp: {fileID: 1562386975}
 --- !u!1 &222614630
 GameObject:
   m_ObjectHideFlags: 0
@@ -4076,6 +4077,7 @@ MonoBehaviour:
   cursor: {fileID: 2029790399}
   txtValue: {fileID: 1294031775}
   txtCost: {fileID: 242907119}
+  btnUp: {fileID: 1751001227}
 --- !u!1 &600972462
 GameObject:
   m_ObjectHideFlags: 0
@@ -5763,6 +5765,7 @@ MonoBehaviour:
   show_time: 0.15
   cursor: {fileID: 1353989024}
   txtCost: {fileID: 691220780}
+  btnGet: {fileID: 355711082}
 --- !u!1 &820830246
 GameObject:
   m_ObjectHideFlags: 0
@@ -6870,6 +6873,7 @@ MonoBehaviour:
   cursor: {fileID: 1904762151}
   txtValue: {fileID: 717962710}
   txtCost: {fileID: 2130783248}
+  btnUp: {fileID: 1684565549}
 --- !u!1 &994574124
 GameObject:
   m_ObjectHideFlags: 0
@@ -8479,6 +8483,7 @@ MonoBehaviour:
   cursor: {fileID: 697760888}
   txtValue: {fileID: 994574126}
   txtCost: {fileID: 1375272015}
+  btnUp: {fileID: 382146317}
 --- !u!1 &1294031773
 GameObject:
   m_ObjectHideFlags: 0
@@ -10476,7 +10481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.514151, b: 0.514151, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13379,6 +13384,7 @@ MonoBehaviour:
   cursor: {fileID: 843012016}
   txtValue: {fileID: 725296981}
   txtCost: {fileID: 1655690645}
+  btnUp: {fileID: 270276022}
 --- !u!1 &2130756655
 GameObject:
   m_ObjectHideFlags: 0

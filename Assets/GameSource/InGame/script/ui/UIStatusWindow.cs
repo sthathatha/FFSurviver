@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 /// <summary>
@@ -49,7 +51,9 @@ public class UIStatusWindow : AppearUIBase
     protected override void InitOpen()
     {
         base.InitOpen();
-        //todo:現在の値セット
+
+        // 現在の値セット
+        UpdateValue();
 
         itemList.MoveReset();
         UpdateCursor();
@@ -69,7 +73,33 @@ public class UIStatusWindow : AppearUIBase
         {
             if (GameInput.IsPress(GameInput.Buttons.MenuOK))
             {
-                //todo:コスト足りていれば強化
+                // コスト足りていれば強化
+                var pp = GameMainSystem.Instance.prm_Player;
+                var game = GameMainSystem.Instance.prm_Game;
+                var pwAct = new Action<UIStatusMaterial, PlayerParameter.Status>((item, stat) =>
+                {
+                    if (stat.CanPowerUp(game.Exp))
+                    {
+                        game.Exp -= stat.cost;
+                        GameMainSystem.Instance.UpdateExpUI();
+                        stat.PowerUp();
+                        UpdateValue();
+                    }
+                    else
+                    {
+                        //todo:エラー音
+                    }
+                });
+                if (itemList.selectIndex == 0)
+                    pwAct(itemList.GetSelectItem(), pp.stat_melee);
+                else if (itemList.selectIndex == 1)
+                    pwAct(itemList.GetSelectItem(), pp.stat_magic);
+                else if (itemList.selectIndex == 2)
+                    pwAct(itemList.GetSelectItem(), pp.stat_maxHp);
+                else if (itemList.selectIndex == 3)
+                    pwAct(itemList.GetSelectItem(), pp.stat_speed);
+                else
+                    pwAct(itemList.GetSelectItem(), pp.stat_jump);
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuCancel))
             {
@@ -93,6 +123,28 @@ public class UIStatusWindow : AppearUIBase
     }
 
     #region その他メソッド
+
+    /// <summary>
+    /// 現在の値に更新
+    /// </summary>
+    private void UpdateValue()
+    {
+        var game = GameMainSystem.Instance.prm_Game;
+        var prm = GameMainSystem.Instance.prm_Player;
+
+        var setAct = new Action<UIStatusMaterial, PlayerParameter.Status>((item, stat) =>
+        {
+            item.SetValue(stat.value);
+            item.SetCost(stat.cost);
+            item.SetButtonEnable(stat.CanPowerUp(game.Exp));
+        });
+
+        setAct(itemMelee, prm.stat_melee);
+        setAct(itemMagic, prm.stat_magic);
+        setAct(itemHp, prm.stat_maxHp);
+        setAct(itemSpeed, prm.stat_speed);
+        setAct(itemJump, prm.stat_jump);
+    }
 
     /// <summary>
     /// カーソル表示更新

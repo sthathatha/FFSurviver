@@ -16,12 +16,12 @@ public class PlayerParameter
         public int value { get; set; }
         /// <summary>最大値</summary>
         private int maxValue { get; set; }
-        /// <summary>強化回数</summary>
-        private int upCount { get; set; }
         /// <summary>強化値</summary>
         private int upHeight { get; set; }
         /// <summary>強化コスト基本値</summary>
         private int costBase { get; set; }
+        /// <summary>次の強化コスト</summary>
+        public int cost { get; set; }
 
         /// <summary>
         /// コンストラクタ
@@ -36,28 +36,33 @@ public class PlayerParameter
             this.upHeight = upHeight;
             this.maxValue = max;
             this.costBase = costBase;
-
-            this.upCount = 0;
+            this.cost = costBase;
         }
 
         /// <summary>
         /// 強化
         /// </summary>
         /// <param name="_noCount">true:回数にカウントしない（アイテム成長の場合）</param>
-        public void Increase(bool _noCount = false)
+        public void PowerUp(bool _noCount = false)
         {
             value += upHeight;
-            if (!_noCount) upCount++;
+            if (!_noCount)
+            {
+                cost += costBase;
+            }
         }
 
         /// <summary>
-        /// 次の強化コスト
+        /// 現在のExpで強化可能かどうか
         /// </summary>
+        /// <param name="nowExp"></param>
         /// <returns></returns>
-        public int GetNextCost()
+        public bool CanPowerUp(int nowExp)
         {
-            //todo:コスト計算
-            return (upCount + 1) * costBase;
+            if (maxValue > 0 && value >= maxValue) return false;
+            if (cost > nowExp) return false;
+
+            return true;
         }
     }
 

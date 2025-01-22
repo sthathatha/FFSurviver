@@ -41,9 +41,6 @@ public class PlayerScript : CharacterScript
     /// <summary>空中上下速度</summary>
     private float y_speed = 0f;
 
-    /// <summary>ジャンプ可能回数</summary>
-    private int jump_count_max = 1;
-
     /// <summary>ジャンプ回数</summary>
     private int jump_count = 0;
 
@@ -73,11 +70,12 @@ public class PlayerScript : CharacterScript
         // ゲームメインに自分を渡す
         GameMainSystem.Instance.playerScript = this;
 
-        //todo:パラメータ初期化
-        jump_count_max = 1;
-        hp_max = 100;
-        hp = hp_max;
-        ui_hp.SetHP(hp, hp_max);
+        // パラメータ初期化
+        var game = GameMainSystem.Instance.prm_Game;
+        var pprm = GameMainSystem.Instance.prm_Player;
+
+        hp = pprm.stat_maxHp.value;
+        ui_hp.SetHP(hp, hp);
     }
 
     /// <summary>
@@ -139,6 +137,9 @@ public class PlayerScript : CharacterScript
     private void AttackControl()
     {
         var main = GameMainSystem.Instance;
+        var tmpData = GlobalData.GetTemporaryData();
+        var game = main.prm_Game;
+        var pprm = main.prm_Player;
 
         // キャラの向き
         var direction = transform.rotation * new Vector3(0, 0, 1);
@@ -149,6 +150,10 @@ public class PlayerScript : CharacterScript
         {
             var center = GetComponent<Collider>().bounds.center;
             var na = Instantiate(normal_attack, main.attackParent);
+            if (tmpData.GetGeneralDataInt("PlayerID", 0) == (int)GameConstant.PlayerID.Koob)
+                na.SetAttackRate(pprm.stat_magic.value);
+            else
+                na.SetAttackRate(pprm.stat_melee.value);
             na.gameObject.SetActive(false);
             na.Shoot(center, direction);
         }
@@ -259,7 +264,9 @@ public class PlayerScript : CharacterScript
     /// </summary>
     private void Jump()
     {
-        if (jump_count < jump_count_max)
+        var pprm = GameMainSystem.Instance.prm_Player;
+
+        if (jump_count < pprm.stat_jump.value)
         {
             var manager = ManagerSceneScript.GetInstance().GetComponent<OriginManager>();
             var dt = manager.inGameDeltaTime;
@@ -321,10 +328,12 @@ public class PlayerScript : CharacterScript
     /// <param name="heal"></param>
     private void Heal(int heal)
     {
-        hp += heal;
-        if (hp > hp_max) hp = hp_max;
+        var pprm = GameMainSystem.Instance.prm_Player;
 
-        ui_hp.SetHP(hp, hp_max);
+        hp += heal;
+        if (hp > pprm.stat_maxHp.value) hp = pprm.stat_maxHp.value;
+
+        ui_hp.SetHP(hp, pprm.stat_maxHp.value);
     }
 
     /// <summary>
@@ -346,7 +355,9 @@ public class PlayerScript : CharacterScript
     protected override void DamageHit()
     {
         base.DamageHit();
-        ui_hp.SetHP(hp, hp_max);
+        var pprm = GameMainSystem.Instance.prm_Player;
+
+        ui_hp.SetHP(hp, pprm.stat_maxHp.value);
     }
 
     /// <summary>

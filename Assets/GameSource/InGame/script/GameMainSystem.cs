@@ -89,6 +89,8 @@ public class GameMainSystem : MainScriptBase
         prm_Player = new PlayerParameter();
         prm_Player.Init();
 
+        UpdateExpUI();
+
         // 初期配置フィールド読み込み
         RefreshFieldCell(true);
         // 読み込み待ち
@@ -297,6 +299,24 @@ public class GameMainSystem : MainScriptBase
     {
         yield return new WaitWhile(() => inGameMenu.isActive);
         state = GameState.Active;
+    }
+
+    /// <summary>
+    /// 経験値追加
+    /// </summary>
+    /// <param name="e"></param>
+    public void AddExp(int e)
+    {
+        prm_Game.Exp += e;
+        UpdateExpUI();
+    }
+
+    /// <summary>
+    /// 経験値最新表示
+    /// </summary>
+    public void UpdateExpUI()
+    {
+        txt_exp.SetText(prm_Game.Exp.ToString());
     }
 
     #endregion

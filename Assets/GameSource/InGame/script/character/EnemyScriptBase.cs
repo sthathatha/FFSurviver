@@ -14,6 +14,15 @@ public class EnemyScriptBase : CharacterScript
     /// <summary>基本体力</summary>
     public int hp_base = 1;
 
+    /// <summary>最大HP</summary>
+    protected int hp_max;
+
+    /// <summary>経験値基本</summary>
+    public int exp_base = 1;
+
+    /// <summary>強さレート</summary>
+    protected float strength_rate = 1f;
+
     #endregion
 
     #region 基底
@@ -27,12 +36,12 @@ public class EnemyScriptBase : CharacterScript
         yield return base.InitCharacter();
 
         // ゲームシステムからステータス倍率を取得
-        var rate = IsBoss() ? GameMainSystem.Instance.GetBossRate() : GameMainSystem.Instance.GetEnemyRate();
-        hp_max = Mathf.RoundToInt(hp_base * rate);
+        strength_rate = IsBoss() ? GameMainSystem.Instance.GetBossRate() : GameMainSystem.Instance.GetEnemyRate();
+        hp_max = Mathf.RoundToInt(hp_base * strength_rate);
         hp = hp_max;
 
         var atk = GetComponent<AttackParameter>();
-        atk.SetAttackRate(rate);
+        atk.SetAttackRate(strength_rate);
     }
 
     /// <summary>
@@ -55,6 +64,19 @@ public class EnemyScriptBase : CharacterScript
     /// <param name="playerCenter"></param>
     protected virtual void TooFarPlayer(Vector3 playerCenter)
     {
+    }
+
+    /// <summary>
+    /// 死亡時処理
+    /// </summary>
+    protected override void DamageDeath()
+    {
+        base.DamageDeath();
+
+        // 経験値を取得
+        //todo:経験値計算
+        var exp = Mathf.CeilToInt(Mathf.Pow(strength_rate, 0.8f) * exp_base);
+        GameMainSystem.Instance.AddExp(exp);
     }
 
     #endregion

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// ステータス画面１項目
@@ -10,6 +11,7 @@ public class UIStatusMaterial : UIMaterialBase
 
     public TMP_Text txtValue;
     public TMP_Text txtCost;
+    public Image btnUp;
 
     #endregion
 
@@ -29,5 +31,17 @@ public class UIStatusMaterial : UIMaterialBase
     public void SetCost(int cost)
     {
         txtCost.SetText(cost.ToString());
+    }
+
+    /// <summary>
+    /// ボタン押下可能表示
+    /// </summary>
+    /// <param name="enable"></param>
+    public void SetButtonEnable(bool enable)
+    {
+        if (enable)
+            btnUp.color = GameConstant.ButtonEnableColor;
+        else
+            btnUp.color = GameConstant.ButtonDisableColor;
     }
 }
