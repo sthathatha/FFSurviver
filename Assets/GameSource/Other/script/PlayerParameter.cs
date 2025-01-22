@@ -26,30 +26,41 @@ public class PlayerParameter
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="initVal">初期値</param>
-        /// <param name="costBase">コスト基本値</param>
-        /// <param name="max">最大値</param>
-        /// <param name="upHeight">上がり幅</param>
-        public Status(int initVal, int upHeight, int max, int costBase)
+        /// <param name="_initVal">初期値</param>
+        /// <param name="_costBase">コスト基本値</param>
+        /// <param name="_max">最大値</param>
+        /// <param name="_upHeight">上がり幅</param>
+        public Status(int _initVal, int _upHeight, int _max, int _costBase)
         {
-            this.value = initVal;
-            this.upHeight = upHeight;
-            this.maxValue = max;
-            this.costBase = costBase;
-            this.cost = costBase;
+            value = _initVal;
+            upHeight = _upHeight;
+            maxValue = _max;
+            costBase = _costBase;
+            cost = _costBase;
         }
 
         /// <summary>
         /// 強化
         /// </summary>
         /// <param name="_noCount">true:回数にカウントしない（アイテム成長の場合）</param>
-        public void PowerUp(bool _noCount = false)
+        /// <returns>上昇量</returns>
+        public int PowerUp(bool _noCount = false)
         {
+            var oldVal = value;
             value += upHeight;
-            if (!_noCount)
+            if (maxValue > 0 && value >= maxValue)
             {
+                // MAXになったらコスト0
+                value = maxValue;
+                cost = 0;
+            }
+            else if (!_noCount)
+            {
+                // todo:コスト増加計算
                 cost += costBase;
             }
+
+            return value - oldVal;
         }
 
         /// <summary>
@@ -85,11 +96,22 @@ public class PlayerParameter
     /// </summary>
     public void Init()
     {
-        //todo:キャラにより初期化
-        stat_melee = new Status(50, 15, -1, 1);
-        stat_magic = new Status(25, 0, 25, 0);
-        stat_maxHp = new Status(100, 50, -1, 5);
-        stat_speed = new Status(10, 2, 100, 10);
-        stat_jump = new Status(1, 1, 3, 2000);
+        // キャラにより初期化
+        var pid = GameConstant.GetTempPID();
+        var status = pid switch
+        {
+            GameConstant.PlayerID.Drows => GameConstant.InitStatus_Drows,
+            GameConstant.PlayerID.Eraps => GameConstant.InitStatus_Eraps,
+            GameConstant.PlayerID.Exa => GameConstant.InitStatus_Exa,
+            GameConstant.PlayerID.Worra => GameConstant.InitStatus_Worra,
+            GameConstant.PlayerID.Koob => GameConstant.InitStatus_Koob,
+            _ => GameConstant.InitStatus_You,
+        };
+
+        stat_melee = new Status(status.melee.init, status.melee.up, status.melee.max, status.melee.cost);
+        stat_magic = new Status(status.magic.init, status.magic.up, status.magic.max, status.magic.cost);
+        stat_maxHp = new Status(status.maxHp.init, status.maxHp.up, status.maxHp.max, status.maxHp.cost);
+        stat_speed = new Status(status.speed.init, status.speed.up, status.speed.max, status.speed.cost);
+        stat_jump = new Status(status.jump.init, status.jump.up, status.jump.max, status.jump.cost);
     }
 }

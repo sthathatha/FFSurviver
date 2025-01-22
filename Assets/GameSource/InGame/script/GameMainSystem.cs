@@ -61,8 +61,8 @@ public class GameMainSystem : MainScriptBase
     /// <summary>UŒ‚‚ğ‚Â‹óƒIƒuƒWƒFƒNƒg</summary>
     public Transform attackParent;
 
-    /// <summary>ŠJn</summary>
-    private float startTime;
+    /// <summary>Œo‰ßŠÔ</summary>
+    private float inGameTime;
 
     #endregion
 
@@ -118,7 +118,7 @@ public class GameMainSystem : MainScriptBase
         StartCoroutine(Test_DisplayFPS());
 
         // ŠJn
-        startTime = Time.time;
+        inGameTime = 0f;
     }
 
     /// <summary>
@@ -144,9 +144,12 @@ public class GameMainSystem : MainScriptBase
     /// <returns></returns>
     private IEnumerator UpdateCoroutine()
     {
+        var origin = ManagerSceneScript.GetInstance().GetComponent<OriginManager>();
+
         while (true)
         {
             yield return null;
+            inGameTime += origin.inGameDeltaTime;
 
             RefreshFieldCell();
         }
@@ -251,14 +254,12 @@ public class GameMainSystem : MainScriptBase
     /// <returns></returns>
     public float GetEnemyRate()
     {
-        var interval = Time.time - startTime; // Œo‰ß•b”
-
         //todo:³®‚È“G‚Ì‹­‚³ŒvZ
         // 60•bŠÔ‚ÍŒÅ’è
-        if (interval <= 60f) return 1f;
+        if (inGameTime <= 60f) return 1f;
 
         // 300•b‚Å{100“
-        return 1f + (interval - 60f) / 300f;
+        return 1f + (inGameTime - 60f) / 300f;
     }
 
     /// <summary>
@@ -267,13 +268,11 @@ public class GameMainSystem : MainScriptBase
     /// <returns></returns>
     public float GetBossRate()
     {
-        var interval = Time.time - startTime; // Œo‰ß•b”
-
         // 300•bŠÔ‚ÍŒÅ’è
-        if (interval <= 300f) return 2f;
+        if (inGameTime <= 300f) return 2f;
 
         // 500•b‚Å{100“
-        return 2f + (interval - 300f) / 500f;
+        return 2f + (inGameTime - 300f) / 500f;
     }
 
     #endregion

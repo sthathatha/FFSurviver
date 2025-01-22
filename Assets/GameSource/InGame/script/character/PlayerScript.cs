@@ -20,9 +20,6 @@ public class PlayerScript : CharacterScript
     /// <summary>通常攻撃</summary>
     public SimpleAttack normal_attack;
 
-    /// <summary>移動最高速</summary>
-    public float run_speed = 10f;
-
     /// <summary>接地判定用Ray</summary>
     private Ray ground_ray;
 
@@ -150,7 +147,7 @@ public class PlayerScript : CharacterScript
         {
             var center = GetComponent<Collider>().bounds.center;
             var na = Instantiate(normal_attack, main.attackParent);
-            if (tmpData.GetGeneralDataInt("PlayerID", 0) == (int)GameConstant.PlayerID.Koob)
+            if (tmpData.GetGeneralDataInt(GameConstant.DATA_PLAYERID, 0) == (int)GameConstant.PlayerID.Koob)
                 na.SetAttackRate(pprm.stat_magic.value);
             else
                 na.SetAttackRate(pprm.stat_melee.value);
@@ -245,7 +242,7 @@ public class PlayerScript : CharacterScript
                 var groundHit = GroundSearch(old_y - newPos.y, out GameGround ground, out RaycastHit hitInfo);
 
                 // 物を踏んだら着地
-                if (groundHit)
+                if (groundHit && (old_y - newPos.y) > 0f)
                 {
                     jump_count = 0;
                     y_speed = 0f;
@@ -292,6 +289,8 @@ public class PlayerScript : CharacterScript
     /// </summary>
     private void MoveControl()
     {
+        var pprm = GameMainSystem.Instance.prm_Player;
+
         // Y速度は保持
         var vy = rigid.linearVelocity.y;
 
@@ -310,7 +309,7 @@ public class PlayerScript : CharacterScript
 
         // スティック値をカメラ回転と合成
         var move = new Vector3(stick.x, 0, stick.y);
-        move = Quaternion.Euler(0, camRot, 0) * move * run_speed;
+        move = Quaternion.Euler(0, camRot, 0) * move * pprm.stat_speed.value;
         rigid.linearVelocity = new Vector3(move.x, vy, move.z);
 
         // キャラの向き
@@ -323,10 +322,10 @@ public class PlayerScript : CharacterScript
     #region ダメージ処理
 
     /// <summary>
-    /// 回復
+    /// 固定値回復
     /// </summary>
     /// <param name="heal"></param>
-    private void Heal(int heal)
+    public void Heal(int heal)
     {
         var pprm = GameMainSystem.Instance.prm_Player;
 
@@ -334,6 +333,17 @@ public class PlayerScript : CharacterScript
         if (hp > pprm.stat_maxHp.value) hp = pprm.stat_maxHp.value;
 
         ui_hp.SetHP(hp, pprm.stat_maxHp.value);
+    }
+
+    /// <summary>
+    /// 最大値の割合回復
+    /// </summary>
+    /// <param name="rate"></param>
+    public void HealRate(float rate)
+    {
+        var pprm = GameMainSystem.Instance.prm_Player;
+        var healVal = Mathf.FloorToInt(rate * pprm.stat_maxHp.value);
+        Heal(healVal);
     }
 
     /// <summary>

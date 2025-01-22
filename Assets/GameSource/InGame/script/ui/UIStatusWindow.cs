@@ -71,18 +71,25 @@ public class UIStatusWindow : AppearUIBase
 
         while (true)
         {
+            var main = GameMainSystem.Instance;
             if (GameInput.IsPress(GameInput.Buttons.MenuOK))
             {
                 // コスト足りていれば強化
-                var pp = GameMainSystem.Instance.prm_Player;
-                var game = GameMainSystem.Instance.prm_Game;
+                var pp = main.prm_Player;
+                var game = main.prm_Game;
                 var pwAct = new Action<UIStatusMaterial, PlayerParameter.Status>((item, stat) =>
                 {
                     if (stat.CanPowerUp(game.Exp))
                     {
                         game.Exp -= stat.cost;
                         GameMainSystem.Instance.UpdateExpUI();
-                        stat.PowerUp();
+                        var up = stat.PowerUp();
+                        if (itemList.selectIndex == 2)
+                        {
+                            // HPの場合現在値も回復
+                            main.playerScript.Heal(up);
+                        }
+
                         UpdateValue();
                     }
                     else
