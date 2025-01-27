@@ -1,13 +1,13 @@
-using System.Collections;
+ï»¿using System.Collections;
 using TMPro;
 using UnityEngine;
 
 /// <summary>
-/// ‚¨q‚ËÒ‰æ–Ê
+/// ãŠå°‹ã­è€…ç”»é¢
 /// </summary>
 public class UIWantedWindow : AppearUIBase
 {
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
     public UIWantedMaterial wanted1;
     public UIWantedMaterial wanted2;
@@ -22,10 +22,10 @@ public class UIWantedWindow : AppearUIBase
 
     #endregion
 
-    #region ‰Šú‰»
+    #region åˆæœŸåŒ–
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     protected override void InitStart()
     {
@@ -36,13 +36,19 @@ public class UIWantedWindow : AppearUIBase
     }
 
     /// <summary>
-    /// •\¦’¼‘O‰Šú‰»
+    /// è¡¨ç¤ºç›´å‰åˆæœŸåŒ–
     /// </summary>
     protected override void InitOpen()
     {
         base.InitOpen();
 
-        //todo:‚¨q‚ËÒƒAƒCƒRƒ“•\¦XV
+        // ãŠå°‹ã­è€…ã‚¢ã‚¤ã‚³ãƒ³è¡¨ç¤ºæ›´æ–°
+        var game = GameMainSystem.Instance.prm_Game;
+        wanted1.ShowWanted(game.Defeated_Boss1);
+        wanted2.ShowWanted(game.Defeated_Boss2);
+        wanted3.ShowWanted(game.Defeated_Boss3);
+        wanted4.ShowWanted(game.Defeated_Boss4);
+        wanted5.ShowWanted(game.Defeated_Boss5);
 
         wantedList.MoveReset();
         UpdateCursor();
@@ -51,7 +57,7 @@ public class UIWantedWindow : AppearUIBase
     #endregion
 
     /// <summary>
-    /// ˆ—
+    /// å‡¦ç†
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator UpdateMenu()
@@ -82,7 +88,7 @@ public class UIWantedWindow : AppearUIBase
     }
 
     /// <summary>
-    /// ƒJ[ƒ\ƒ‹XV‚ÆÚ×•\¦
+    /// ã‚«ãƒ¼ã‚½ãƒ«æ›´æ–°ã¨è©³ç´°è¡¨ç¤º
     /// </summary>
     private void UpdateCursor()
     {
@@ -92,6 +98,34 @@ public class UIWantedWindow : AppearUIBase
             else wantedList.GetItem(i).Cursor_Hide();
         }
 
-        //todo:‚¨q‚ËÒÚ×•\¦
+        // ãŠå°‹ã­è€…è©³ç´°è¡¨ç¤º
+        var game = GameMainSystem.Instance.prm_Game;
+        switch (wantedList.selectIndex)
+        {
+            case 0:
+                txtName.SetText(Strings.Wanted_Name_Boss1);
+                txtDescription.SetText(Strings.Wanted_Detail_Boss1);
+                break;
+            case 1:
+                txtName.SetText(Strings.Wanted_Name_Boss2);
+                txtDescription.SetText(Strings.Wanted_Detail_Boss2);
+                break;
+            case 2:
+                txtName.SetText(Strings.Wanted_Name_Boss3);
+                txtDescription.SetText(Strings.Wanted_Detail_Boss3);
+                break;
+            case 3:
+                txtName.SetText(Strings.Wanted_Name_Boss4);
+                txtDescription.SetText(Strings.Wanted_Detail_Boss4);
+                break;
+            default:
+                if (game.Defeated_Boss1)
+                    txtName.SetText(Strings.Wanted_Name_Boss5);
+                else
+                    txtName.SetText(Strings.Wanted_Name_Boss5_X);
+                txtDescription.SetText(Strings.Wanted_Detail_Boss5);
+                break;
+
+        }
     }
 }

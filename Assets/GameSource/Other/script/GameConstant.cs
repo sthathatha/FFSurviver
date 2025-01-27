@@ -7,8 +7,8 @@ public class GameConstant
 {
     public const string DATA_PLAYERID = "PlayerID";
 
-    public static readonly Color ButtonEnableColor = Color.red;
-    public static readonly Color ButtonDisableColor = new(1, 0.5f, 0.5f);
+    public static readonly Color ButtonEnableColor = Color.white;
+    public static readonly Color ButtonDisableColor = new(1, 0, 0, 0.5f);
 
     /// <summary>プレイヤーキャラ</summary>
     public enum PlayerID

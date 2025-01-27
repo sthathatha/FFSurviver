@@ -12,8 +12,9 @@ public class UIWantedMaterial : UIMaterialBase
     /// <summary>
     /// ‚¨q‚ËÒ•\¦
     /// </summary>
-    public void ShowWanted()
+    /// <param name="_defeated">“¢”°Ï‚İ</param>
+    public void ShowWanted(bool _defeated)
     {
-        //todo:
+        defeated.gameObject.SetActive(_defeated);
     }
 }
