@@ -1,25 +1,36 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// “Æ©ƒ}ƒl[ƒWƒƒ[
+/// ç‹¬è‡ªãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 /// </summary>
 public class OriginManager : MonoBehaviour
 {
-    #region ƒƒ“ƒo[
+    /// <summary>
+    /// Instanceã¯ManagerSceneã‹ã‚‰å–å¾—ã™ã‚‹
+    /// </summary>
+    public static OriginManager Instance
+    {
+        get
+        {
+            return ManagerSceneScript.GetInstance().GetComponent<OriginManager>();
+        }
+    }
 
-    /// <summary>ƒIƒvƒVƒ‡ƒ“</summary>
+    #region ãƒ¡ãƒ³ãƒãƒ¼
+
+    /// <summary>ã‚ªãƒ—ã‚·ãƒ§ãƒ³</summary>
     public OptionUI optionUI;
 
-    /// <summary>ƒQ[ƒ€“à—LŒøŠÔ</summary>
+    /// <summary>ã‚²ãƒ¼ãƒ å†…æœ‰åŠ¹æ™‚é–“</summary>
     public float inGameDeltaTime { get; private set; } = 0f;
-    /// <summary>ƒQ[ƒ€“àŠÔ‘¬“x</summary>
+    /// <summary>ã‚²ãƒ¼ãƒ å†…æ™‚é–“é€Ÿåº¦</summary>
     public float inGameTimeSpeed = 1f;
 
     #endregion
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     private void Start()
     {
@@ -27,7 +38,7 @@ public class OriginManager : MonoBehaviour
     }
 
     /// <summary>
-    /// XV
+    /// æ›´æ–°
     /// </summary>
     private void Update()
     {

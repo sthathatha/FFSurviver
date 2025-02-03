@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -7,45 +7,45 @@ using UnityEngine;
 using UnityEngine.Analytics;
 
 /// <summary>
-/// ƒQ[ƒ€ŠÇ—
+/// ã‚²ãƒ¼ãƒ ç®¡ç†
 /// </summary>
 public class GameMainSystem : MainScriptBase
 {
-    /// <summary>ƒCƒ“ƒXƒ^ƒ“ƒX</summary>
+    /// <summary>ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹</summary>
     public static GameMainSystem Instance { get; private set; }
 
-    #region ’è”
+    #region å®šæ•°
 
     #endregion
 
-    #region •Ï”Eƒƒ“ƒo[
+    #region å¤‰æ•°ãƒ»ãƒ¡ãƒ³ãƒãƒ¼
 
     #region UI
 
-    /// <summary>HPƒQ[ƒW</summary>
+    /// <summary>HPã‚²ãƒ¼ã‚¸</summary>
     public UIHpGauge ui_hp;
 
     /// <summary>Exp</summary>
     public TMP_Text txt_exp;
 
-    /// <summary>FPS•\¦</summary>
+    /// <summary>FPSè¡¨ç¤º</summary>
     public TMP_Text txt_fps;
 
-    /// <summary>ƒƒjƒ…[</summary>
+    /// <summary>ãƒ¡ãƒ‹ãƒ¥ãƒ¼</summary>
     public UIInGameMenu inGameMenu;
 
     #endregion
 
-    /// <summary>ƒQ[ƒ€ƒpƒ‰ƒ[ƒ^</summary>
+    /// <summary>ã‚²ãƒ¼ãƒ ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿</summary>
     public GameParameter prm_Game { get; private set; }
-    /// <summary>ƒvƒŒƒCƒ„[ƒpƒ‰ƒ[ƒ^</summary>
+    /// <summary>ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿</summary>
     public PlayerParameter prm_Player { get; private set; }
 
     private Vector2Int player_loc;
-    /// <summary>ƒvƒŒƒCƒ„[</summary>
+    /// <summary>ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼</summary>
     public PlayerScript playerScript { get; set; }
 
-    /// <summary>ƒQ[ƒ€ó‘Ô</summary>
+    /// <summary>ã‚²ãƒ¼ãƒ çŠ¶æ…‹</summary>
     public enum GameState
     {
         Loading = 0,
@@ -55,27 +55,36 @@ public class GameMainSystem : MainScriptBase
     }
     public GameState state { get; private set; } = GameState.Loading;
 
-    /// <summary>G‹›“G‚ğ‚Â‹óƒIƒuƒWƒFƒNƒg</summary>
+    /// <summary>é›‘é­šæ•µã‚’æŒã¤ç©ºã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ</summary>
     public Transform smallEnemyParent;
 
-    /// <summary>UŒ‚‚ğ‚Â‹óƒIƒuƒWƒFƒNƒg</summary>
+    /// <summary>æ”»æ’ƒã‚’æŒã¤ç©ºã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ</summary>
     public Transform attackParent;
 
-    /// <summary>Œo‰ßŠÔ</summary>
+    /// <summary>ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ã¤ã„ã¦å‹•ãç©ºã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ</summary>
+    public Transform playerBodyParent
+    {
+        get
+        {
+            return playerScript?.body_parent;
+        }
+    }
+
+    /// <summary>çµŒéæ™‚é–“</summary>
     private float inGameTime;
 
     #endregion
 
-    #region Šî’ê
+    #region åŸºåº•
 
-    /// <summary>ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÅƒCƒ“ƒXƒ^ƒ“ƒXİ’è</summary>
+    /// <summary>ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹è¨­å®š</summary>
     public GameMainSystem() { Instance = this; }
 
-    /// <summary>Á–Å‚ÉƒCƒ“ƒXƒ^ƒ“ƒXnull</summary>
+    /// <summary>æ¶ˆæ»…æ™‚ã«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹null</summary>
     private void OnDestroy() { Instance = null; }
 
     /// <summary>
-    /// ŠJn‘O
+    /// é–‹å§‹å‰
     /// </summary>
     /// <returns></returns>
     public override IEnumerator BeforeInitFadeIn()
@@ -83,7 +92,7 @@ public class GameMainSystem : MainScriptBase
         yield return base.BeforeInitFadeIn();
         var manager = ManagerSceneScript.GetInstance();
 
-        // ƒpƒ‰ƒ[ƒ^ì¬
+        // ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ä½œæˆ
         prm_Game = new GameParameter();
         prm_Game.InitParam();
         prm_Player = new PlayerParameter();
@@ -91,19 +100,26 @@ public class GameMainSystem : MainScriptBase
 
         UpdateExpUI();
 
-        // ‰Šú”z’uƒtƒB[ƒ‹ƒh“Ç‚İ‚İ
+        // åˆæœŸé…ç½®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰èª­ã¿è¾¼ã¿
         RefreshFieldCell(true);
-        // “Ç‚İ‚İ‘Ò‚¿
+        // èª­ã¿è¾¼ã¿å¾…ã¡
         yield return new WaitWhile(() => manager.IsLoadingSubScene());
 
-        //todo:ƒLƒƒƒ‰ƒNƒ^[“Ç‚İ‚İ
+        //todo:ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼èª­ã¿è¾¼ã¿
         manager.LoadSubScene("GameSceneDrows", 0, 0);
-        // “Ç‚İ‚İ‘Ò‚¿
+        // èª­ã¿è¾¼ã¿å¾…ã¡
+        yield return new WaitWhile(() => manager.IsLoadingSubScene());
+
+        //todo:test
+        //manager.LoadSubScene("GameWeaponFireball", 0, 0);
+        //manager.LoadSubScene("GameWeaponThunder", 0, 0);
+        //manager.LoadSubScene("GameWeaponWind", 0, 0);
+        manager.LoadSubScene("GameWeaponMeteor", 0, 0);
         yield return new WaitWhile(() => manager.IsLoadingSubScene());
     }
 
     /// <summary>
-    /// ƒtƒF[ƒhƒCƒ“Œã
+    /// ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³å¾Œ
     /// </summary>
     /// <param name="init"></param>
     /// <returns></returns>
@@ -114,15 +130,15 @@ public class GameMainSystem : MainScriptBase
 
         StartCoroutine(UpdateCoroutine());
 
-        //todo:x•b–ˆ‚ÉFPS•\¦
+        //todo:xç§’æ¯ã«FPSè¡¨ç¤º
         StartCoroutine(Test_DisplayFPS());
 
-        // ŠJn
+        // é–‹å§‹æ™‚åˆ»
         inGameTime = 0f;
     }
 
     /// <summary>
-    /// FPS•\¦‚Ä‚·‚Æ
+    /// FPSè¡¨ç¤ºã¦ã™ã¨
     /// </summary>
     /// <returns></returns>
     private IEnumerator Test_DisplayFPS()
@@ -137,9 +153,9 @@ public class GameMainSystem : MainScriptBase
 
     #endregion
 
-    #region ƒƒCƒ“ˆ—
+    #region ãƒ¡ã‚¤ãƒ³å‡¦ç†
     /// <summary>
-    /// ƒƒCƒ“ˆ—
+    /// ãƒ¡ã‚¤ãƒ³å‡¦ç†
     /// </summary>
     /// <returns></returns>
     private IEnumerator UpdateCoroutine()
@@ -155,16 +171,16 @@ public class GameMainSystem : MainScriptBase
         }
 
         //state = GameState.Exiting;
-        //todo:ƒQ[ƒ€I—¹
+        //todo:ã‚²ãƒ¼ãƒ çµ‚äº†
     }
     #endregion
 
-    #region ƒtƒB[ƒ‹ƒhƒ}ƒXŠÇ—
+    #region ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ãƒã‚¹ç®¡ç†
 
     /// <summary>
-    /// ƒtƒB[ƒ‹ƒh¶¬
+    /// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ç”Ÿæˆ
     /// </summary>
-    /// <param name="init">‰Šú‰»</param>
+    /// <param name="init">åˆæœŸåŒ–æ™‚</param>
     private void RefreshFieldCell(bool init = false)
     {
         var manager = ManagerSceneScript.GetInstance();
@@ -175,14 +191,14 @@ public class GameMainSystem : MainScriptBase
         }
         else
         {
-            // ƒvƒŒƒCƒ„[‚ÌŒ»İˆÊ’u‚ğæ“¾
+            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç¾åœ¨ä½ç½®ã‚’å–å¾—
             var nowPos = playerScript.transform.position;
             var nowLoc = FieldUtil.GetFieldLoc(nowPos.x, nowPos.z);
-            if (player_loc == nowLoc) return; // XV‚Ì•K—v‚È‚µ
+            if (player_loc == nowLoc) return; // æ›´æ–°ã®å¿…è¦ãªã—
             player_loc = nowLoc;
         }
 
-        // Œ»İ‚ÌˆÊ’u‚©‚ç‹——£‚RˆÈã‚ÌƒtƒB[ƒ‹ƒh‚ğ”jŠü
+        // ç¾åœ¨ã®ä½ç½®ã‹ã‚‰è·é›¢ï¼“ä»¥ä¸Šã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’ç ´æ£„
         var subList = manager.GetSubSceneList();
         var releaseList = new List<GameFieldSystem>();
         foreach (var sub in subList)
@@ -199,16 +215,16 @@ public class GameMainSystem : MainScriptBase
             fld.ReleaseField();
         }
 
-        // ƒ[ƒfƒBƒ“ƒO’†‚Ì‚à‚Ì
+        // ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ä¸­ã®ã‚‚ã®
         var loadingSubList = manager.GetSubSceneLoadingList();
 
-        // Œ»İ‚ÌˆÊ’u‚©‚ç‹——£‚P‚Ü‚Å‚ÌƒtƒB[ƒ‹ƒh‚ğ“Ç‚İ‚İ
+        // ç¾åœ¨ã®ä½ç½®ã‹ã‚‰è·é›¢ï¼‘ã¾ã§ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’èª­ã¿è¾¼ã¿
         var createLocList = FieldUtil.GetAroundLocations(player_loc);
         //var createLocList = new List<Vector2Int>();
         createLocList.Add(player_loc);
         foreach (var loc in createLocList)
         {
-            // ‚·‚Å‚É‚ ‚Á‚½‚ç–³‹
+            // ã™ã§ã«ã‚ã£ãŸã‚‰ç„¡è¦–
             if (subList.Any(sub =>
                 sub is GameFieldSystem && (sub as GameFieldSystem).fieldCell == loc)
             )
@@ -217,7 +233,7 @@ public class GameMainSystem : MainScriptBase
                 sub.prmList[0] == loc.x && sub.prmList[1] == loc.y))
                 continue;
 
-            // “Ç‚İ‚İ
+            // èª­ã¿è¾¼ã¿
             if (init)
                 manager.LoadSubScene("GameSceneField01", loc.x, loc.y);
             else
@@ -239,7 +255,7 @@ public class GameMainSystem : MainScriptBase
 
     #endregion
 
-    #region æ“¾Œn
+    #region å–å¾—ç³»
 
     public Vector3 GetPlayerCenter()
     {
@@ -249,38 +265,38 @@ public class GameMainSystem : MainScriptBase
     }
 
     /// <summary>
-    /// “G‚Ì‹­‚³ƒŒ[ƒg
+    /// æ•µã®å¼·ã•ãƒ¬ãƒ¼ãƒˆ
     /// </summary>
     /// <returns></returns>
     public float GetEnemyRate()
     {
-        //todo:³®‚È“G‚Ì‹­‚³ŒvZ
-        // 60•bŠÔ‚ÍŒÅ’è
+        //todo:æ­£å¼ãªæ•µã®å¼·ã•è¨ˆç®—
+        // 60ç§’é–“ã¯å›ºå®š
         if (inGameTime <= 60f) return 1f;
 
-        // 300•b‚Å{100“
+        // 300ç§’ã§ï¼‹100ï¼…
         return 1f + (inGameTime - 60f) / 300f;
     }
 
     /// <summary>
-    /// ƒ{ƒX‚Ì‹­‚³ƒŒ[ƒg
+    /// ãƒœã‚¹ã®å¼·ã•ãƒ¬ãƒ¼ãƒˆ
     /// </summary>
     /// <returns></returns>
     public float GetBossRate()
     {
-        // 300•bŠÔ‚ÍŒÅ’è
+        // 300ç§’é–“ã¯å›ºå®š
         if (inGameTime <= 300f) return 2f;
 
-        // 500•b‚Å{100“
+        // 500ç§’ã§ï¼‹100ï¼…
         return 2f + (inGameTime - 300f) / 500f;
     }
 
     #endregion
 
-    #region ‚»‚Ì‘¼
+    #region ãã®ä»–
 
     /// <summary>
-    /// ƒƒjƒ…[‚ğŠJ‚­
+    /// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ã
     /// </summary>
     public void OpenMenu()
     {
@@ -291,7 +307,7 @@ public class GameMainSystem : MainScriptBase
     }
 
     /// <summary>
-    /// ƒƒjƒ…[•Â‚¶‘Ò‚¿
+    /// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é–‰ã˜å¾…ã¡
     /// </summary>
     /// <returns></returns>
     private IEnumerator WaitMenu()
@@ -301,7 +317,7 @@ public class GameMainSystem : MainScriptBase
     }
 
     /// <summary>
-    /// ŒoŒ±’l’Ç‰Á
+    /// çµŒé¨“å€¤è¿½åŠ 
     /// </summary>
     /// <param name="e"></param>
     public void AddExp(int e)
@@ -311,7 +327,7 @@ public class GameMainSystem : MainScriptBase
     }
 
     /// <summary>
-    /// ŒoŒ±’lÅV•\¦
+    /// çµŒé¨“å€¤æœ€æ–°è¡¨ç¤º
     /// </summary>
     public void UpdateExpUI()
     {

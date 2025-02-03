@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/GameSource/Scenes/GameSceneMain.unity
     guid: 1195a02029da5d041a8e318312c14b8d
   - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameSceneWeaponTest.unity
+    guid: f5e7d85f3643cf0489699de9c7f665ae
+  - enabled: 1
     path: Assets/GameSource/Scenes/character/GameSceneDrows.unity
     guid: 9d63d4388c691ab4499f0fdbdbd71727
   - enabled: 1
@@ -29,5 +32,17 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GameSource/Scenes/field/GameSceneField_willy1.unity
     guid: 985f0cb7c5911134c8c6785f5e518ba3
+  - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameWeaponFireball.unity
+    guid: 4dd8bf49f0f53cc43a8c065218c6e799
+  - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameWeaponThunder.unity
+    guid: 15c6e384f78fd9a4a89ccbf54cc6446b
+  - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameWeaponWind.unity
+    guid: f71321b778a3d9544a366e0b977692a7
+  - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameWeaponMeteor.unity
+    guid: 7f2bba5673889984bb8728723ddd0bb3
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

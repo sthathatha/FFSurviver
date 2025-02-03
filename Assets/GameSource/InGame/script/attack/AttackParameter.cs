@@ -1,22 +1,30 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// UŒ‚ƒpƒ‰ƒ[ƒ^
+/// æ”»æ’ƒãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 /// </summary>
 public class AttackParameter : MonoBehaviour
 {
-    #region ƒpƒ‰ƒ[ƒ^
+    #region ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 
     public bool atkToEnemy = false;
     public bool atkToPlayer = false;
 
+    public bool isMagic = false;
+
     public int attackPower = 1;
-    private float attackRate = 1f;
+    protected float attackRate = 1f;
+
+    /// <summary>é€£ç¶šãƒ’ãƒƒãƒˆæ™‚é–“ã®é•·ã•ã«å€ç‡</summary>
+    public float intervalRate = 1f;
+
+    /// <summary>ã‚µã‚¤ã‚ºå€ç‡</summary>
+    public float scaleRate { get; set; } = 1f;
 
     #endregion
 
     /// <summary>
-    /// UŒ‚—Í
+    /// æ”»æ’ƒåŠ›
     /// </summary>
     /// <param name="rate"></param>
     public void SetAttackRate(float rate)
@@ -25,7 +33,7 @@ public class AttackParameter : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ_ƒ[ƒWæ“¾
+    /// ãƒ€ãƒ¡ãƒ¼ã‚¸å–å¾—
     /// </summary>
     /// <returns></returns>
     public int GetDamage()

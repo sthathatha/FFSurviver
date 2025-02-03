@@ -1,58 +1,57 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 /// </summary>
 public class PlayerScript : CharacterScript
 {
-    #region ƒƒ“ƒo[
-
-    #region ƒpƒ‰ƒ[ƒ^
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
     /// <summary>HP</summary>
     private UIHpGauge ui_hp;
 
-    #endregion
-
-    /// <summary>’ÊíUŒ‚</summary>
+    /// <summary>é€šå¸¸æ”»æ’ƒ</summary>
     public SimpleAttack normal_attack;
 
-    /// <summary>Ú’n”»’è—pRay</summary>
+    /// <summary>è‡ªåˆ†ã«ã¤ã„ã¦å‹•ãæ”»æ’ƒç”¨</summary>
+    public Transform body_parent;
+
+    /// <summary>æ¥åœ°åˆ¤å®šç”¨Ray</summary>
     private Ray ground_ray;
 
-    /// <summary>ƒvƒŒƒCƒ„[ó‘Ô</summary>
+    /// <summary>ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼çŠ¶æ…‹</summary>
     public enum PlayerState
     {
-        /// <summary>—§‚¿</summary>
+        /// <summary>ç«‹ã¡</summary>
         Stand = 0,
-        /// <summary>ƒWƒƒƒ“ƒv</summary>
+        /// <summary>ã‚¸ãƒ£ãƒ³ãƒ—</summary>
         Jump,
-        /// <summary>ƒ_ƒ[ƒW</summary>
+        /// <summary>ãƒ€ãƒ¡ãƒ¼ã‚¸</summary>
         Damage,
     }
     public PlayerState state { get; private set; }
 
-    /// <summary>‹ó’†ã‰º‘¬“x</summary>
+    /// <summary>ç©ºä¸­ä¸Šä¸‹é€Ÿåº¦</summary>
     private float y_speed = 0f;
 
-    /// <summary>ƒWƒƒƒ“ƒv‰ñ”</summary>
+    /// <summary>ã‚¸ãƒ£ãƒ³ãƒ—å›æ•°</summary>
     private int jump_count = 0;
 
     #endregion
 
-    #region Šî’ê
+    #region åŸºåº•
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     protected override IEnumerator InitCharacter()
     {
         yield return base.InitCharacter();
 
-        // Å‰‚Ìæ“¾‚È‚Ç
+        // æœ€åˆã®å–å¾—ãªã©
         ui_hp = GameMainSystem.Instance.ui_hp;
         normal_attack.gameObject.SetActive(false);
 
@@ -64,10 +63,10 @@ public class PlayerScript : CharacterScript
         ground_ray.direction = new Vector3(0, -1f, 0);
         state = PlayerState.Stand;
 
-        // ƒQ[ƒ€ƒƒCƒ“‚É©•ª‚ğ“n‚·
+        // ã‚²ãƒ¼ãƒ ãƒ¡ã‚¤ãƒ³ã«è‡ªåˆ†ã‚’æ¸¡ã™
         GameMainSystem.Instance.playerScript = this;
 
-        // ƒpƒ‰ƒ[ƒ^‰Šú‰»
+        // ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿åˆæœŸåŒ–
         var game = GameMainSystem.Instance.prm_Game;
         var pprm = GameMainSystem.Instance.prm_Player;
 
@@ -76,24 +75,27 @@ public class PlayerScript : CharacterScript
     }
 
     /// <summary>
-    /// XV
+    /// æ›´æ–°
     /// </summary>
     protected override void UpdateCharacter()
     {
         base.UpdateCharacter();
         if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
 
-        // ƒƒjƒ…[ˆ—’†‚Í‰º‚Ìˆ—‚ğ‚µ‚È‚¢
+        // ãƒ¡ãƒ‹ãƒ¥ãƒ¼å‡¦ç†ä¸­ã¯ä¸‹ã®å‡¦ç†ã‚’ã—ãªã„
         if (!MenuControl()) return;
 
         AttackControl();
         MoveControl();
         GroundControl();
         UpdateAnim();
+
+        // æ”»æ’ƒç”¨ã®ã‚„ã¤
+        body_parent.position = GetComponent<Collider>().bounds.center;
     }
 
     /// <summary>
-    /// Œã‚Å‘–‚éXV
+    /// å¾Œã§èµ°ã‚‹æ›´æ–°
     /// </summary>
     protected override void UpdateCharacter2()
     {
@@ -104,17 +106,17 @@ public class PlayerScript : CharacterScript
 
     #endregion
 
-    #region ƒƒjƒ…[‘€ì
+    #region ãƒ¡ãƒ‹ãƒ¥ãƒ¼æ“ä½œ
 
     /// <summary>
-    /// ƒƒjƒ…[‘€ì
+    /// ãƒ¡ãƒ‹ãƒ¥ãƒ¼æ“ä½œ
     /// </summary>
-    /// <returns>false:ˆÈ~‚Ìˆ—‚ğ–³‹</returns>
+    /// <returns>false:ä»¥é™ã®å‡¦ç†ã‚’ç„¡è¦–</returns>
     private bool MenuControl()
     {
         if (GameInput.IsPress(GameInput.Buttons.Menu))
         {
-            // •¨—‚Í~‚ß‚ç‚ê‚È‚¢‚Ì‚ÅXZ‘¬“x~‚ß‚é
+            // ç‰©ç†ã¯æ­¢ã‚ã‚‰ã‚Œãªã„ã®ã§XZé€Ÿåº¦æ­¢ã‚ã‚‹
             var vy = rigid.linearVelocity.y;
             rigid.linearVelocity = new Vector3(0, vy, 0);
             GameMainSystem.Instance.OpenMenu();
@@ -126,10 +128,10 @@ public class PlayerScript : CharacterScript
 
     #endregion
 
-    #region UŒ‚ˆ—
+    #region æ”»æ’ƒå‡¦ç†
 
     /// <summary>
-    /// UŒ‚ˆ—
+    /// æ”»æ’ƒå‡¦ç†
     /// </summary>
     private void AttackControl()
     {
@@ -137,15 +139,15 @@ public class PlayerScript : CharacterScript
         var tmpData = GlobalData.GetTemporaryData();
         var game = main.prm_Game;
         var pprm = main.prm_Player;
+        var center = GetComponent<Collider>().bounds.center;
 
-        // ƒLƒƒƒ‰‚ÌŒü‚«
+        // ã‚­ãƒ£ãƒ©ã®å‘ã
         var direction = transform.rotation * new Vector3(0, 0, 1);
 
-        // ’ÊíUŒ‚
+        // é€šå¸¸æ”»æ’ƒ
         if (GameInput.IsPress(GameInput.Buttons.NormalAttack)
             && (state != PlayerState.Damage))
         {
-            var center = GetComponent<Collider>().bounds.center;
             var na = Instantiate(normal_attack, main.attackParent);
             if (tmpData.GetGeneralDataInt(GameConstant.DATA_PLAYERID, 0) == (int)GameConstant.PlayerID.Koob)
                 na.SetAttackRate(pprm.stat_magic.value);
@@ -158,12 +160,12 @@ public class PlayerScript : CharacterScript
 
     #endregion
 
-    #region Ú’n”»’èˆ—
+    #region æ¥åœ°åˆ¤å®šå‡¦ç†
 
     /// <summary>
-    /// ’n–ÊŒŸõ
+    /// åœ°é¢æ¤œç´¢
     /// </summary>
-    /// <param name="threathold">ã•ûŒü‚Ì—P—\</param>
+    /// <param name="threathold">ä¸Šæ–¹å‘ã®çŒ¶äºˆ</param>
     /// <param name="hitGround"></param>
     /// <param name="hitInfo"></param>
     /// <returns></returns>
@@ -171,11 +173,11 @@ public class PlayerScript : CharacterScript
     {
         hitGround = null;
 
-        // RayXV
+        // Rayæ›´æ–°
         if (threathold < 0.2f) threathold = 0.2f;
         ground_ray.origin = transform.position + new Vector3(0, threathold, 0);
 
-        // ŒŸõ
+        // æ¤œç´¢
         var layer = LayerMask.GetMask(new string[] { "Ground" });
         var groundHit = Physics.Raycast(ground_ray,
             out hitInfo,
@@ -192,7 +194,7 @@ public class PlayerScript : CharacterScript
     }
 
     /// <summary>
-    /// Ú’n”»’èˆ—
+    /// æ¥åœ°åˆ¤å®šå‡¦ç†
     /// </summary>
     private void GroundControl()
     {
@@ -204,14 +206,14 @@ public class PlayerScript : CharacterScript
         {
             var groundHit = GroundSearch(0f, out GameGround ground, out RaycastHit hitInfo);
 
-            // ƒWƒƒƒ“ƒv
+            // ã‚¸ãƒ£ãƒ³ãƒ—
             if (GameInput.IsPress(GameInput.Buttons.Jump))
             {
                 Jump();
             }
             else if (!groundHit)
             {
-                // ’n–Ê‚ª–³‚­‚È‚Á‚½‚ç—‰º
+                // åœ°é¢ãŒç„¡ããªã£ãŸã‚‰è½ä¸‹
                 jump_count = 1;
                 y_speed = 0f;
                 state = PlayerState.Jump;
@@ -224,24 +226,24 @@ public class PlayerScript : CharacterScript
         {
             if (GameInput.IsPress(GameInput.Buttons.Jump))
             {
-                // ƒXƒy[ƒXƒL[‚Å“ñ’iƒWƒƒƒ“ƒv
+                // ã‚¹ãƒšãƒ¼ã‚¹ã‚­ãƒ¼ã§äºŒæ®µã‚¸ãƒ£ãƒ³ãƒ—
                 Jump();
             }
             else
             {
-                // ‰º‚É‰Á‘¬
+                // ä¸‹ã«åŠ é€Ÿ
                 y_speed -= FALL_G * dt;
                 if (y_speed < FALL_MAX) y_speed = FALL_MAX;
 
                 var newPos = transform.position + new Vector3(0, y_speed * dt, 0);
-                // —‚¿‰ß‚¬‚½‚çã‚Éo‚é
+                // è½ã¡éããŸã‚‰ä¸Šã«å‡ºã‚‹
                 if (newPos.y < -20f) newPos.y = 20f;
                 transform.position = newPos;
 
-                // ’n–Ê”»’è
+                // åœ°é¢åˆ¤å®š
                 var groundHit = GroundSearch(old_y - newPos.y, out GameGround ground, out RaycastHit hitInfo);
 
-                // •¨‚ğ“¥‚ñ‚¾‚ç’…’n
+                // ç‰©ã‚’è¸ã‚“ã ã‚‰ç€åœ°
                 if (groundHit && (old_y - newPos.y) > 0f)
                 {
                     jump_count = 0;
@@ -257,7 +259,7 @@ public class PlayerScript : CharacterScript
     }
 
     /// <summary>
-    /// ƒWƒƒƒ“ƒvˆ—
+    /// ã‚¸ãƒ£ãƒ³ãƒ—å‡¦ç†
     /// </summary>
     private void Jump()
     {
@@ -273,7 +275,7 @@ public class PlayerScript : CharacterScript
 
             transform.position += new Vector3(0, y_speed * dt, 0);
 
-            // ƒWƒƒƒ“ƒvƒAƒjƒ[ƒVƒ‡ƒ“
+            // ã‚¸ãƒ£ãƒ³ãƒ—ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
             anim?.SetBool("Jump", true);
             anim?.SetBool("Grounded", false);
             anim?.SetBool("FreeFall", false);
@@ -282,19 +284,19 @@ public class PlayerScript : CharacterScript
 
     #endregion
 
-    #region ˆÚ“®‘€ì
+    #region ç§»å‹•æ“ä½œ
 
     /// <summary>
-    /// ˆÚ“®‘€ì
+    /// ç§»å‹•æ“ä½œ
     /// </summary>
     private void MoveControl()
     {
         var pprm = GameMainSystem.Instance.prm_Player;
 
-        // Y‘¬“x‚Í•Û
+        // Yé€Ÿåº¦ã¯ä¿æŒ
         var vy = rigid.linearVelocity.y;
 
-        // ˆÚ“®ƒx[ƒX
+        // ç§»å‹•ãƒ™ãƒ¼ã‚¹
         var stick = GameInput.GetLeftStick();
 
         if (stick.magnitude < 0.1f)
@@ -303,26 +305,26 @@ public class PlayerScript : CharacterScript
             return;
         }
 
-        // ƒJƒƒ‰‰ñ“]‚Ìy¬•ª
+        // ã‚«ãƒ¡ãƒ©å›è»¢ã®yæˆåˆ†
         var cam = ManagerSceneScript.GetInstance().GetCamera3D();
         var camRot = cam.RotateLR * Mathf.Rad2Deg;
 
-        // ƒXƒeƒBƒbƒN’l‚ğƒJƒƒ‰‰ñ“]‚Æ‡¬
+        // ã‚¹ãƒ†ã‚£ãƒƒã‚¯å€¤ã‚’ã‚«ãƒ¡ãƒ©å›è»¢ã¨åˆæˆ
         var move = new Vector3(stick.x, 0, stick.y);
         move = Quaternion.Euler(0, camRot, 0) * move * pprm.stat_speed.value;
         rigid.linearVelocity = new Vector3(move.x, vy, move.z);
 
-        // ƒLƒƒƒ‰‚ÌŒü‚«
+        // ã‚­ãƒ£ãƒ©ã®å‘ã
         var chrRot = Quaternion.LookRotation(move, new Vector3(0, 1f, 0));
         transform.rotation = chrRot;
     }
 
     #endregion
 
-    #region ƒ_ƒ[ƒWˆ—
+    #region ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†
 
     /// <summary>
-    /// ŒÅ’è’l‰ñ•œ
+    /// å›ºå®šå€¤å›å¾©
     /// </summary>
     /// <param name="heal"></param>
     public void Heal(int heal)
@@ -336,7 +338,7 @@ public class PlayerScript : CharacterScript
     }
 
     /// <summary>
-    /// Å‘å’l‚ÌŠ„‡‰ñ•œ
+    /// æœ€å¤§å€¤ã®å‰²åˆå›å¾©
     /// </summary>
     /// <param name="rate"></param>
     public void HealRate(float rate)
@@ -347,7 +349,7 @@ public class PlayerScript : CharacterScript
     }
 
     /// <summary>
-    /// “G”»’è‚ÌÚG’†
+    /// æ•µåˆ¤å®šã®æ¥è§¦ä¸­
     /// </summary>
     /// <param name="other"></param>
     private void OnTriggerStay(Collider other)
@@ -360,7 +362,7 @@ public class PlayerScript : CharacterScript
     }
 
     /// <summary>
-    /// ƒ_ƒ[ƒWƒqƒbƒg
+    /// ãƒ€ãƒ¡ãƒ¼ã‚¸ãƒ’ãƒƒãƒˆ
     /// </summary>
     protected override void DamageHit()
     {
@@ -371,23 +373,23 @@ public class PlayerScript : CharacterScript
     }
 
     /// <summary>
-    /// €–Sˆ—
+    /// æ­»äº¡å‡¦ç†
     /// </summary>
     protected override void DamageDeath()
     {
         base.DamageDeath();
 
-        //todo:ƒQ[ƒ€ƒI[ƒo[ˆ—
+        //todo:ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼å‡¦ç†
     }
 
     #endregion
 
-    #region ƒJƒƒ‰‘€ì
+    #region ã‚«ãƒ¡ãƒ©æ“ä½œ
 
     /// <summary>
-    /// ƒJƒƒ‰‘€ì
+    /// ã‚«ãƒ¡ãƒ©æ“ä½œ
     /// </summary>
-    /// <param name="noInput">“ü—Í•s‰Â</param>
+    /// <param name="noInput">å…¥åŠ›ä¸å¯</param>
     private void CameraControl(bool noInput = false)
     {
         var stick = noInput ? Vector2.zero : GameInput.GetRightStick();
@@ -404,10 +406,10 @@ public class PlayerScript : CharacterScript
 
     #endregion
 
-    #region ƒ‚ƒfƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“§Œä
+    #region ãƒ¢ãƒ‡ãƒ«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆ¶å¾¡
 
     /// <summary>
-    /// ƒ‚ƒfƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“§Œä
+    /// ãƒ¢ãƒ‡ãƒ«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆ¶å¾¡
     /// </summary>
     private void UpdateAnim()
     {

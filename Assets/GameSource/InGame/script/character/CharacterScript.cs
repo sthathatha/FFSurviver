@@ -1,47 +1,47 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 using UnityEngine;
 
 /// <summary>
-/// ƒLƒƒƒ‰ƒNƒ^[ƒx[ƒX
+/// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãƒ™ãƒ¼ã‚¹
 /// </summary>
 public class CharacterScript : MonoBehaviour
 {
-    #region ’è”
+    #region å®šæ•°
 
-    /// <summary>ƒWƒƒƒ“ƒv‰‘¬</summary>
+    /// <summary>ã‚¸ãƒ£ãƒ³ãƒ—åˆé€Ÿ</summary>
     protected const float JUMP_V0 = 15f;
-    /// <summary>—‰º‰Á‘¬“x</summary>
+    /// <summary>è½ä¸‹åŠ é€Ÿåº¦</summary>
     protected const float FALL_G = 25.6f;
-    /// <summary>—‰º‘¬“xÅ‘å</summary>
+    /// <summary>è½ä¸‹é€Ÿåº¦æœ€å¤§</summary>
     protected const float FALL_MAX = -50f;
-    /// <summary>Ú’n”»’è‹——£</summary>
+    /// <summary>æ¥åœ°åˆ¤å®šè·é›¢</summary>
     protected const float STAND_DISTANCE = 0.05f;
 
-    /// <summary>“¯‚¶UŒ‚‚©‚ç</summary>
+    /// <summary>åŒã˜æ”»æ’ƒã‹ã‚‰</summary>
     protected const float DAMAGE_INTERVAL = 0.25f;
 
     #endregion
 
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
 
 
     #endregion
 
-    #region •Ï”
+    #region å¤‰æ•°
 
-    /// <summary>•¨—</summary>
+    /// <summary>ç‰©ç†</summary>
     protected Rigidbody rigid;
-    /// <summary>ƒ‚ƒfƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“</summary>
+    /// <summary>ãƒ¢ãƒ‡ãƒ«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³</summary>
     protected Animator anim;
 
-    /// <summary>Startˆ—‚ªI‚í‚é‚Ü‚ÅUpdate‚ÍŒÄ‚Î‚È‚¢</summary>
+    /// <summary>Startå‡¦ç†ãŒçµ‚ã‚ã‚‹ã¾ã§Updateã¯å‘¼ã°ãªã„</summary>
     private bool started = false;
 
-    /// <summary>UŒ‚ó‚¯‚½ƒqƒXƒgƒŠ[</summary>
+    /// <summary>æ”»æ’ƒå—ã‘ãŸãƒ’ã‚¹ãƒˆãƒªãƒ¼</summary>
     protected class AttackHistory
     {
         public AttackParameter atk;
@@ -49,7 +49,7 @@ public class CharacterScript : MonoBehaviour
 
         public AttackHistory(AttackParameter _atk, float _intTime) { atk = _atk; intTime = _intTime; }
     }
-    /// <summary>ƒ_ƒ[ƒWŠÇ—</summary>
+    /// <summary>ãƒ€ãƒ¡ãƒ¼ã‚¸ç®¡ç†</summary>
     protected List<AttackHistory> atkHistories;
 
     /// <summary>HP</summary>
@@ -57,14 +57,14 @@ public class CharacterScript : MonoBehaviour
 
     #endregion
 
-    #region Šî’ê
+    #region åŸºåº•
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     private IEnumerator Start()
     {
-        // ‰Šú‰»•Ï”‚È‚Ç
+        // åˆæœŸåŒ–å¤‰æ•°ãªã©
         atkHistories = new List<AttackHistory>();
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
@@ -76,7 +76,7 @@ public class CharacterScript : MonoBehaviour
     }
 
     /// <summary>
-    /// XV
+    /// æ›´æ–°
     /// </summary>
     private void Update()
     {
@@ -88,7 +88,7 @@ public class CharacterScript : MonoBehaviour
     }
 
     /// <summary>
-    /// Update‚æ‚èŒã‚ÉƒtƒŒ[ƒ€‚²‚Æ1‰ñ
+    /// Updateã‚ˆã‚Šå¾Œã«ãƒ•ãƒ¬ãƒ¼ãƒ ã”ã¨1å›
     /// </summary>
     private void LateUpdate()
     {
@@ -98,27 +98,27 @@ public class CharacterScript : MonoBehaviour
         }
     }
 
-    /// <summary>”h¶‰Šú‰»ˆ—</summary>
+    /// <summary>æ´¾ç”ŸåˆæœŸåŒ–å‡¦ç†</summary>
     protected virtual IEnumerator InitCharacter() { yield break; }
-    /// <summary>”h¶XVˆ—</summary>
+    /// <summary>æ´¾ç”Ÿæ›´æ–°å‡¦ç†</summary>
     protected virtual void UpdateCharacter() { }
-    /// <summary>”h¶XVŒãˆ—</summary>
+    /// <summary>æ´¾ç”Ÿæ›´æ–°å¾Œå‡¦ç†</summary>
     protected virtual void UpdateCharacter2() { }
 
     #endregion
 
-    #region ƒ_ƒ[ƒWŠÇ—
+    #region ãƒ€ãƒ¡ãƒ¼ã‚¸ç®¡ç†
 
     /// <summary>
-    /// ƒ_ƒ[ƒWƒqƒbƒg
+    /// ãƒ€ãƒ¡ãƒ¼ã‚¸ãƒ’ãƒƒãƒˆ
     /// </summary>
     /// <param name="param"></param>
     public void AttackTrigger(AttackParameter param)
     {
         if (!atkHistories.Any(h => h.atk == param))
         {
-            // —š—ğ‚É‚È‚¯‚ê‚Îƒ_ƒ[ƒWó‚¯‚é
-            atkHistories.Add(new AttackHistory(param, DAMAGE_INTERVAL));
+            // å±¥æ­´ã«ãªã‘ã‚Œã°ãƒ€ãƒ¡ãƒ¼ã‚¸å—ã‘ã‚‹
+            atkHistories.Add(new AttackHistory(param, DAMAGE_INTERVAL * param.intervalRate));
 
             hp -= param.GetDamage();
             DamageHit();
@@ -130,7 +130,7 @@ public class CharacterScript : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ_ƒ[ƒWˆ—
+    /// ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†
     /// </summary>
     private void DamageControl()
     {
@@ -141,17 +141,17 @@ public class CharacterScript : MonoBehaviour
             h.intTime -= manager.inGameDeltaTime;
         }
 
-        // ‹‚È‚­‚È‚Á‚Ä‚¢‚½‚çíœ
+        // å±…ãªããªã£ã¦ã„ãŸã‚‰å‰Šé™¤
         atkHistories.RemoveAll(h => h.intTime <= 0f);
     }
 
     /// <summary>
-    /// ƒ_ƒ[ƒW‚¤‚¯‚½ƒCƒxƒ“ƒg
+    /// ãƒ€ãƒ¡ãƒ¼ã‚¸ã†ã‘ãŸã‚¤ãƒ™ãƒ³ãƒˆ
     /// </summary>
     protected virtual void DamageHit() { }
 
     /// <summary>
-    /// ƒ_ƒ[ƒW‚Ì‚½‚ß€–S
+    /// ãƒ€ãƒ¡ãƒ¼ã‚¸ã®ãŸã‚æ­»äº¡
     /// </summary>
     protected virtual void DamageDeath()
     {
@@ -160,10 +160,10 @@ public class CharacterScript : MonoBehaviour
 
     #endregion
 
-    #region ƒ‚[ƒVƒ‡ƒ“‚©‚ç‚ÌƒCƒxƒ“ƒg
+    #region ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‹ã‚‰ã®ã‚¤ãƒ™ãƒ³ãƒˆ
 
     /// <summary>
-    /// ‘«‰¹H
+    /// è¶³éŸ³ï¼Ÿ
     /// </summary>
     /// <param name="animationEvent"></param>
     virtual protected void OnFootstep(AnimationEvent animationEvent)
@@ -179,7 +179,7 @@ public class CharacterScript : MonoBehaviour
     }
 
     /// <summary>
-    /// ’…’nH
+    /// ç€åœ°ï¼Ÿ
     /// </summary>
     /// <param name="animationEvent"></param>
     virtual protected void OnLand(AnimationEvent animationEvent)

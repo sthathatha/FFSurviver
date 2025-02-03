@@ -405,6 +405,10 @@ PrefabInstance:
       value: willy1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2f2c95e6343aa164d800bdc20ca88de8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2f2c95e6343aa164d800bdc20ca88de8, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -470,6 +474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp_base: 7
+  exp_base: 1
 --- !u!136 &1940450066
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -507,6 +512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   atkToEnemy: 0
   atkToPlayer: 1
+  isMagic: 0
   attackPower: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

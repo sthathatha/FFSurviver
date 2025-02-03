@@ -29,6 +29,13 @@ public class Strings
 
     #endregion
 
+    #region 武器
+
+    public const string Weapon1_Fireball_Name = "ファイアボール";
+    public const string Weapon1_Thunder_Name = "プラズマオプション";
+
+    #endregion
+
     #region つくよみちゃんセリフ
 
 
