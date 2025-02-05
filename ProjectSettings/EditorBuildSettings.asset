@@ -44,5 +44,23 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GameSource/Scenes/weapon/GameWeaponMeteor.unity
     guid: 7f2bba5673889984bb8728723ddd0bb3
+  - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameWeaponFloat.unity
+    guid: c1de054296963c24ebfba7ac9812313f
+  - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameWeaponQuake.unity
+    guid: 3fd11b39ddee4f0479beda5976aea0ca
+  - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameWeaponBomb.unity
+    guid: dadf147a9a831654aaf17325e3fb39df
+  - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameWeaponCyclone.unity
+    guid: b5a66134df9dbca488591ecd0729838c
+  - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameWeaponChildOption.unity
+    guid: a1d494be8bf2f1e44aaca36850a2f191
+  - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameWeaponFireworks.unity
+    guid: 98d99319f6e2a6341834174a80f4807e
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

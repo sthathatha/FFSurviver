@@ -1,36 +1,37 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ƒVƒ“ƒvƒ‹‚É’¼üˆÚ“®‚µ‚ÄÁ‚¦‚éUŒ‚
+/// ã‚·ãƒ³ãƒ—ãƒ«ã«ç›´ç·šç§»å‹•ã—ã¦æ¶ˆãˆã‚‹æ”»æ’ƒ
 /// </summary>
 public class SimpleAttack : AttackParameter
 {
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
-    /// <summary>‚ ‚½‚Á‚½‚çÁ‚¦‚é</summary>
+    /// <summary>ã‚ãŸã£ãŸã‚‰æ¶ˆãˆã‚‹</summary>
     public bool is_hit_disappear = false;
-    /// <summary>Á‚¦‚éŠÔ</summary>
+    /// <summary>æ¶ˆãˆã‚‹æ™‚é–“</summary>
     public float disappear_time = 1f;
-    /// <summary>”ò‚ÔƒXƒs[ƒh</summary>
+    /// <summary>é£›ã¶ã‚¹ãƒ”ãƒ¼ãƒ‰</summary>
     public float speed = 1f;
 
-    /// <summary>ˆÚ“®•ûŒü</summary>
+    /// <summary>ç§»å‹•æ–¹å‘</summary>
     private Vector3 move_direction;
-    /// <summary>¶‘¶ŠÔ</summary>
+    /// <summary>ç”Ÿå­˜æ™‚é–“</summary>
     private float valid_time = 0f;
 
     #endregion
 
-    #region UnityŠù’è
+    #region Unityæ—¢å®š
 
     /// <summary>
-    /// XV
+    /// æ›´æ–°
     /// </summary>
     void Update()
     {
-        var dt = ManagerSceneScript.GetInstance().GetComponent<OriginManager>().inGameDeltaTime;
+        var dt = OriginManager.Instance.inGameDeltaTime;
         valid_time -= dt;
-        if (valid_time <= 0f)
+        if (valid_time <= 0f ||
+            (is_hit_disappear && isHitted))
         {
             Destroy(gameObject);
             return;
@@ -41,10 +42,10 @@ public class SimpleAttack : AttackParameter
 
     #endregion
 
-    #region ‘€ì
+    #region æ“ä½œ
 
     /// <summary>
-    /// ŠJn
+    /// é–‹å§‹
     /// </summary>
     /// <param name="startPos"></param>
     /// <param name="direction"></param>

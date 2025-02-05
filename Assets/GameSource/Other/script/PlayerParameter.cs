@@ -1,35 +1,35 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[ƒpƒ‰ƒ[ƒ^
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 /// </summary>
 public class PlayerParameter
 {
-    #region ƒpƒ‰ƒ[ƒ^
+    #region ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 
     /// <summary>
-    /// ƒXƒe[ƒ^ƒXŠÇ—ƒNƒ‰ƒX
+    /// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç®¡ç†ã‚¯ãƒ©ã‚¹
     /// </summary>
     public class Status
     {
-        /// <summary>Œ»İ’l</summary>
+        /// <summary>ç¾åœ¨å€¤</summary>
         public int value { get; set; }
-        /// <summary>Å‘å’l</summary>
+        /// <summary>æœ€å¤§å€¤</summary>
         private int maxValue { get; set; }
-        /// <summary>‹­‰»’l</summary>
+        /// <summary>å¼·åŒ–å€¤</summary>
         private int upHeight { get; set; }
-        /// <summary>‹­‰»ƒRƒXƒgŠî–{’l</summary>
+        /// <summary>å¼·åŒ–ã‚³ã‚¹ãƒˆåŸºæœ¬å€¤</summary>
         private int costBase { get; set; }
-        /// <summary>Ÿ‚Ì‹­‰»ƒRƒXƒg</summary>
+        /// <summary>æ¬¡ã®å¼·åŒ–ã‚³ã‚¹ãƒˆ</summary>
         public int cost { get; set; }
 
         /// <summary>
-        /// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+        /// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
         /// </summary>
-        /// <param name="_initVal">‰Šú’l</param>
-        /// <param name="_costBase">ƒRƒXƒgŠî–{’l</param>
-        /// <param name="_max">Å‘å’l</param>
-        /// <param name="_upHeight">ã‚ª‚è•</param>
+        /// <param name="_initVal">åˆæœŸå€¤</param>
+        /// <param name="_costBase">ã‚³ã‚¹ãƒˆåŸºæœ¬å€¤</param>
+        /// <param name="_max">æœ€å¤§å€¤</param>
+        /// <param name="_upHeight">ä¸ŠãŒã‚Šå¹…</param>
         public Status(int _initVal, int _upHeight, int _max, int _costBase)
         {
             value = _initVal;
@@ -40,23 +40,23 @@ public class PlayerParameter
         }
 
         /// <summary>
-        /// ‹­‰»
+        /// å¼·åŒ–
         /// </summary>
-        /// <param name="_noCount">true:‰ñ”‚ÉƒJƒEƒ“ƒg‚µ‚È‚¢iƒAƒCƒeƒ€¬’·‚Ìê‡j</param>
-        /// <returns>ã¸—Ê</returns>
+        /// <param name="_noCount">true:å›æ•°ã«ã‚«ã‚¦ãƒ³ãƒˆã—ãªã„ï¼ˆã‚¢ã‚¤ãƒ†ãƒ æˆé•·ã®å ´åˆï¼‰</param>
+        /// <returns>ä¸Šæ˜‡é‡</returns>
         public int PowerUp(bool _noCount = false)
         {
             var oldVal = value;
             value += upHeight;
             if (maxValue > 0 && value >= maxValue)
             {
-                // MAX‚É‚È‚Á‚½‚çƒRƒXƒg0
+                // MAXã«ãªã£ãŸã‚‰ã‚³ã‚¹ãƒˆ0
                 value = maxValue;
                 cost = 0;
             }
             else if (!_noCount)
             {
-                // todo:ƒRƒXƒg‘‰ÁŒvZ
+                // todo:ã‚³ã‚¹ãƒˆå¢—åŠ è¨ˆç®—
                 cost += costBase;
             }
 
@@ -64,7 +64,7 @@ public class PlayerParameter
         }
 
         /// <summary>
-        /// Œ»İ‚ÌExp‚Å‹­‰»‰Â”\‚©‚Ç‚¤‚©
+        /// ç¾åœ¨ã®Expã§å¼·åŒ–å¯èƒ½ã‹ã©ã†ã‹
         /// </summary>
         /// <param name="nowExp"></param>
         /// <returns></returns>
@@ -77,26 +77,25 @@ public class PlayerParameter
         }
     }
 
-    /// <summary>•¨—UŒ‚—Í</summary>
+    /// <summary>ç‰©ç†æ”»æ’ƒåŠ›</summary>
     public Status stat_melee { get; set; }
-    /// <summary>–‚–@UŒ‚—Í</summary>
+    /// <summary>é­”æ³•æ”»æ’ƒåŠ›</summary>
     public Status stat_magic { get; set; }
-    /// <summary>Å‘åHP</summary>
+    /// <summary>æœ€å¤§HP</summary>
     public Status stat_maxHp { get; set; }
-    /// <summary>ˆÚ“®‘¬“x</summary>
+    /// <summary>ç§»å‹•é€Ÿåº¦</summary>
     public Status stat_speed { get; set; }
-    /// <summary>ƒWƒƒƒ“ƒv‰ñ”</summary>
+    /// <summary>ã‚¸ãƒ£ãƒ³ãƒ—å›æ•°</summary>
     public Status stat_jump { get; set; }
 
     #endregion
 
-
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     public void Init()
     {
-        // ƒLƒƒƒ‰‚É‚æ‚è‰Šú‰»
+        // ã‚­ãƒ£ãƒ©ã«ã‚ˆã‚ŠåˆæœŸåŒ–
         var pid = GameConstant.GetTempPID();
         var status = pid switch
         {
@@ -113,5 +112,16 @@ public class PlayerParameter
         stat_maxHp = new Status(status.maxHp.init, status.maxHp.up, status.maxHp.max, status.maxHp.cost);
         stat_speed = new Status(status.speed.init, status.speed.up, status.speed.max, status.speed.cost);
         stat_jump = new Status(status.jump.init, status.jump.up, status.jump.max, status.jump.cost);
+    }
+
+    /// <summary>
+    /// speedã®å€¤ã‹ã‚‰ç§»å‹•é€Ÿåº¦ã‚’æ±ºå®š
+    /// </summary>
+    /// <returns></returns>
+    public float GetSpeedVelocity()
+    {
+        var tmp = stat_speed.value;
+
+        return 10f + tmp / 10f;
     }
 }

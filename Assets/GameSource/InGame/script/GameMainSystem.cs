@@ -70,6 +70,9 @@ public class GameMainSystem : MainScriptBase
         }
     }
 
+    /// <summary>武器管理</summary>
+    public WeaponManager weaponManager { get; private set; }
+
     /// <summary>経過時間</summary>
     private float inGameTime;
 
@@ -93,6 +96,7 @@ public class GameMainSystem : MainScriptBase
         var manager = ManagerSceneScript.GetInstance();
 
         // パラメータ作成
+        weaponManager = new WeaponManager();
         prm_Game = new GameParameter();
         prm_Game.InitParam();
         prm_Player = new PlayerParameter();
@@ -111,10 +115,17 @@ public class GameMainSystem : MainScriptBase
         yield return new WaitWhile(() => manager.IsLoadingSubScene());
 
         //todo:test
-        //manager.LoadSubScene("GameWeaponFireball", 0, 0);
-        //manager.LoadSubScene("GameWeaponThunder", 0, 0);
-        //manager.LoadSubScene("GameWeaponWind", 0, 0);
-        manager.LoadSubScene("GameWeaponMeteor", 0, 0);
+        //manager.LoadSubScene("GameWeaponFireball", (int)WeaponManager.ID.FireBall);
+        //manager.LoadSubScene("GameWeaponThunder", (int)WeaponManager.ID.Thunder);
+        //manager.LoadSubScene("GameWeaponWind", (int)WeaponManager.ID.LeafWind);
+        //manager.LoadSubScene("GameWeaponMeteor", (int)WeaponManager.ID.Meteor);
+        //manager.LoadSubScene("GameWeaponFloat", (int)WeaponManager.ID.FloatBody);
+        //manager.LoadSubScene("GameWeaponQuake", (int)WeaponManager.ID.Quake);
+        //manager.LoadSubScene("GameWeaponBomb", (int)WeaponManager.ID.Bomb);
+        //manager.LoadSubScene("GameWeaponCyclone", (int)WeaponManager.ID.Cyclone);
+        manager.LoadSubScene("GameWeaponChildOption", (int)WeaponManager.ID.ChildOption);
+        manager.LoadSubScene("GameWeaponFireworks", (int)WeaponManager.ID.Fireworks);
+
         yield return new WaitWhile(() => manager.IsLoadingSubScene());
     }
 
@@ -259,7 +270,10 @@ public class GameMainSystem : MainScriptBase
 
     public Vector3 GetPlayerCenter()
     {
-        if (playerScript) return playerScript.gameObject.transform.position;
+        if (playerScript)
+        {
+            return playerScript.GetComponent<Collider>().bounds.center;
+        }
 
         return Vector3.zero;
     }

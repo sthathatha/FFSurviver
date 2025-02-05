@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -39,6 +40,9 @@ public class PlayerScript : CharacterScript
 
     /// <summary>ジャンプ回数</summary>
     private int jump_count = 0;
+
+    /// <summary>浮遊時間</summary>
+    private float float_time = 0f;
 
     #endregion
 
@@ -169,17 +173,17 @@ public class PlayerScript : CharacterScript
     /// <param name="hitGround"></param>
     /// <param name="hitInfo"></param>
     /// <returns></returns>
-    private bool GroundSearch(float threathold, out GameGround hitGround, out RaycastHit hitInfo)
+    public static bool GroundSearch(Vector3 nowPos, float threathold, Ray useRay, out GameGround hitGround, out RaycastHit hitInfo)
     {
         hitGround = null;
 
         // Ray更新
         if (threathold < 0.2f) threathold = 0.2f;
-        ground_ray.origin = transform.position + new Vector3(0, threathold, 0);
+        useRay.origin = nowPos + new Vector3(0, threathold, 0);
 
         // 検索
         var layer = LayerMask.GetMask(new string[] { "Ground" });
-        var groundHit = Physics.Raycast(ground_ray,
+        var groundHit = Physics.Raycast(useRay,
             out hitInfo,
             STAND_DISTANCE + threathold,
             layer
@@ -201,10 +205,11 @@ public class PlayerScript : CharacterScript
         var manager = ManagerSceneScript.GetInstance();
         var dt = manager.GetComponent<OriginManager>().inGameDeltaTime;
         var old_y = transform.position.y;
+        var wpn = GameMainSystem.Instance.weaponManager;
 
         if (state == PlayerState.Stand)
         {
-            var groundHit = GroundSearch(0f, out GameGround ground, out RaycastHit hitInfo);
+            var groundHit = GroundSearch(transform.position, 0f, ground_ray, out GameGround ground, out RaycastHit hitInfo);
 
             // ジャンプ
             if (GameInput.IsPress(GameInput.Buttons.Jump))
@@ -220,6 +225,11 @@ public class PlayerScript : CharacterScript
                 anim?.SetBool("Jump", false);
                 anim?.SetBool("FreeFall", true);
                 anim?.SetBool("Grounded", false);
+
+                if (wpn.HaveWeapon(WeaponManager.ID.FloatBody))
+                    float_time = wpn.GetWeaponSlot(WeaponManager.ID.FloatBody).AsFloat().validTime;
+                else
+                    float_time = 0f;
             }
         }
         else if (state == PlayerState.Jump)
@@ -235,24 +245,27 @@ public class PlayerScript : CharacterScript
                 y_speed -= FALL_G * dt;
                 if (y_speed < FALL_MAX) y_speed = FALL_MAX;
 
+                // 浮遊処理
+                if (y_speed <= 0f &&
+                    float_time > 0f &&
+                    GameInput.IsKeep(GameInput.Buttons.Jump))
+                {
+                    y_speed = 0;
+                    float_time -= dt;
+                }
+
                 var newPos = transform.position + new Vector3(0, y_speed * dt, 0);
                 // 落ち過ぎたら上に出る
                 if (newPos.y < -20f) newPos.y = 20f;
                 transform.position = newPos;
 
                 // 地面判定
-                var groundHit = GroundSearch(old_y - newPos.y, out GameGround ground, out RaycastHit hitInfo);
+                var groundHit = GroundSearch(newPos, old_y - newPos.y, ground_ray, out GameGround ground, out RaycastHit hitInfo);
 
                 // 物を踏んだら着地
                 if (groundHit && (old_y - newPos.y) > 0f)
                 {
-                    jump_count = 0;
-                    y_speed = 0f;
-                    transform.position = hitInfo.point;
-                    state = PlayerState.Stand;
-                    anim?.SetBool("Jump", false);
-                    anim?.SetBool("FreeFall", false);
-                    anim?.SetBool("Grounded", true);
+                    Grounding(hitInfo.point);
                 }
             }
         }
@@ -264,6 +277,7 @@ public class PlayerScript : CharacterScript
     private void Jump()
     {
         var pprm = GameMainSystem.Instance.prm_Player;
+        var wpn = GameMainSystem.Instance.weaponManager;
 
         if (jump_count < pprm.stat_jump.value)
         {
@@ -272,6 +286,10 @@ public class PlayerScript : CharacterScript
             jump_count++;
             y_speed = JUMP_V0;
             state = PlayerState.Jump;
+            if (wpn.HaveWeapon(WeaponManager.ID.FloatBody))
+                float_time = wpn.GetWeaponSlot(WeaponManager.ID.FloatBody).AsFloat().validTime;
+            else
+                float_time = 0f;
 
             transform.position += new Vector3(0, y_speed * dt, 0);
 
@@ -281,6 +299,29 @@ public class PlayerScript : CharacterScript
             anim?.SetBool("FreeFall", false);
         }
     }
+
+    /// <summary>
+    /// 着地処理
+    /// </summary>
+    /// <param name="hitPos"></param>
+    private void Grounding(Vector3 hitPos)
+    {
+        jump_count = 0;
+        y_speed = 0f;
+        transform.position = hitPos;
+        state = PlayerState.Stand;
+        anim?.SetBool("Jump", false);
+        anim?.SetBool("FreeFall", false);
+        anim?.SetBool("Grounded", true);
+
+        var wpn = GameMainSystem.Instance.weaponManager;
+        if (wpn.HaveWeapon(WeaponManager.ID.Quake))
+        {
+            var sys = wpn.GetWeaponSlot(WeaponManager.ID.Quake).AsQuake();
+            sys.CreateQuake();
+        }
+    }
+
 
     #endregion
 
@@ -311,7 +352,7 @@ public class PlayerScript : CharacterScript
 
         // スティック値をカメラ回転と合成
         var move = new Vector3(stick.x, 0, stick.y);
-        move = Quaternion.Euler(0, camRot, 0) * move * pprm.stat_speed.value;
+        move = Quaternion.Euler(0, camRot, 0) * move * pprm.GetSpeedVelocity();
         rigid.linearVelocity = new Vector3(move.x, vy, move.z);
 
         // キャラの向き

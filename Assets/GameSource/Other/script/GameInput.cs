@@ -1,10 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class GameInput
 {
     /// <summary>
-    /// ƒ{ƒ^ƒ“
+    /// ãƒœã‚¿ãƒ³
     /// </summary>
     public enum Buttons
     {
@@ -21,7 +21,7 @@ public class GameInput
     }
 
     /// <summary>
-    /// ƒ{ƒ^ƒ“‘€ì
+    /// ãƒœã‚¿ãƒ³æ“ä½œ
     /// </summary>
     /// <returns></returns>
     public static bool IsPress(Buttons btn)
@@ -71,7 +71,58 @@ public class GameInput
     }
 
     /// <summary>
-    /// ¶ƒXƒeƒBƒbƒN‘€ì
+    /// æŠ¼ã—ã£ã±ãªã—
+    /// </summary>
+    /// <param name="btn"></param>
+    /// <returns></returns>
+    public static bool IsKeep(Buttons btn)
+    {
+        var keyboard = Keyboard.current;
+        var gamepad = Gamepad.current;
+
+        switch (btn)
+        {
+            case Buttons.Jump:
+                return keyboard?.spaceKey.isPressed == true ||
+                    gamepad?.buttonSouth.isPressed == true;
+            case Buttons.NormalAttack:
+                return keyboard?.enterKey.isPressed == true ||
+                    gamepad?.buttonWest.isPressed == true;
+            case Buttons.Avoid:
+                return keyboard?.cKey.isPressed == true ||
+                    gamepad?.rightTrigger.isPressed == true;
+            case Buttons.Menu:
+                return keyboard?.backspaceKey.isPressed == true ||
+                    gamepad?.buttonNorth.isPressed == true;
+            case Buttons.MenuOK:
+                return keyboard?.enterKey.isPressed == true ||
+                    gamepad?.buttonSouth?.isPressed == true;
+            case Buttons.MenuCancel:
+                return keyboard?.backspaceKey.isPressed == true ||
+                    gamepad?.buttonEast.isPressed == true;
+            case Buttons.MenuUp:
+                return keyboard?.upArrowKey.isPressed == true ||
+                    gamepad?.dpad.up.isPressed == true ||
+                    gamepad?.leftStick.up.isPressed == true;
+            case Buttons.MenuDown:
+                return keyboard?.downArrowKey.isPressed == true ||
+                    gamepad?.dpad.down.isPressed == true ||
+                    gamepad?.leftStick.down.isPressed == true;
+            case Buttons.MenuRight:
+                return keyboard?.rightArrowKey.isPressed == true ||
+                    gamepad?.dpad.right.isPressed == true ||
+                    gamepad?.leftStick.right.isPressed == true;
+            case Buttons.MenuLeft:
+                return keyboard?.leftArrowKey.isPressed == true ||
+                    gamepad?.dpad.left.isPressed == true ||
+                    gamepad?.leftStick.left.isPressed == true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯æ“ä½œ
     /// </summary>
     /// <returns></returns>
     public static Vector2 GetLeftStick()
@@ -95,7 +146,7 @@ public class GameInput
     }
 
     /// <summary>
-    /// ‰EƒXƒeƒBƒbƒN‘€ì
+    /// å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯æ“ä½œ
     /// </summary>
     /// <returns></returns>
     public static Vector2 GetRightStick()

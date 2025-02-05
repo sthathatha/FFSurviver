@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// メテオの石部分
 /// </summary>
-public class MeteorAttack : AttackParameter
+public class MeteorAttack : SimpleMoveAttack
 {
     /// <summary>高さ</summary>
     protected const float FALL_HEIGHT = 10f;
@@ -14,9 +14,6 @@ public class MeteorAttack : AttackParameter
 
     /// <summary>着弾後の炎上</summary>
     public ExpandAttack burnTemplate;
-
-    /// <summary>位置</summary>
-    private DeltaVector3 deltaPos = null;
 
     /// <summary>
     /// 発射
@@ -28,33 +25,18 @@ public class MeteorAttack : AttackParameter
 
         const float RANDX = FALL_HEIGHT * 0.05f;
         var heightPos = new Vector3(Util.RandomFloat(-RANDX, RANDX), FALL_HEIGHT, Util.RandomFloat(-RANDX, RANDX));
-        deltaPos = new DeltaVector3();
-        deltaPos.Set(target + heightPos);
-        deltaPos.MoveTo(target, FALL_TIME, DeltaFloat.MoveType.LINE);
 
-        transform.position = deltaPos.Get();
-        gameObject.SetActive(true);
-        StartCoroutine(UpdateCoroutine());
+        MoveStart(target + heightPos, target, FALL_TIME);
     }
 
     /// <summary>
-    /// 更新
+    /// 移動後
     /// </summary>
-    /// <returns></returns>
-    private IEnumerator UpdateCoroutine()
+    /// <param name="pos"></param>
+    protected override void AfterMove(Vector3 pos)
     {
+        base.AfterMove(pos);
         var main = GameMainSystem.Instance;
-        var origin = OriginManager.Instance;
-        var pprm = main.prm_Player;
-
-        while (deltaPos.IsActive())
-        {
-            yield return null;
-            deltaPos.Update(origin.inGameDeltaTime);
-
-            transform.position = deltaPos.Get();
-        }
-        yield return null;
 
         // 炎上エフェクトを出して自分は消える
         if (burnTemplate)
@@ -63,9 +45,7 @@ public class MeteorAttack : AttackParameter
 
             na.SetAttackRate(attackRate);
             na.scaleRate = scaleRate;
-            na.Shoot(deltaPos.Get());
+            na.Shoot(pos);
         }
-
-        Destroy(gameObject);
     }
 }

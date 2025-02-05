@@ -8,16 +8,16 @@ public class TestWeaponSystem : BaseSearchWeapon
 {
     public SimpleAttack test1;
 
-    protected override void ExecAttack(List<Collider> targets)
+    protected override void ExecAttack(Vector3 selfPos, List<Collider> targets)
     {
-        base.ExecAttack(targets);
+        base.ExecAttack(selfPos, targets);
 
         // 
         var main = GameMainSystem.Instance;
         var tmpData = GlobalData.GetTemporaryData();
         var game = main.prm_Game;
         var pprm = main.prm_Player;
-        var center = main.GetPlayerCenter();
+        var center = selfPos;
 
         foreach (var target in targets)
         {

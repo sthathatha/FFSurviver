@@ -21,6 +21,9 @@ public class AttackParameter : MonoBehaviour
     /// <summary>サイズ倍率</summary>
     public float scaleRate { get; set; } = 1f;
 
+    /// <summary>ヒット済み</summary>
+    protected bool isHitted = false;
+
     #endregion
 
     /// <summary>
@@ -48,6 +51,7 @@ public class AttackParameter : MonoBehaviour
             var enm = other.gameObject.GetComponent<EnemyScriptBase>();
             if (enm != null)
             {
+                isHitted = true;
                 enm.AttackTrigger(this);
             }
         }
@@ -57,7 +61,8 @@ public class AttackParameter : MonoBehaviour
             var plr = other.gameObject.GetComponent<PlayerScript>();
             if (plr != null)
             {
-
+                isHitted = true;
+                plr.AttackTrigger(this);
             }
         }
     }

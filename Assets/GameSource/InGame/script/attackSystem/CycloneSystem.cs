@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ファイアボール
+/// かまいたち
 /// </summary>
-public class FireballSystem : BaseSearchWeapon
+public class CycloneSystem : BaseSearchWeapon
 {
-    /// <summary>ファイアボール</summary>
-    public SimpleAttack fireBall;
+    /// <summary>コピー元</summary>
+    public SimpleAttack template;
 
     /// <summary>
     /// 初期化
@@ -18,8 +18,8 @@ public class FireballSystem : BaseSearchWeapon
     {
         yield return base.InitStart();
 
-        Prm_coolTime = 2f;
-        Prm_searchRange = 20f;
+        Prm_coolTime = 1f;
+        Prm_searchRange = 15f;
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public class FireballSystem : BaseSearchWeapon
             var direction = target.bounds.center - selfPos;
 
             // ファイアボール生成
-            var na = Instantiate(fireBall, main.attackParent);
+            var na = Instantiate(template, main.attackParent);
             na.gameObject.SetActive(false);
 
             SetAttackParam(na, pprm.stat_magic.value);

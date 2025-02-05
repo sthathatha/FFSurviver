@@ -25,10 +25,11 @@ public class MeteorSystem : BaseSearchWeapon
     /// <summary>
     /// 攻撃
     /// </summary>
+    /// <param name="selfPos"></param>
     /// <param name="targets"></param>
-    protected override void ExecAttack(List<Collider> targets)
+    protected override void ExecAttack(Vector3 selfPos, List<Collider> targets)
     {
-        base.ExecAttack(targets);
+        base.ExecAttack(selfPos, targets);
 
         var main = GameMainSystem.Instance;
         var pprm = main.prm_Player;

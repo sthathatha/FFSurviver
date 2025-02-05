@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ファイアボール
+/// 爆弾
 /// </summary>
-public class FireballSystem : BaseSearchWeapon
+public class BombSystem : BaseSearchWeapon
 {
-    /// <summary>ファイアボール</summary>
-    public SimpleAttack fireBall;
+    /// <summary>爆弾</summary>
+    public BombAttack template;
 
     /// <summary>
     /// 初期化
@@ -18,12 +18,12 @@ public class FireballSystem : BaseSearchWeapon
     {
         yield return base.InitStart();
 
-        Prm_coolTime = 2f;
-        Prm_searchRange = 20f;
+        Prm_coolTime = 4.2f;
+        Prm_searchRange = 30f;
     }
 
     /// <summary>
-    /// 攻撃
+    /// 爆弾投げる
     /// </summary>
     /// <param name="selfPos"></param>
     /// <param name="targets"></param>
@@ -36,15 +36,14 @@ public class FireballSystem : BaseSearchWeapon
 
         foreach (var target in targets)
         {
-            // 向き
-            var direction = target.bounds.center - selfPos;
-
-            // ファイアボール生成
-            var na = Instantiate(fireBall, main.attackParent);
+            // 爆弾生成
+            var na = Instantiate(template, main.attackParent);
             na.gameObject.SetActive(false);
 
-            SetAttackParam(na, pprm.stat_magic.value);
-            na.Shoot(selfPos, direction);
+            // 爆弾本体のサイズは大きくしないためSetAttackParamは使わない
+            na.SetAttackRate(pprm.stat_melee.value * Prm_attackRate);
+            na.scaleRate = Prm_attackSize;
+            na.Shoot(selfPos, target.bounds.center);
         }
     }
 }
