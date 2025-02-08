@@ -33,8 +33,6 @@ public class RollOptionSystem : GameWeaponSystemBase
     {
         yield return base.InitStart();
 
-        initCount = 3;
-
         attacks = new List<FreeAttack>();
         // 作成
         Create(initCount);
@@ -63,6 +61,20 @@ public class RollOptionSystem : GameWeaponSystemBase
 
         UpdateAttackPos();
     }
+
+    /// <summary>
+    /// オプション追加
+    /// </summary>
+    public void AddOption()
+    {
+        Create(attacks.Count + 1);
+    }
+
+    /// <summary>
+    /// 現在の数
+    /// </summary>
+    /// <returns></returns>
+    public int GetOptionCount() { return attacks.Count; }
 
     /// <summary>
     /// 更新

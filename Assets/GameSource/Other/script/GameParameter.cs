@@ -1,33 +1,36 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ƒQ[ƒ€‚»‚Ì‚à‚Ì‚Ìƒpƒ‰ƒ[ƒ^
+/// ã‚²ãƒ¼ãƒ ãã®ã‚‚ã®ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 /// </summary>
 public class GameParameter
 {
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
-    /// <summary>ŒoŒ±’l</summary>
+    /// <summary>çµŒé¨“å€¤</summary>
     public int Exp { get; set; }
 
-    /// <summary>ƒ{ƒXŒ‚”jƒtƒ‰ƒO‚P</summary>
+    /// <summary>ãƒœã‚¹æ’ƒç ´ãƒ•ãƒ©ã‚°ï¼‘</summary>
     public bool Defeated_Boss1 { get; set; }
-    /// <summary>ƒ{ƒXŒ‚”jƒtƒ‰ƒO‚Q</summary>
+    /// <summary>ãƒœã‚¹æ’ƒç ´ãƒ•ãƒ©ã‚°ï¼’</summary>
     public bool Defeated_Boss2 { get; set; }
-    /// <summary>ƒ{ƒXŒ‚”jƒtƒ‰ƒO‚R</summary>
+    /// <summary>ãƒœã‚¹æ’ƒç ´ãƒ•ãƒ©ã‚°ï¼“</summary>
     public bool Defeated_Boss3 { get; set; }
-    /// <summary>ƒ{ƒXŒ‚”jƒtƒ‰ƒO‚S</summary>
+    /// <summary>ãƒœã‚¹æ’ƒç ´ãƒ•ãƒ©ã‚°ï¼”</summary>
     public bool Defeated_Boss4 { get; set; }
-    /// <summary>ƒ{ƒXŒ‚”jƒtƒ‰ƒO‚T</summary>
+    /// <summary>ãƒœã‚¹æ’ƒç ´ãƒ•ãƒ©ã‚°ï¼•</summary>
     public bool Defeated_Boss5 { get; set; }
 
-    /// <summary>‚­‚¶ˆø‚«ƒRƒXƒg</summary>
+    /// <summary>ãã˜å¼•ãã‚³ã‚¹ãƒˆ</summary>
     public int LotteryCost { get; set; }
+
+    /// <summary>ãã˜å¼•ã„ãŸæ•°</summary>
+    private int lotteryCount = 0;
 
     #endregion
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     public void InitParam()
     {
@@ -38,14 +41,17 @@ public class GameParameter
         Defeated_Boss4 = false;
         Defeated_Boss5 = false;
         LotteryCost = 20;
+        lotteryCount = 0;
     }
 
     /// <summary>
-    /// ‚­‚¶ˆø‚¢‚ÄŸƒRƒXƒgƒAƒbƒv
+    /// ãã˜å¼•ã„ã¦æ¬¡ã‚³ã‚¹ãƒˆã‚¢ãƒƒãƒ—
     /// </summary>
     public void LotteryCostUp()
     {
-        //todo:ƒRƒXƒgƒAƒbƒvŒvZ
-        LotteryCost += 100;
+        ++lotteryCount;
+
+        // ã‚³ã‚¹ãƒˆã‚¢ãƒƒãƒ—è¨ˆç®—
+        LotteryCost += Mathf.RoundToInt(Mathf.Pow(lotteryCount, 1.2f)) * 10;
     }
 }

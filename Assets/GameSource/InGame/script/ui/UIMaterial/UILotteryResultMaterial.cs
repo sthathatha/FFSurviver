@@ -1,18 +1,19 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// ƒƒgƒŠ[Œ‹‰Ê‚PŒÂ
+/// ãƒ­ãƒˆãƒªãƒ¼çµæœï¼‘å€‹
 /// </summary>
 public class UILotteryResultMaterial : UIMaterialBase
 {
     public Image icon;
 
     /// <summary>
-    /// ƒAƒCƒeƒ€•\¦
+    /// ã‚¢ã‚¤ãƒ†ãƒ è¡¨ç¤º
     /// </summary>
-    public void ShowItem()
+    /// <param name="_treasure">å¼•ã„ãŸã‚¢ã‚¤ãƒ†ãƒ </param>
+    public void ShowItem(TreasureItemBase _treasure)
     {
-        //todo:ƒƒgƒŠ[Œ‹‰ÊƒAƒCƒRƒ“
+        //todo:ãƒ­ãƒˆãƒªãƒ¼çµæœã‚¢ã‚¤ã‚³ãƒ³
     }
 }

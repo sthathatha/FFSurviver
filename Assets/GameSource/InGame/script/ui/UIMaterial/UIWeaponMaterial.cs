@@ -1,13 +1,13 @@
-using TMPro;
+ï»¿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// •Ší‚PŒÂ
+/// æ­¦å™¨ï¼‘å€‹
 /// </summary>
 public class UIWeaponMaterial : UIMaterialBase
 {
-    #region €–Ú
+    #region é …ç›®
 
     public Image icon;
     public TMP_Text txtLv;
@@ -16,10 +16,25 @@ public class UIWeaponMaterial : UIMaterialBase
     #endregion
 
     /// <summary>
-    /// •\¦
+    /// è¡¨ç¤º
     /// </summary>
-    public void SetWeapon()
+    /// <param name="_slotData"></param>
+    public void SetWeapon(WeaponManager.SlotData _slotData)
     {
-        //todo:
+        if (_slotData == null)
+        {
+            // ç©º
+            icon.gameObject.SetActive(false);
+            txtLv.SetText("");
+            txtName.SetText(WeaponManager.GetWeaponName(WeaponManager.ID.Empty));
+        }
+        else
+        {
+            // æ­¦å™¨ã®è¡¨ç¤º
+            //todo:æ­¦å™¨ã‚¢ã‚¤ã‚³ãƒ³
+            icon.gameObject.SetActive(true);
+            txtLv.SetText(_slotData.lv.ToString());
+            txtName.SetText(WeaponManager.GetWeaponName(_slotData.id));
+        }
     }
 }

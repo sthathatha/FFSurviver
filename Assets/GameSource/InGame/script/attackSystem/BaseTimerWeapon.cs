@@ -12,7 +12,7 @@ public class BaseTimerWeapon : GameWeaponSystemBase
     #region パラメータ
 
     /// <summary>インターバル秒</summary>
-    public float Prm_interval = 4f;
+    public float Prm_coolTime = 4f;
 
     /// <summary>時間管理リスト</summary>
     private List<TimeManager> timeList;
@@ -52,7 +52,7 @@ public class BaseTimerWeapon : GameWeaponSystemBase
             if (time <= 0f)
             {
                 system.ExecAttack(selfPos);
-                time = system.Prm_interval;
+                time = system.Prm_coolTime;
             }
         }
     }

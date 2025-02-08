@@ -31,8 +31,54 @@ public class Strings
 
     #region 武器
 
-    public const string Weapon1_Fireball_Name = "ファイアボール";
-    public const string Weapon1_Thunder_Name = "プラズマオプション";
+    public const string Weapon_Empty_Name = "";
+
+    public const string Weapon_Fireball_Name = "ファイアボール";
+    public const string Weapon_Fireball_Desc = "【魔法】もよりの敵に貫通する火球を発射する";
+    public const string Weapon_Thunder_Name = "エレキシールド";
+    public const string Weapon_Thunder_Desc = "【魔法】まわりを回転する電気の球";
+    public const string Weapon_Meteor_Name = "メテオ";
+    public const string Weapon_Meteor_Desc = "【魔法】燃える隕石を落とし、しばらく炎の地形を残す";
+    public const string Weapon_Leaf_Name = "木の葉乱舞";
+    public const string Weapon_Leaf_Desc = "【魔法】周囲の敵を攻撃する風の刃";
+    public const string Weapon_Quake_Name = "アースシェイカー";
+    public const string Weapon_Quake_Desc = "【物理】着地する時に地面を揺らして周囲を攻撃";
+    public const string Weapon_Bomb_Name = "小型爆弾";
+    public const string Weapon_Bomb_Desc = "【物理】近くの敵に爆弾を投げつけて攻撃";
+    public const string Weapon_Float_Name = "浮遊";
+    public const string Weapon_Float_Desc = "【特殊】ジャンプボタン長押しでしばらく滞空できる";
+    public const string Weapon_Option_Name = "オプション";
+    public const string Weapon_Option_Desc = "【特殊】プレイヤーと同時に攻撃する光球\n特定の攻撃はできない";
+    public const string Weapon_Cyclone_Name = "かまいたち";
+    public const string Weapon_Cyclone_Desc = "【物理】もよりの敵に貫通する斬撃を飛ばす";
+    public const string Weapon_Fireworks_Name = "ねずみ花火";
+    public const string Weapon_Fireworks_Desc = "【物理】ランダムな方向に花火を飛ばして攻撃";
+
+    #endregion
+
+    #region 強化アイテム
+
+    public const string Item_Heal_Name = "ヒール";
+    public const string Item_Heal_Desc = "HPを50％回復する";
+
+    public const string Item_Stat_All = "シェリフスター";
+    public const string Item_Stat_All_Desc = "全ステータス2段階アップ";
+    public const string Item_Stat_Melee = "Melee＋";
+    public const string Item_Stat_Melee_Desc = "物理攻撃力1段階アップ";
+    public const string Item_Stat_Magic = "Magic＋";
+    public const string Item_Stat_Magic_Desc = "魔法攻撃力1段階アップ";
+    public const string Item_Stat_Hp = "HP＋";
+    public const string Item_Stat_Hp_Desc = "最大HP1段階アップ";
+    public const string Item_Stat_Speed = "Speed＋";
+    public const string Item_Stat_Speed_Desc = "移動速度1段階アップ";
+    public const string Item_Stat_Jump = "Jump＋";
+    public const string Item_Stat_Jump_Desc = "ジャンプ回数アップ";
+
+    public const string Item_General_CoolTime = "クールタイム－10％";
+    public const string Item_General_Size = "サイズ＋20％";
+    public const string Item_General_Count = "攻撃数＋1";
+
+    public const string Item_Float_Time = "浮遊時間増加";
 
     #endregion
 

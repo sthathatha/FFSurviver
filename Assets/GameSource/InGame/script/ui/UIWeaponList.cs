@@ -1,12 +1,13 @@
+ï»¿using System;
 using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// •ŠíƒŠƒXƒg
+/// æ­¦å™¨ãƒªã‚¹ãƒˆ
 /// </summary>
 public class UIWeaponList : AppearUIBase
 {
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
     public UIWeaponMaterial wpn1;
     public UIWeaponMaterial wpn2;
@@ -16,10 +17,10 @@ public class UIWeaponList : AppearUIBase
 
     #endregion
 
-    #region ‰Šú‰»
+    #region åˆæœŸåŒ–
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     protected override void InitStart()
     {
@@ -27,19 +28,25 @@ public class UIWeaponList : AppearUIBase
     }
 
     /// <summary>
-    /// •\¦’¼‘O‰Šú‰»
+    /// è¡¨ç¤ºç›´å‰åˆæœŸåŒ–
     /// </summary>
     protected override void InitOpen()
     {
         base.InitOpen();
 
-        //todo:•Ší•\¦
+        // æ­¦å™¨è¡¨ç¤º
+        var man = GameMainSystem.Instance.weaponManager;
+        wpn1.SetWeapon(man.GetSlot(0));
+        wpn2.SetWeapon(man.GetSlot(1));
+        wpn3.SetWeapon(man.GetSlot(2));
+        wpn4.SetWeapon(man.GetSlot(3));
+        wpn5.SetWeapon(man.GetSlot(4));
     }
 
     #endregion
 
     /// <summary>
-    /// ˆ—
+    /// å‡¦ç†
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator UpdateMenu()

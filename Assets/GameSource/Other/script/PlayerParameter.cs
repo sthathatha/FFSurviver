@@ -66,12 +66,12 @@ public class PlayerParameter
         /// <summary>
         /// 現在のExpで強化可能かどうか
         /// </summary>
-        /// <param name="nowExp"></param>
+        /// <param name="nowExp">現在のExp、マイナスの場合Max判定のみ</param>
         /// <returns></returns>
         public bool CanPowerUp(int nowExp)
         {
             if (maxValue > 0 && value >= maxValue) return false;
-            if (cost > nowExp) return false;
+            if (nowExp >= 0 && cost > nowExp) return false;
 
             return true;
         }

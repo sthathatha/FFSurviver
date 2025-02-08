@@ -1,34 +1,37 @@
+ï»¿using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 /// <summary>
-/// ƒƒgƒŠ[Œ‹‰Ê‰æ–Ê
+/// ãƒ­ãƒˆãƒªãƒ¼çµæœç”»é¢
 /// </summary>
 public class UILotteryResult : AppearUIBase
 {
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
     public UILotteryResultMaterial result1;
     public UILotteryResultMaterial result2;
     public UILotteryResultMaterial result3;
 
-    /// <summary>Ú×@–¼‘O</summary>
+    /// <summary>è©³ç´°ã€€åå‰</summary>
     public TMP_Text txtDetailName;
-    /// <summary>Ú×@à–¾•¶</summary>
+    /// <summary>è©³ç´°ã€€èª¬æ˜æ–‡</summary>
     public TMP_Text txtDetail;
 
-    /// <summary>ƒŠƒUƒ‹ƒg</summary>
+    /// <summary>ãƒªã‚¶ãƒ«ãƒˆUI</summary>
     private LineSelectList<UILotteryResultMaterial> resultList;
 
-
+    /// <summary>å¼•ã„ãŸã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿</summary>
+    private List<TreasureItemBase> treasureList;
 
     #endregion
 
-    #region ‰Šú‰»
+    #region åˆæœŸåŒ–
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     protected override void InitStart()
     {
@@ -36,16 +39,25 @@ public class UILotteryResult : AppearUIBase
 
         resultList = new LineSelectList<UILotteryResultMaterial>();
         resultList.AddItem(result1, result2, result3);
+
+        treasureList = new List<TreasureItemBase>();
     }
 
     /// <summary>
-    /// •\¦’¼‘O‰Šú‰»
+    /// è¡¨ç¤ºç›´å‰åˆæœŸåŒ–
     /// </summary>
     protected override void InitOpen()
     {
         base.InitOpen();
 
-        //todo:ƒŠƒUƒ‹ƒg•\¦
+        // å¼•ã
+        var tMan = GameMainSystem.Instance.treasureManager;
+        treasureList.Clear();
+        treasureList = tMan.GetItem();
+        for (var i = 0; i < resultList.GetAllCount(); ++i)
+        {
+            resultList.GetItem(i).ShowItem(treasureList[i]);
+        }
 
         resultList.MoveReset();
         UpdateCursor();
@@ -54,7 +66,7 @@ public class UILotteryResult : AppearUIBase
     #endregion
 
     /// <summary>
-    /// XV
+    /// æ›´æ–°
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator UpdateMenu()
@@ -75,7 +87,8 @@ public class UILotteryResult : AppearUIBase
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuOK))
             {
-                //todo:‘I‘ğ
+                // é¸æŠ
+                treasureList[resultList.selectIndex].ExecGetItem();
                 break;
             }
 
@@ -83,10 +96,11 @@ public class UILotteryResult : AppearUIBase
         }
 
         yield return Close();
+        yield return new WaitWhile(() => ManagerSceneScript.GetInstance().IsLoadingSubScene());
     }
 
     /// <summary>
-    /// ƒJ[ƒ\ƒ‹XV‚©‚ÂÚ×•\¦
+    /// ã‚«ãƒ¼ã‚½ãƒ«æ›´æ–°ã‹ã¤è©³ç´°è¡¨ç¤º
     /// </summary>
     private void UpdateCursor()
     {
@@ -96,7 +110,9 @@ public class UILotteryResult : AppearUIBase
             else resultList.GetItem(i).Cursor_Hide();
         }
 
-        //todo:ƒƒgƒŠ[Œ‹‰ÊÚ×•\¦
-
+        // è©³ç´°è¡¨ç¤º
+        var idx = resultList.selectIndex;
+        txtDetailName.SetText(treasureList[idx].name);
+        txtDetail.SetText(treasureList[idx].description);
     }
 }

@@ -73,6 +73,9 @@ public class GameMainSystem : MainScriptBase
     /// <summary>武器管理</summary>
     public WeaponManager weaponManager { get; private set; }
 
+    /// <summary>くじ引き管理</summary>
+    public TreasureManager treasureManager { get; private set; }
+
     /// <summary>経過時間</summary>
     private float inGameTime;
 
@@ -97,6 +100,7 @@ public class GameMainSystem : MainScriptBase
 
         // パラメータ作成
         weaponManager = new WeaponManager();
+        treasureManager = new TreasureManager();
         prm_Game = new GameParameter();
         prm_Game.InitParam();
         prm_Player = new PlayerParameter();
@@ -112,20 +116,6 @@ public class GameMainSystem : MainScriptBase
         //todo:キャラクター読み込み
         manager.LoadSubScene("GameSceneDrows", 0, 0);
         // 読み込み待ち
-        yield return new WaitWhile(() => manager.IsLoadingSubScene());
-
-        //todo:test
-        //manager.LoadSubScene("GameWeaponFireball", (int)WeaponManager.ID.FireBall);
-        //manager.LoadSubScene("GameWeaponThunder", (int)WeaponManager.ID.Thunder);
-        //manager.LoadSubScene("GameWeaponWind", (int)WeaponManager.ID.LeafWind);
-        //manager.LoadSubScene("GameWeaponMeteor", (int)WeaponManager.ID.Meteor);
-        //manager.LoadSubScene("GameWeaponFloat", (int)WeaponManager.ID.FloatBody);
-        //manager.LoadSubScene("GameWeaponQuake", (int)WeaponManager.ID.Quake);
-        //manager.LoadSubScene("GameWeaponBomb", (int)WeaponManager.ID.Bomb);
-        //manager.LoadSubScene("GameWeaponCyclone", (int)WeaponManager.ID.Cyclone);
-        manager.LoadSubScene("GameWeaponChildOption", (int)WeaponManager.ID.ChildOption);
-        manager.LoadSubScene("GameWeaponFireworks", (int)WeaponManager.ID.Fireworks);
-
         yield return new WaitWhile(() => manager.IsLoadingSubScene());
     }
 

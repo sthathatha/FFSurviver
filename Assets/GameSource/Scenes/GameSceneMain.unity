@@ -11008,11 +11008,11 @@ MonoBehaviour:
   hide_X: 800
   show_X: 100
   show_time: 0.15
-  wpn1: {fileID: 0}
-  wpn2: {fileID: 0}
-  wpn3: {fileID: 0}
-  wpn4: {fileID: 0}
-  wpn5: {fileID: 0}
+  wpn1: {fileID: 282110655}
+  wpn2: {fileID: 469192369}
+  wpn3: {fileID: 1193804341}
+  wpn4: {fileID: 1410565309}
+  wpn5: {fileID: 2006979287}
 --- !u!1 &1725929249
 GameObject:
   m_ObjectHideFlags: 0

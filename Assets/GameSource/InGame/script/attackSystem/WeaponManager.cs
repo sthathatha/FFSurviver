@@ -40,6 +40,30 @@ public class WeaponManager
         Fireworks,
     }
 
+    /// <summary>
+    /// 武器名称
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static string GetWeaponName(ID id)
+    {
+        return id switch
+        {
+            ID.ChildOption => Strings.Weapon_Option_Name,
+            ID.FloatBody => Strings.Weapon_Float_Name,
+            ID.FireBall => Strings.Weapon_Fireball_Name,
+            ID.LeafWind => Strings.Weapon_Leaf_Name,
+            ID.ThunderBall => Strings.Weapon_Thunder_Name,
+            ID.Meteor => Strings.Weapon_Meteor_Name,
+            ID.Cyclone => Strings.Weapon_Cyclone_Name,
+            ID.Fireworks => Strings.Weapon_Fireworks_Name,
+            ID.Quake => Strings.Weapon_Quake_Name,
+            ID.Bomb => Strings.Weapon_Bomb_Name,
+
+            _ => Strings.Weapon_Empty_Name,
+        };
+    }
+
     #endregion
 
     #region メンバー
@@ -78,13 +102,13 @@ public class WeaponManager
 
         #region 各IDについてのシステム取得
 
-        public FireballSystem AsFireBallSystem() { return system as FireballSystem; }
-        public WindSystem AsWindSystem() { return system as WindSystem; }
-        public RollOptionSystem AsRollSystem() { return system as RollOptionSystem; }
+        public FireballSystem AsFireBall() { return system as FireballSystem; }
+        public RollOptionSystem AsRollOption() { return system as RollOptionSystem; }
+        public WindSystem AsWind() { return system as WindSystem; }
         public MeteorSystem AsMeteor() { return system as MeteorSystem; }
         public FloatSystem AsFloat() { return system as FloatSystem; }
         public QuakeSystem AsQuake() { return system as QuakeSystem; }
-        public QuakeSystem AsBomb() { return system as QuakeSystem; }
+        public BombSystem AsBomb() { return system as BombSystem; }
         public CycloneSystem AsCyclone() { return system as CycloneSystem; }
         public ChildOptionSystem AsChildren() { return system as ChildOptionSystem; }
         public FireworksSystem AsFireworks() { return system as FireworksSystem; }

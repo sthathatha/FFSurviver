@@ -11,7 +11,7 @@ public class FireworksSystem : BaseTimerWeapon
     public FireworksAttack template;
 
     /// <summary>攻撃数</summary>
-    public int Prm_AttackCount { get; set; } = 1;
+    public int Prm_attackCount { get; set; } = 1;
 
     #endregion
 
@@ -23,10 +23,10 @@ public class FireworksSystem : BaseTimerWeapon
     {
         base.ExecAttack(selfPos);
 
-        var rotOne = Mathf.PI * 2f / Prm_AttackCount;
+        var rotOne = Mathf.PI * 2f / Prm_attackCount;
         var rot = Util.RandomFloat(0f, Mathf.PI * 2f);
 
-        for (var i = 0; i < Prm_AttackCount; ++i)
+        for (var i = 0; i < Prm_attackCount; ++i)
         {
             CreateAttack(selfPos, rot);
             rot += rotOne;

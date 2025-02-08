@@ -53,7 +53,7 @@ public class CharacterScript : MonoBehaviour
     protected List<AttackHistory> atkHistories;
 
     /// <summary>HP</summary>
-    protected int hp;
+    public int hp { get; protected set; }
 
     #endregion
 
