@@ -52,6 +52,6 @@ public class GameParameter
         ++lotteryCount;
 
         // コストアップ計算
-        LotteryCost += Mathf.RoundToInt(Mathf.Pow(lotteryCount, 1.2f)) * 10;
+        LotteryCost = 10 + Mathf.RoundToInt(Mathf.Pow(lotteryCount, 1.2f) * 10);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// アイテム機能
@@ -18,4 +19,6 @@ public abstract class TreasureItemBase
     public virtual int GetRarelity() { return rarelity; }
     /// <summary>取得時の結果反映</summary>
     public abstract void ExecGetItem();
+    /// <summary>アイコン表示</summary>
+    public abstract void ShowTreasureIcon(Image icon1, Image icon2, UIIconManager resource);
 }

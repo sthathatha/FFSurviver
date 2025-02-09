@@ -13,6 +13,8 @@ public class UIWeaponMaterial : UIMaterialBase
     public TMP_Text txtLv;
     public TMP_Text txtName;
 
+    public UIIconManager iconManager;
+
     #endregion
 
     /// <summary>
@@ -31,8 +33,8 @@ public class UIWeaponMaterial : UIMaterialBase
         else
         {
             // 武器の表示
-            //todo:武器アイコン
             icon.gameObject.SetActive(true);
+            icon.sprite = iconManager.GetWeaponIcon(_slotData.id);
             txtLv.SetText(_slotData.lv.ToString());
             txtName.SetText(WeaponManager.GetWeaponName(_slotData.id));
         }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using UnityEngine.UI;
 
 /// <summary>
 /// サイズアップ全般
@@ -14,7 +14,8 @@ public class GeneralSize : WeaponItemBase
     public GeneralSize(WeaponManager.ID _wid) : base(_wid)
     {
         description = Strings.Item_General_Size;
-        rarelity = _wid switch{
+        rarelity = _wid switch
+        {
             WeaponManager.ID.Meteor => 50,
             _ => 30,
         };
@@ -25,6 +26,7 @@ public class GeneralSize : WeaponItemBase
     /// </summary>
     public override void ExecGetItem()
     {
+        base.ExecGetItem();
         var slot = GetSlot();
         if (weaponId == WeaponManager.ID.FireBall)
         {
@@ -58,5 +60,17 @@ public class GeneralSize : WeaponItemBase
         {
             slot.AsWind().Prm_attackSize *= SIZE_RATE;
         }
+    }
+
+    /// <summary>
+    /// アイコン表示
+    /// </summary>
+    /// <param name="icon1"></param>
+    /// <param name="icon2"></param>
+    /// <param name="resource"></param>
+    public override void ShowTreasureIcon(Image icon1, Image icon2, UIIconManager resource)
+    {
+        ShowWeaponIcon(icon1, resource);
+        icon2.sprite = resource.spIconSize;
     }
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using UnityEngine.UI;
 
 /// <summary>
 /// ステータスアップ系
@@ -97,6 +97,7 @@ public class StatusTreasure : TreasureItemBase
     /// </summary>
     public override void ExecGetItem()
     {
+        var plr = GameMainSystem.Instance.playerScript;
         var pprm = GameMainSystem.Instance.prm_Player;
 
         // コスト使用せずアップする
@@ -107,12 +108,35 @@ public class StatusTreasure : TreasureItemBase
             else if (kind == Status.Magic)
                 pprm.stat_magic.PowerUp(true);
             else if (kind == Status.Hp)
-                pprm.stat_maxHp.PowerUp(true);
+            {
+                var hpPlus = pprm.stat_maxHp.PowerUp(true);
+                plr.Heal(hpPlus);
+            }
             else if (kind == Status.Speed)
                 pprm.stat_speed.PowerUp(true);
             else
                 pprm.stat_jump.PowerUp(true);
         }
 
+    }
+
+    /// <summary>
+    /// アイコン表示
+    /// </summary>
+    /// <param name="icon1"></param>
+    /// <param name="icon2"></param>
+    /// <param name="resource"></param>
+    public override void ShowTreasureIcon(Image icon1, Image icon2, UIIconManager resource)
+    {
+        icon1.sprite = kind switch
+        {
+            Status.Melee => resource.spStatMelee,
+            Status.Magic => resource.spStatMagic,
+            Status.Hp => resource.spStatHp,
+            Status.Speed => resource.spStatSpeed,
+            Status.Jump => resource.spStatJump,
+            _ => null,
+        };
+        icon2.sprite = resource.spIconPlus;
     }
 }

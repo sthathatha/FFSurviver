@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine.UI;
 
 /// <summary>
 /// 武器強化アイテム系
@@ -71,5 +70,24 @@ public abstract class WeaponItemBase : TreasureItemBase
     protected WeaponManager.SlotData GetSlot()
     {
         return GameMainSystem.Instance.weaponManager.GetWeaponSlot(weaponId);
+    }
+
+    /// <summary>
+    /// 入手処理
+    /// </summary>
+    public override void ExecGetItem()
+    {
+        var slot = GetSlot();
+        slot.lv++;
+    }
+
+    /// <summary>
+    /// 武器アイコン表示
+    /// </summary>
+    /// <param name="icon"></param>
+    /// <param name="resource"></param>
+    protected void ShowWeaponIcon(Image icon, UIIconManager resource)
+    {
+        icon.sprite = resource.GetWeaponIcon(weaponId);
     }
 }

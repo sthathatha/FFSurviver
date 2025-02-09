@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class UILotteryResultMaterial : UIMaterialBase
 {
     public Image icon;
+    public Image icon2;
+
+    public UIIconManager iconManager;
 
     /// <summary>
     /// アイテム表示
@@ -14,6 +17,8 @@ public class UILotteryResultMaterial : UIMaterialBase
     /// <param name="_treasure">引いたアイテム</param>
     public void ShowItem(TreasureItemBase _treasure)
     {
-        //todo:ロトリー結果アイコン
+        // ロトリー結果アイコン表示
+        _treasure.ShowTreasureIcon(icon, icon2, iconManager);
+        icon2.gameObject.SetActive(icon2.sprite != null);
     }
 }

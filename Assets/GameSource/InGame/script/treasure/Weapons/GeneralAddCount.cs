@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using UnityEngine.UI;
 
 /// <summary>
 /// カウントアップ系
@@ -24,6 +24,7 @@ public class GeneralAddCount : WeaponItemBase
     /// </summary>
     public override void ExecGetItem()
     {
+        base.ExecGetItem();
         var slot = GetSlot();
         if (weaponId == WeaponManager.ID.FireBall)
         {
@@ -53,5 +54,17 @@ public class GeneralAddCount : WeaponItemBase
         {
             slot.AsChildren().AddChild();
         }
+    }
+
+    /// <summary>
+    /// アイコン表示
+    /// </summary>
+    /// <param name="icon1"></param>
+    /// <param name="icon2"></param>
+    /// <param name="resource"></param>
+    public override void ShowTreasureIcon(Image icon1, Image icon2, UIIconManager resource)
+    {
+        ShowWeaponIcon(icon1, resource);
+        icon2.sprite = resource.spIconPlus;
     }
 }

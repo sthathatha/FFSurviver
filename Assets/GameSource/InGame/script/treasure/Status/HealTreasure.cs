@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using UnityEngine.UI;
 
 /// <summary>
 /// 回復
@@ -37,5 +37,17 @@ public class HealTreasure : TreasureItemBase
     {
         var plr = GameMainSystem.Instance.playerScript;
         plr.HealRate(0.5f);
+    }
+
+    /// <summary>
+    /// アイコン表示
+    /// </summary>
+    /// <param name="icon1"></param>
+    /// <param name="icon2"></param>
+    /// <param name="resource"></param>
+    public override void ShowTreasureIcon(Image icon1, Image icon2, UIIconManager resource)
+    {
+        icon1.sprite = resource.spHeal;
+        icon2.sprite = null;
     }
 }

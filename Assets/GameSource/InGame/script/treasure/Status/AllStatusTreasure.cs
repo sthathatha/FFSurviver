@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using static UnityEngine.InputManagerEntry;
+﻿using UnityEngine.UI;
 
 /// <summary>
 /// シェリフスター
@@ -50,6 +49,7 @@ public class AllStatusTreasure : TreasureItemBase
     /// </summary>
     public override void ExecGetItem()
     {
+        var plr = GameMainSystem.Instance.playerScript;
         var pprm = GameMainSystem.Instance.prm_Player;
 
         // コスト使用せずアップする
@@ -57,10 +57,24 @@ public class AllStatusTreasure : TreasureItemBase
         {
             pprm.stat_melee.PowerUp(true);
             pprm.stat_magic.PowerUp(true);
-            pprm.stat_maxHp.PowerUp(true);
+            var hpPlus = pprm.stat_maxHp.PowerUp(true);
             pprm.stat_speed.PowerUp(true);
             pprm.stat_jump.PowerUp(true);
+
+            plr.Heal(hpPlus);
         }
 
+    }
+
+    /// <summary>
+    /// アイコン表示
+    /// </summary>
+    /// <param name="icon1"></param>
+    /// <param name="icon2"></param>
+    /// <param name="resource"></param>
+    public override void ShowTreasureIcon(Image icon1, Image icon2, UIIconManager resource)
+    {
+        icon1.sprite = resource.spStar;
+        icon2.sprite = null;
     }
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using UnityEngine.UI;
 
 /// <summary>
 /// 武器新規入手系
@@ -69,5 +69,17 @@ public class NewWeaponItem : TreasureItemBase
             _ => "GameWeaponFireworks",
         };
         manager.LoadSubScene(sceneName, (int)weaponId);
+    }
+
+    /// <summary>
+    /// アイコン表示
+    /// </summary>
+    /// <param name="icon1"></param>
+    /// <param name="icon2"></param>
+    /// <param name="resource"></param>
+    public override void ShowTreasureIcon(Image icon1, Image icon2, UIIconManager resource)
+    {
+        icon1.sprite = resource.GetWeaponIcon(weaponId);
+        icon2.sprite = null;
     }
 }

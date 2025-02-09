@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using UnityEngine.UI;
 
 /// <summary>
 /// クールタイム全般
@@ -26,6 +26,7 @@ public class GeneralCoolTime : WeaponItemBase
     /// </summary>
     public override void ExecGetItem()
     {
+        base.ExecGetItem();
         var slot = GetSlot();
         if (weaponId == WeaponManager.ID.FireBall)
         {
@@ -51,5 +52,17 @@ public class GeneralCoolTime : WeaponItemBase
         {
             slot.AsWind().Prm_coolTime *= COOLTIME_RATE;
         }
+    }
+
+    /// <summary>
+    /// アイコン表示
+    /// </summary>
+    /// <param name="icon1"></param>
+    /// <param name="icon2"></param>
+    /// <param name="resource"></param>
+    public override void ShowTreasureIcon(Image icon1, Image icon2, UIIconManager resource)
+    {
+        ShowWeaponIcon(icon1, resource);
+        icon2.sprite = resource.spIconTimer;
     }
 }

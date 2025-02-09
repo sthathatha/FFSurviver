@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectParent: {fileID: 1157133700}
-  Prm_interval: 3
+  Prm_coolTime: 0.5
   template: {fileID: 1256497677}
 --- !u!1 &1157133700
 GameObject:

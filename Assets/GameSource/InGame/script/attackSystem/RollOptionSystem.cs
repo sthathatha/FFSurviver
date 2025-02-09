@@ -113,4 +113,15 @@ public class RollOptionSystem : GameWeaponSystemBase
             r += theta;
         }
     }
+
+    /// <summary>
+    /// サイズ変更を反映
+    /// </summary>
+    public void UpdateSize()
+    {
+        foreach (var atk in attacks)
+        {
+            atk.transform.localScale = new Vector3(Prm_attackSize, Prm_attackSize, Prm_attackSize);
+        }
+    }
 }
