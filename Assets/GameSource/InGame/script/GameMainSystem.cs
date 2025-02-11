@@ -284,12 +284,15 @@ public class GameMainSystem : MainScriptBase
     /// <returns></returns>
     public float GetEnemyRate()
     {
-        //todo:正式な敵の強さ計算
-        // 60秒間は固定
-        if (inGameTime <= 60f) return 1f;
+        const float b = 1f;
+        const float x = 50f;
+        const float y = 120f;
 
-        // 300秒で＋100％
-        return 1f + (inGameTime - 60f) / 300f;
+        // x秒間は固定
+        if (inGameTime <= x) return b;
+
+        // y秒で＋100％
+        return b + (inGameTime - x) / y;
     }
 
     /// <summary>
@@ -298,11 +301,14 @@ public class GameMainSystem : MainScriptBase
     /// <returns></returns>
     public float GetBossRate()
     {
-        // 300秒間は固定
-        if (inGameTime <= 300f) return 2f;
+        const float b = 3f;
+        const float x = 200f;
+        const float y = 100f;
+        // x秒間は固定
+        if (inGameTime <= x) return b;
 
-        // 500秒で＋100％
-        return 2f + (inGameTime - 300f) / 500f;
+        // x秒で＋100％
+        return b + (inGameTime - x) / y;
     }
 
     #endregion

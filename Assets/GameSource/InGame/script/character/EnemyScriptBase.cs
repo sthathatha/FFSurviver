@@ -1,41 +1,41 @@
-using NUnit.Framework;
+ï»¿using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// “GƒXƒNƒŠƒvƒg‹¤’Ê
+/// æ•µã‚¹ã‚¯ãƒªãƒ—ãƒˆå…±é€š
 /// </summary>
 public class EnemyScriptBase : CharacterScript
 {
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
-    /// <summary>Šî–{‘Ì—Í</summary>
+    /// <summary>åŸºæœ¬ä½“åŠ›</summary>
     public int hp_base = 1;
 
-    /// <summary>Å‘åHP</summary>
+    /// <summary>æœ€å¤§HP</summary>
     protected int hp_max;
 
-    /// <summary>ŒoŒ±’lŠî–{</summary>
+    /// <summary>çµŒé¨“å€¤åŸºæœ¬</summary>
     public int exp_base = 1;
 
-    /// <summary>‹­‚³ƒŒ[ƒg</summary>
+    /// <summary>å¼·ã•ãƒ¬ãƒ¼ãƒˆ</summary>
     protected float strength_rate = 1f;
 
     #endregion
 
-    #region Šî’ê
+    #region åŸºåº•
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator InitCharacter()
     {
         yield return base.InitCharacter();
 
-        // ƒQ[ƒ€ƒVƒXƒeƒ€‚©‚çƒXƒe[ƒ^ƒX”{—¦‚ğæ“¾
+        // ã‚²ãƒ¼ãƒ ã‚·ã‚¹ãƒ†ãƒ ã‹ã‚‰ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å€ç‡ã‚’å–å¾—
         strength_rate = IsBoss() ? GameMainSystem.Instance.GetBossRate() : GameMainSystem.Instance.GetEnemyRate();
         hp_max = Mathf.RoundToInt(hp_base * strength_rate);
         hp = hp_max;
@@ -45,21 +45,21 @@ public class EnemyScriptBase : CharacterScript
     }
 
     /// <summary>
-    /// XV
+    /// æ›´æ–°
     /// </summary>
     protected override void UpdateCharacter()
     {
         base.UpdateCharacter();
         if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
 
-        // —£‚ê‚·‚¬‚½
+        // é›¢ã‚Œã™ããŸæ™‚
         var pCenter = GameMainSystem.Instance.GetPlayerCenter();
         var distance = pCenter - transform.position;
         if (distance.sqrMagnitude > 10000f) TooFarPlayer(pCenter);
     }
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚©‚ç—£‚ê‚·‚¬‚½
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰é›¢ã‚Œã™ããŸæ™‚
     /// </summary>
     /// <param name="playerCenter"></param>
     protected virtual void TooFarPlayer(Vector3 playerCenter)
@@ -67,24 +67,23 @@ public class EnemyScriptBase : CharacterScript
     }
 
     /// <summary>
-    /// €–Sˆ—
+    /// æ­»äº¡æ™‚å‡¦ç†
     /// </summary>
     protected override void DamageDeath()
     {
         base.DamageDeath();
 
-        // ŒoŒ±’l‚ğæ“¾
-        //todo:ŒoŒ±’lŒvZ
-        var exp = Mathf.CeilToInt(Mathf.Pow(strength_rate, 0.8f) * exp_base);
+        // çµŒé¨“å€¤ã‚’å–å¾—
+        var exp = Mathf.RoundToInt(Mathf.Pow(strength_rate, 0.8f) * exp_base);
         GameMainSystem.Instance.AddExp(exp);
     }
 
     #endregion
 
-    #region ‘®«”»’è—p
+    #region å±æ€§åˆ¤å®šç”¨
 
     /// <summary>
-    /// ƒ{ƒX
+    /// ãƒœã‚¹
     /// </summary>
     /// <returns></returns>
     virtual protected bool IsBoss() { return false; }
