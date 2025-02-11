@@ -12,11 +12,29 @@ EditorBuildSettings:
     path: Assets/GameSource/Scenes/GameSceneMain.unity
     guid: 1195a02029da5d041a8e318312c14b8d
   - enabled: 1
+    path: Assets/GameSource/Scenes/TitleScene.unity
+    guid: ddf2a9b255e4e0044807e86d57b74b24
+  - enabled: 1
     path: Assets/GameSource/Scenes/weapon/GameSceneWeaponTest.unity
     guid: f5e7d85f3643cf0489699de9c7f665ae
   - enabled: 1
     path: Assets/GameSource/Scenes/character/GameSceneDrows.unity
     guid: 9d63d4388c691ab4499f0fdbdbd71727
+  - enabled: 1
+    path: Assets/GameSource/Scenes/character/GameSceneEraps.unity
+    guid: 1391de3e425853449847125279c847d0
+  - enabled: 1
+    path: Assets/GameSource/Scenes/character/GameSceneExa.unity
+    guid: a0993cec5bf62b04ba3aea59e32481f6
+  - enabled: 1
+    path: Assets/GameSource/Scenes/character/GameSceneWorra.unity
+    guid: 60805b021fffadc4abade299273d3fb4
+  - enabled: 1
+    path: Assets/GameSource/Scenes/character/GameSceneKoob.unity
+    guid: 0cbff528ea79a184b9a950c2335eb640
+  - enabled: 1
+    path: Assets/GameSource/Scenes/character/GameSceneYou.unity
+    guid: b20cea83ff9247545be221100d77bb04
   - enabled: 1
     path: Assets/GameSource/Scenes/field/GameSceneField01.unity
     guid: e276461ad1f04594ab541460ef759350

@@ -1,38 +1,38 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// ‰¡‚©‚ço‚Ä‚­‚éUI‚ÌŠî–{
+/// æ¨ªã‹ã‚‰å‡ºã¦ãã‚‹UIã®åŸºæœ¬
 /// </summary>
 public class AppearUIBase : MonoBehaviour
 {
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
-    /// <summary>‰B‚ê‚é‚ÌXÀ•W</summary>
+    /// <summary>éš ã‚Œã‚‹æ™‚ã®Xåº§æ¨™</summary>
     public float hide_X = 0f;
-    /// <summary>ƒAƒNƒeƒBƒuXÀ•W</summary>
+    /// <summary>ã‚¢ã‚¯ãƒ†ã‚£ãƒ–Xåº§æ¨™</summary>
     public float show_X = 100f;
-    /// <summary>•\¦ŠÔ</summary>
+    /// <summary>è¡¨ç¤ºæ™‚é–“</summary>
     public float show_time = 0.15f;
 
-    /// <summary>ˆÚ“®À•W</summary>
+    /// <summary>ç§»å‹•åº§æ¨™</summary>
     private DeltaFloat moveX;
 
-    /// <summary>u•\¦</summary>
+    /// <summary>ç¬æ™‚è¡¨ç¤º</summary>
     protected bool isImmediate;
 
-    /// <summary>‰Šú‰»ˆ—Ï‚İ</summary>
+    /// <summary>åˆæœŸåŒ–å‡¦ç†æ¸ˆã¿</summary>
     private bool isInitialized = false;
 
-    /// <summary>‰Ò“­’†</summary>
+    /// <summary>ç¨¼åƒä¸­</summary>
     public bool isActive { get; private set; } = false;
 
     #endregion
 
-    #region Šî’ê
+    #region åŸºåº•
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     private void Start()
     {
@@ -43,7 +43,7 @@ public class AppearUIBase : MonoBehaviour
     }
 
     /// <summary>
-    /// ‰Šú‰»ˆ—
+    /// åˆæœŸåŒ–å‡¦ç†
     /// </summary>
     private void Initialize()
     {
@@ -53,18 +53,18 @@ public class AppearUIBase : MonoBehaviour
     }
 
     /// <summary>
-    /// •K‚¸‚P‰ñ‚â‚é‰Šú‰»ˆ—
+    /// å¿…ãšï¼‘å›ã‚„ã‚‹åˆæœŸåŒ–å‡¦ç†
     /// </summary>
     virtual protected void InitStart() { }
 
     #endregion
 
-    #region §Œä
+    #region åˆ¶å¾¡
 
     /// <summary>
-    /// ŠJ‚­
+    /// é–‹ã
     /// </summary>
-    /// <param name="_immediate">‘¦ŠJ‚­</param>
+    /// <param name="_immediate">å³é–‹ã</param>
     /// <returns></returns>
     public IEnumerator Open(bool _immediate = false)
     {
@@ -72,10 +72,10 @@ public class AppearUIBase : MonoBehaviour
         var rect = GetComponent<RectTransform>();
         var basePos = rect.anchoredPosition;
 
-        // Å‰”ñ•\¦‚Ìê‡Start‚ª‘–‚Á‚Ä‚È‚¢ê‡‚ª‚ ‚é‚Ì‚Å
+        // æœ€åˆéè¡¨ç¤ºã®å ´åˆStartãŒèµ°ã£ã¦ãªã„å ´åˆãŒã‚ã‚‹ã®ã§
         if (!isInitialized)
         {
-            // Active‚Å‚È‚¢‚Æ‚Å‚«‚È‚¢‰Šú‰»ˆ—‚ª‚ ‚è‚¦‚é‚Ì‚ÅAÁ‚¦‚½êŠ‚Éİ’è‚µ‚Ä‹N“®ó‘Ô‚É‚µ‚Ä‚¨‚­
+            // Activeã§ãªã„ã¨ã§ããªã„åˆæœŸåŒ–å‡¦ç†ãŒã‚ã‚Šãˆã‚‹ã®ã§ã€æ¶ˆãˆãŸå ´æ‰€ã«è¨­å®šã—ã¦èµ·å‹•çŠ¶æ…‹ã«ã—ã¦ãŠã
             basePos.x = hide_X;
             rect.anchoredPosition = basePos;
             gameObject.SetActive(true);
@@ -85,18 +85,20 @@ public class AppearUIBase : MonoBehaviour
         }
 
         isActive = true;
+        isImmediate = _immediate;
 
         if (_immediate)
         {
-            // ‚·‚®o‚Ä‚­‚é
+            // ã™ãå‡ºã¦ãã‚‹
             basePos.x = show_X;
             rect.anchoredPosition = basePos;
+            InitOpen();
             gameObject.SetActive(true);
+            yield return null;
         }
         else
         {
-            // ˆÚ“®
-            isImmediate = _immediate;
+            // ç§»å‹•
             InitOpen();
             gameObject.SetActive(true);
 
@@ -116,7 +118,7 @@ public class AppearUIBase : MonoBehaviour
     }
 
     /// <summary>
-    /// ‰E‚Ö•Â‚¶‚é
+    /// å³ã¸é–‰ã˜ã‚‹
     /// </summary>
     /// <param name="_immediate"></param>
     /// <returns></returns>
@@ -128,13 +130,13 @@ public class AppearUIBase : MonoBehaviour
 
         if (_immediate)
         {
-            // ‚·‚®Á‚¦‚é
+            // ã™ãæ¶ˆãˆã‚‹
             basePos.x = hide_X;
             rect.anchoredPosition = basePos;
         }
         else
         {
-            // ˆÚ“®
+            // ç§»å‹•
             isImmediate = _immediate;
 
             moveX.Set(show_X);
@@ -154,12 +156,12 @@ public class AppearUIBase : MonoBehaviour
     }
 
     /// <summary>
-    /// ŠJ‚­‘O‚Ì•\¦XV
+    /// é–‹ãå‰ã®è¡¨ç¤ºæ›´æ–°
     /// </summary>
     virtual protected void InitOpen() { }
 
     /// <summary>
-    /// ŠJ‚«‚«‚Á‚½‚ ‚Æ‚ÌXVƒRƒ‹[ƒ`ƒ“
+    /// é–‹ããã£ãŸã‚ã¨ã®æ›´æ–°ã‚³ãƒ«ãƒ¼ãƒãƒ³
     /// </summary>
     /// <returns></returns>
     virtual protected IEnumerator UpdateMenu() { yield break; }

@@ -25,6 +25,7 @@ public class SimpleMoveAttack : AttackParameter
         deltaPos.Set(start);
         deltaPos.MoveTo(target, time, moveType);
 
+        transform.rotation = Quaternion.LookRotation(target - start, new Vector3(0, 1, 0));
         transform.position = deltaPos.Get();
         gameObject.SetActive(true);
         StartCoroutine(UpdateCoroutine());

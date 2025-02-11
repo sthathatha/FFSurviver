@@ -1,7 +1,7 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ’è”
+/// å®šæ•°
 /// </summary>
 public class GameConstant
 {
@@ -10,7 +10,7 @@ public class GameConstant
     public static readonly Color ButtonEnableColor = Color.white;
     public static readonly Color ButtonDisableColor = new(1, 0, 0, 0.5f);
 
-    /// <summary>ƒvƒŒƒCƒ„[ƒLƒƒƒ‰</summary>
+    /// <summary>ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚­ãƒ£ãƒ©</summary>
     public enum PlayerID
     {
         Drows = 0,
@@ -22,7 +22,7 @@ public class GameConstant
     }
 
     /// <summary>
-    /// TemporaryData‚©‚çƒvƒŒƒCƒ„[IDæ“¾
+    /// TemporaryDataã‹ã‚‰ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼IDå–å¾—
     /// </summary>
     /// <returns></returns>
     public static PlayerID GetTempPID()
@@ -31,9 +31,19 @@ public class GameConstant
         return (PlayerID)tmp.GetGeneralDataInt(DATA_PLAYERID);
     }
 
-    #region ‰Šú‰»ƒXƒe[ƒ^ƒX
+    /// <summary>
+    /// TemporaryDataã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼IDã‚»ãƒƒãƒˆ
+    /// </summary>
+    /// <param name="id"></param>
+    public static void SetTempPID(PlayerID id)
+    {
+        var tmp = GlobalData.GetTemporaryData();
+        tmp.SetGeneralData(DATA_PLAYERID, (int)id);
+    }
 
-    /// <summary>ƒXƒe[ƒ^ƒX1ŒÂ</summary>
+    #region åˆæœŸåŒ–ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+
+    /// <summary>ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹1å€‹</summary>
     public struct InitStatusOne
     {
         public int init;
@@ -50,7 +60,7 @@ public class GameConstant
         }
     }
 
-    /// <summary>‰Šú‰»ƒXƒe[ƒ^ƒX</summary>
+    /// <summary>åˆæœŸåŒ–ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹</summary>
     public struct InitStatus
     {
         public InitStatusOne melee;

@@ -113,8 +113,14 @@ public class GameMainSystem : MainScriptBase
         // 読み込み待ち
         yield return new WaitWhile(() => manager.IsLoadingSubScene());
 
-        //todo:キャラクター読み込み
-        manager.LoadSubScene("GameSceneDrows", 0, 0);
+        // キャラクター読み込み
+        var sel = GameConstant.GetTempPID();
+        if (sel == GameConstant.PlayerID.Drows) manager.LoadSubScene("GameSceneDrows", 0, 0);
+        else if (sel == GameConstant.PlayerID.Eraps) manager.LoadSubScene("GameSceneEraps", 0, 0);
+        else if (sel == GameConstant.PlayerID.Exa) manager.LoadSubScene("GameSceneExa", 0, 0);
+        else if (sel == GameConstant.PlayerID.Worra) manager.LoadSubScene("GameSceneWorra", 0, 0);
+        else if (sel == GameConstant.PlayerID.Koob) manager.LoadSubScene("GameSceneKoob", 0, 0);
+        else manager.LoadSubScene("GameSceneYou", 0, 0);
         // 読み込み待ち
         yield return new WaitWhile(() => manager.IsLoadingSubScene());
     }
@@ -161,18 +167,18 @@ public class GameMainSystem : MainScriptBase
     /// <returns></returns>
     private IEnumerator UpdateCoroutine()
     {
-        var origin = ManagerSceneScript.GetInstance().GetComponent<OriginManager>();
+        var origin = OriginManager.Instance;
 
-        while (true)
+        while (playerScript.gameObject.activeInHierarchy)
         {
-            yield return null;
             inGameTime += origin.inGameDeltaTime;
 
             RefreshFieldCell();
+            yield return null;
         }
 
-        //state = GameState.Exiting;
-        //todo:ゲーム終了
+        var manager = ManagerSceneScript.GetInstance();
+        ManagerSceneScript.GetInstance().LoadMainScene("TitleScene", 0);
     }
     #endregion
 
@@ -258,6 +264,10 @@ public class GameMainSystem : MainScriptBase
 
     #region 取得系
 
+    /// <summary>
+    /// プレイヤーの中心座標
+    /// </summary>
+    /// <returns></returns>
     public Vector3 GetPlayerCenter()
     {
         if (playerScript)

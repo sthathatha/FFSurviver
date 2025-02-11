@@ -1,33 +1,33 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// ƒIƒvƒVƒ‡ƒ“‰æ–Ê
+/// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ç”»é¢
 /// </summary>
 public class OptionUI : AppearUIBase
 {
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
     /// <summary>BGM</summary>
     public Slider bgmSlider;
     /// <summary>SE</summary>
     public Slider seSlider;
 
-    /// <summary>BGMƒJ[ƒ\ƒ‹</summary>
+    /// <summary>BGMã‚«ãƒ¼ã‚½ãƒ«</summary>
     public GameObject bgmCursor;
-    /// <summary>SEƒJ[ƒ\ƒ‹</summary>
+    /// <summary>SEã‚«ãƒ¼ã‚½ãƒ«</summary>
     public GameObject seCursor;
 
-    /// <summary>‘I‘ğˆ</summary>
+    /// <summary>é¸æŠè‚¢</summary>
     private LineSelectList<int> commands;
 
     #endregion
 
-    #region ˆ—
+    #region å‡¦ç†
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     protected override void InitStart()
     {
@@ -37,11 +37,19 @@ public class OptionUI : AppearUIBase
     }
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     protected override void InitOpen()
     {
         base.InitOpen();
+        // ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã§ã¯ä¸­å¤®
+        if (isImmediate)
+        {
+            var rect = GetComponent<RectTransform>();
+            var p = rect.anchoredPosition;
+            p.x = 0;
+            rect.anchoredPosition = p;
+        }
 
         var save = GlobalData.GetSaveData();
         bgmSlider.value = save.system.bgmVolume;
@@ -52,7 +60,7 @@ public class OptionUI : AppearUIBase
     }
 
     /// <summary>
-    /// XV
+    /// æ›´æ–°
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator UpdateMenu()
@@ -64,7 +72,7 @@ public class OptionUI : AppearUIBase
             if (GameInput.IsPress(GameInput.Buttons.MenuOK) ||
                 GameInput.IsPress(GameInput.Buttons.MenuCancel))
             {
-                // Œˆ’è
+                // æ±ºå®š
                 save.SaveSystemData();
 
                 break;
@@ -109,7 +117,7 @@ public class OptionUI : AppearUIBase
     }
 
     /// <summary>
-    /// ƒJ[ƒ\ƒ‹•\¦XV
+    /// ã‚«ãƒ¼ã‚½ãƒ«è¡¨ç¤ºæ›´æ–°
     /// </summary>
     private void UpdateCursor()
     {

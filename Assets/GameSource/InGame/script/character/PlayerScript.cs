@@ -32,6 +32,8 @@ public class PlayerScript : CharacterScript
         Jump,
         /// <summary>ダメージ</summary>
         Damage,
+        /// <summary>死亡処理</summary>
+        Death,
     }
     public PlayerState state { get; private set; }
 
@@ -84,7 +86,10 @@ public class PlayerScript : CharacterScript
     protected override void UpdateCharacter()
     {
         base.UpdateCharacter();
-        if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
+        if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active)
+            return;
+        if (state == PlayerState.Death)
+            return;
 
         // メニュー処理中は下の処理をしない
         if (!MenuControl()) return;
@@ -104,7 +109,10 @@ public class PlayerScript : CharacterScript
     protected override void UpdateCharacter2()
     {
         base.UpdateCharacter2();
-        if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
+        if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active)
+            return;
+        if (state == PlayerState.Death)
+            return;
         CameraControl();
     }
 
@@ -176,13 +184,24 @@ public class PlayerScript : CharacterScript
     public static bool GroundSearch(Vector3 nowPos, float threathold, Ray useRay, out GameGround hitGround, out RaycastHit hitInfo)
     {
         hitGround = null;
+        var layer = LayerMask.GetMask(new string[] { "Ground" });
+
+        // 0.fは必ず地面扱いにする
+        if (nowPos.y < 0f)
+        {
+            // 固定座標で設定
+            hitGround = null;
+            hitInfo = new RaycastHit();
+            hitInfo.point = new Vector3(nowPos.x, 0f, nowPos.z);
+
+            return true;
+        }
 
         // Ray更新
         if (threathold < 0.2f) threathold = 0.2f;
         useRay.origin = nowPos + new Vector3(0, threathold, 0);
 
         // 検索
-        var layer = LayerMask.GetMask(new string[] { "Ground" });
         var groundHit = Physics.Raycast(useRay,
             out hitInfo,
             STAND_DISTANCE + threathold,
@@ -322,7 +341,6 @@ public class PlayerScript : CharacterScript
         }
     }
 
-
     #endregion
 
     #region 移動操作
@@ -420,7 +438,45 @@ public class PlayerScript : CharacterScript
     {
         base.DamageDeath();
 
-        //todo:ゲームオーバー処理
+        // ゲームオーバー処理
+        state = PlayerState.Death;
+        StartCoroutine(DeathCoroutine());
+    }
+
+    /// <summary>
+    /// 死亡処理コルーチン
+    /// </summary>
+    /// <returns></returns>
+    protected IEnumerator DeathCoroutine()
+    {
+        // 水平停止
+        rigid.linearVelocity = Vector3.zero;
+
+        var y = new DeltaFloat();
+        y.Set(transform.position.y);
+        y.MoveTo(transform.position.y + 10f, 0.7f, DeltaFloat.MoveType.DECEL);
+        // はねて下まで落ちる
+        while (y.IsActive())
+        {
+            yield return null;
+            y.Update();
+            var p = transform.position;
+            p.y = y.Get();
+            transform.position = p;
+        }
+
+        y.MoveTo(-5f, 1f, DeltaFloat.MoveType.ACCEL);
+        while (y.IsActive())
+        {
+            yield return null;
+            y.Update();
+            var p = transform.position;
+            p.y = y.Get();
+            transform.position = p;
+        }
+
+        // 閉じる
+        gameObject.SetActive(false);
     }
 
     #endregion

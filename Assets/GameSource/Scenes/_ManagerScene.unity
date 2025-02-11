@@ -407,7 +407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5448049876748378092, guid: 67c3d74caa46d9e4a98a9090d03ed3a5, type: 3}
       propertyPath: init_scene
-      value: GameSceneMain
+      value: TitleScene
       objectReference: {fileID: 0}
     - target: {fileID: 5448049876748378092, guid: 67c3d74caa46d9e4a98a9090d03ed3a5, type: 3}
       propertyPath: camera_is_2d
