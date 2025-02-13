@@ -507,12 +507,21 @@ public class PlayerScript : CharacterScript
         var stick = noInput ? Vector2.zero : GameInput.GetRightStick();
 
         var cam = ManagerSceneScript.GetInstance().GetCamera3D();
+        cam.SetTargetPos(GetComponent<Collider>().bounds.center);
 
-        cam.SetTargetPos(transform.position + new Vector3(0, 0.6f, 0));
-        if (Mathf.Abs(stick.x) > 0.1f)
-            cam.SetRotateLR(stick.x);
-        if (Mathf.Abs(stick.y) > 0.1f)
-            cam.SetRotateUD(stick.y);
+        // カメラリセット
+        if (GameInput.IsPress(GameInput.Buttons.CameraReset))
+        {
+            var resetDir = transform.rotation * new Vector3(0, -0.15f, 1);
+            cam.SetRotateTime(resetDir, 0.2f);
+        }
+        else
+        {
+            if (Mathf.Abs(stick.x) > 0.1f)
+                cam.SetRotateLR(stick.x);
+            if (Mathf.Abs(stick.y) > 0.1f)
+                cam.SetRotateUD(stick.y);
+        }
 
     }
 

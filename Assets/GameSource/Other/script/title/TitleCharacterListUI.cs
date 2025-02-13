@@ -45,6 +45,9 @@ public class TitleCharacterListUI : MonoBehaviour
         result = Result.Cancel;
         yield return null;
 
+        var manager = ManagerSceneScript.GetInstance();
+        var sound = manager.soundManager;
+
         while (true)
         {
             if (GameInput.IsPress(GameInput.Buttons.MenuOK))
@@ -70,11 +73,13 @@ public class TitleCharacterListUI : MonoBehaviour
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuRight))
             {
+                sound.PlaySE(sound.commonSeMove);
                 itemList.MoveNext();
                 UpdateCursor();
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuLeft))
             {
+                sound.PlaySE(sound.commonSeMove);
                 itemList.MoveBefore();
                 UpdateCursor();
             }

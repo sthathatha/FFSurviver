@@ -18,6 +18,7 @@ public class GameInput
         MenuDown,
         MenuRight,
         MenuLeft,
+        CameraReset,
     }
 
     /// <summary>
@@ -65,6 +66,9 @@ public class GameInput
                 return keyboard?.leftArrowKey.wasPressedThisFrame == true ||
                     gamepad?.dpad.left.wasPressedThisFrame == true ||
                     gamepad?.leftStick.left.wasPressedThisFrame == true;
+            case Buttons.CameraReset:
+                return keyboard?.endKey.wasPressedThisFrame == true ||
+                    gamepad?.leftTrigger.wasPressedThisFrame == true;
         }
 
         return false;

@@ -1,14 +1,14 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
 /// <summary>
-/// ƒXƒe[ƒ^ƒX‰æ–Ê
+/// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢
 /// </summary>
 public class UIStatusWindow : AppearUIBase
 {
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
     public UIStatusMaterial itemMelee;
     public UIStatusMaterial itemMagic;
@@ -19,7 +19,7 @@ public class UIStatusWindow : AppearUIBase
     private LineSelectList<UIStatusMaterial> itemList;
 
     /// <summary>
-    /// €–Ú”Ô†
+    /// é …ç›®ç•ªå·
     /// </summary>
     private enum ItemIndex
     {
@@ -32,10 +32,10 @@ public class UIStatusWindow : AppearUIBase
 
     #endregion
 
-    #region ‰Šú‰»
+    #region åˆæœŸåŒ–
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     protected override void InitStart()
     {
@@ -46,13 +46,13 @@ public class UIStatusWindow : AppearUIBase
     }
 
     /// <summary>
-    /// •\¦’¼‘O‰Šú‰»
+    /// è¡¨ç¤ºç›´å‰åˆæœŸåŒ–
     /// </summary>
     protected override void InitOpen()
     {
         base.InitOpen();
 
-        // Œ»İ‚Ì’lƒZƒbƒg
+        // ç¾åœ¨ã®å€¤ã‚»ãƒƒãƒˆ
         UpdateValue();
 
         itemList.MoveReset();
@@ -62,19 +62,20 @@ public class UIStatusWindow : AppearUIBase
     #endregion
 
     /// <summary>
-    /// XVˆ—
+    /// æ›´æ–°å‡¦ç†
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator UpdateMenu()
     {
         yield return base.UpdateMenu();
+        var sound = ManagerSceneScript.GetInstance().soundManager;
 
         while (true)
         {
             var main = GameMainSystem.Instance;
             if (GameInput.IsPress(GameInput.Buttons.MenuOK))
             {
-                // ƒRƒXƒg‘«‚è‚Ä‚¢‚ê‚Î‹­‰»
+                // ã‚³ã‚¹ãƒˆè¶³ã‚Šã¦ã„ã‚Œã°å¼·åŒ–
                 var pp = main.prm_Player;
                 var game = main.prm_Game;
                 var pwAct = new Action<UIStatusMaterial, PlayerParameter.Status>((item, stat) =>
@@ -86,15 +87,17 @@ public class UIStatusWindow : AppearUIBase
                         var up = stat.PowerUp();
                         if (itemList.selectIndex == 2)
                         {
-                            // HP‚Ìê‡Œ»İ’l‚à‰ñ•œ
+                            // HPã®å ´åˆç¾åœ¨å€¤ã‚‚å›å¾©
                             main.playerScript.Heal(up);
                         }
 
                         UpdateValue();
+                        sound.PlaySE(sound.commonSeSelect);
                     }
                     else
                     {
-                        //todo:ƒGƒ‰[‰¹
+                        // ã‚¨ãƒ©ãƒ¼éŸ³
+                        sound.PlaySE(sound.commonSeError);
                     }
                 });
                 if (itemList.selectIndex == 0)
@@ -110,15 +113,18 @@ public class UIStatusWindow : AppearUIBase
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuCancel))
             {
+                sound.PlaySE(sound.commonSeCancel);
                 break;
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuUp))
             {
+                sound.PlaySE(sound.commonSeMove);
                 itemList.MoveBefore();
                 UpdateCursor();
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuDown))
             {
+                sound.PlaySE(sound.commonSeMove);
                 itemList.MoveNext();
                 UpdateCursor();
             }
@@ -129,10 +135,10 @@ public class UIStatusWindow : AppearUIBase
         yield return Close();
     }
 
-    #region ‚»‚Ì‘¼ƒƒ\ƒbƒh
+    #region ãã®ä»–ãƒ¡ã‚½ãƒƒãƒ‰
 
     /// <summary>
-    /// Œ»İ‚Ì’l‚ÉXV
+    /// ç¾åœ¨ã®å€¤ã«æ›´æ–°
     /// </summary>
     private void UpdateValue()
     {
@@ -154,7 +160,7 @@ public class UIStatusWindow : AppearUIBase
     }
 
     /// <summary>
-    /// ƒJ[ƒ\ƒ‹•\¦XV
+    /// ã‚«ãƒ¼ã‚½ãƒ«è¡¨ç¤ºæ›´æ–°
     /// </summary>
     private void UpdateCursor()
     {

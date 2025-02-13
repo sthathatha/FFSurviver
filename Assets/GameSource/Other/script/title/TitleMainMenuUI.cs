@@ -12,6 +12,8 @@ public class TitleMainMenuUI : MonoBehaviour
 
     public TitleCharacterListUI charaUI;
 
+    public AudioClip seGameStart;
+
     private LineSelectList<UIMaterialBase> itemList;
 
     /// <summary>
@@ -33,22 +35,28 @@ public class TitleMainMenuUI : MonoBehaviour
     /// <returns></returns>
     private IEnumerator UpdateCoroutine()
     {
+        var manager = ManagerSceneScript.GetInstance();
+        var sound = manager.soundManager;
+
         while (true)
         {
             if (GameInput.IsPress(GameInput.Buttons.MenuOK))
             {
                 itemList.GetSelectItem().Cursor_Stop();
+                sound.PlaySE(sound.commonSeSelect);
                 if (itemList.selectIndex == 0)
                 {
                     yield return charaUI.Open();
                     if (charaUI.result != TitleCharacterListUI.Result.Cancel)
                     {
                         // 選択したキャラでゲーム開始
-                        ManagerSceneScript.GetInstance().LoadMainScene("GameSceneMain", 0);
+                        sound.PlaySE(seGameStart);
+                        manager.LoadMainScene("GameSceneMain", 0);
                         yield break;
                     }
 
                     // キャンセルならそのまま
+                    sound.PlaySE(sound.commonSeCancel);
                 }
                 else
                 {
@@ -61,11 +69,13 @@ public class TitleMainMenuUI : MonoBehaviour
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuUp))
             {
+                sound.PlaySE(sound.commonSeMove);
                 itemList.MoveBefore();
                 UpdateCursor();
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuDown))
             {
+                sound.PlaySE(sound.commonSeMove);
                 itemList.MoveNext();
                 UpdateCursor();
             }

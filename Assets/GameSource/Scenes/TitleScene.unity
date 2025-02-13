@@ -831,6 +831,7 @@ MonoBehaviour:
   itemStart: {fileID: 1604722215}
   itemOption: {fileID: 289050945}
   charaUI: {fileID: 449056332}
+  seGameStart: {fileID: 8300000, guid: 08a878aaba4d50f419398a8e7512c8ae, type: 3}
 --- !u!1 &441660496
 GameObject:
   m_ObjectHideFlags: 0

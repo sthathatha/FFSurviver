@@ -130,8 +130,12 @@ public class GameMainSystem : MainScriptBase
         prm_Player.Init();
 
         waterFieldNum = Util.RandomInt(0, WATER_FIELD_INTERVAL - 1);
+        isStandingBase = true;
 
         UpdateExpUI();
+
+        // カメラリセット
+        manager.GetCamera3D().SetRotateTime(new Vector3(0, -0.15f, 1f));
 
         // 初期配置フィールド読み込み
         RefreshFieldCell(true);

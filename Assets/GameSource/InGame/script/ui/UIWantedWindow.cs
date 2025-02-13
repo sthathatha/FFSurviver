@@ -63,21 +63,25 @@ public class UIWantedWindow : AppearUIBase
     protected override IEnumerator UpdateMenu()
     {
         yield return base.UpdateMenu();
+        var sound = ManagerSceneScript.GetInstance().soundManager;
 
         while (true)
         {
             if (GameInput.IsPress(GameInput.Buttons.MenuRight))
             {
+                sound.PlaySE(sound.commonSeMove);
                 wantedList.MoveNext();
                 UpdateCursor();
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuLeft))
             {
+                sound.PlaySE(sound.commonSeMove);
                 wantedList.MoveBefore();
                 UpdateCursor();
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuCancel))
             {
+                sound.PlaySE(sound.commonSeCancel);
                 break;
             }
 

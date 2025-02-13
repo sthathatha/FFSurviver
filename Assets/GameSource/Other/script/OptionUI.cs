@@ -66,6 +66,7 @@ public class OptionUI : AppearUIBase
     protected override IEnumerator UpdateMenu()
     {
         var save = GlobalData.GetSaveData();
+        var sound = ManagerSceneScript.GetInstance().soundManager;
 
         while (true)
         {
@@ -74,6 +75,7 @@ public class OptionUI : AppearUIBase
             {
                 // 決定
                 save.SaveSystemData();
+                sound.PlaySE(sound.commonSeSelect);
 
                 break;
             }
@@ -82,6 +84,7 @@ public class OptionUI : AppearUIBase
                 if (GameInput.IsPress(GameInput.Buttons.MenuUp) ||
                     GameInput.IsPress(GameInput.Buttons.MenuDown))
                 {
+                    sound.PlaySE(sound.commonSeMove);
                     commands.MoveNext();
                     UpdateCursor();
                 }
@@ -97,6 +100,7 @@ public class OptionUI : AppearUIBase
 
                         bgmSlider.value = save.system.bgmVolume;
                         ManagerSceneScript.GetInstance().soundManager.UpdateBgmVolume();
+                        sound.PlaySE(sound.commonSeMove);
                     }
                     else
                     {
@@ -106,6 +110,7 @@ public class OptionUI : AppearUIBase
 
                         seSlider.value = save.system.seVolume;
                         ManagerSceneScript.GetInstance().soundManager.UpdateSeVolume();
+                        sound.PlaySE(sound.commonSeMove);
                     }
                 }
             }

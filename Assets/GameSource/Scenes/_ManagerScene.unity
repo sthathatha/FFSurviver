@@ -389,6 +389,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1688525826170011552, guid: 67c3d74caa46d9e4a98a9090d03ed3a5, type: 3}
+      propertyPath: commonSeMove
+      value: 
+      objectReference: {fileID: 8300000, guid: 47b7a68c09946864992a364c554e1f24, type: 3}
+    - target: {fileID: 1688525826170011552, guid: 67c3d74caa46d9e4a98a9090d03ed3a5, type: 3}
+      propertyPath: commonSeError
+      value: 
+      objectReference: {fileID: 8300000, guid: 7c538b082187c4c4eb4c318a48d178a2, type: 3}
+    - target: {fileID: 1688525826170011552, guid: 67c3d74caa46d9e4a98a9090d03ed3a5, type: 3}
+      propertyPath: commonSeCancel
+      value: 
+      objectReference: {fileID: 8300000, guid: c33fb72511180b14e83745d02289571b, type: 3}
+    - target: {fileID: 1688525826170011552, guid: 67c3d74caa46d9e4a98a9090d03ed3a5, type: 3}
+      propertyPath: commonSeSelect
+      value: 
+      objectReference: {fileID: 8300000, guid: 18100e82d9dfc7c41a2cbeaf2167625a, type: 3}
     - target: {fileID: 1898215446349702483, guid: 67c3d74caa46d9e4a98a9090d03ed3a5, type: 3}
       propertyPath: orthographic
       value: 0

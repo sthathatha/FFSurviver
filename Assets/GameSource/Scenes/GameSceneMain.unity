@@ -6415,6 +6415,7 @@ MonoBehaviour:
   cursor: {fileID: 1353989024}
   txtCost: {fileID: 691220780}
   btnGet: {fileID: 355711082}
+  se_open: {fileID: 8300000, guid: dfba195ea404a484080d218fd9ef3ebe, type: 3}
 --- !u!1 &820830246
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,13 +1,13 @@
-using System.Collections;
+ï»¿using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
-/// ƒƒCƒ“ƒRƒ}ƒ“ƒh
+/// ãƒ¡ã‚¤ãƒ³ã‚³ãƒãƒ³ãƒ‰
 /// </summary>
 public class UIMainCommand : AppearUIBase
 {
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
     public UIStatusWindow statusWindow;
     public UIWeaponList weaponList;
@@ -34,7 +34,7 @@ public class UIMainCommand : AppearUIBase
     #endregion
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     protected override void InitStart()
     {
@@ -51,7 +51,7 @@ public class UIMainCommand : AppearUIBase
     }
 
     /// <summary>
-    /// ŠJ‚­’¼‘O
+    /// é–‹ãç›´å‰
     /// </summary>
     protected override void InitOpen()
     {
@@ -62,56 +62,62 @@ public class UIMainCommand : AppearUIBase
     }
 
     /// <summary>
-    /// XV
+    /// æ›´æ–°
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator UpdateMenu()
     {
         yield return base.UpdateMenu();
-        var manager = ManagerSceneScript.GetInstance().GetComponent<OriginManager>();
+        var origin = OriginManager.Instance;
+        var manager = ManagerSceneScript.GetInstance();
+        var sound = manager.soundManager;
 
         while (true)
         {
             if (GameInput.IsPress(GameInput.Buttons.MenuDown))
             {
+                sound.PlaySE(sound.commonSeMove);
                 commands.MoveNext();
                 UpdateCursor();
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuUp))
             {
+                sound.PlaySE(sound.commonSeMove);
                 commands.MoveBefore();
                 UpdateCursor();
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuCancel))
             {
+                sound.PlaySE(sound.commonSeCancel);
                 break;
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuOK))
             {
-                // ƒRƒ}ƒ“ƒhŒˆ’è
+                sound.PlaySE(sound.commonSeSelect);
+                // ã‚³ãƒãƒ³ãƒ‰æ±ºå®š
                 if (commands.GetSelectItem() == MainCommand.Status)
                 {
                     itemStatus.Cursor_Stop();
-                    // ƒXƒe[ƒ^ƒX
+                    // ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
                     yield return statusWindow.Open();
                     yield return new WaitWhile(() => statusWindow.isActive);
                 }
                 else if (commands.GetSelectItem() == MainCommand.Weapon)
                 {
                     itemWeapon.Cursor_Stop();
-                    // •Ší
+                    // æ­¦å™¨
                     yield return weaponList.Open();
                     yield return new WaitWhile(() => weaponList.isActive);
                 }
                 else if (commands.GetSelectItem() == MainCommand.Lottery)
                 {
                     itemLottery.Cursor_Stop();
-                    // ƒƒgƒŠ[
+                    // ãƒ­ãƒˆãƒªãƒ¼
                     yield return lotteryWindow.Open();
                     yield return new WaitWhile(() => lotteryWindow.isActive);
                     if (lotteryWindow.isGetLottery)
                     {
-                        // ˆø‚­
+                        // å¼•ã
                         yield return lotteryResult.Open();
                         yield return new WaitWhile(() => lotteryResult.isActive);
                     }
@@ -119,16 +125,16 @@ public class UIMainCommand : AppearUIBase
                 else if (commands.GetSelectItem() == MainCommand.Wanted)
                 {
                     itemWanted.Cursor_Stop();
-                    // ‚¨q‚ËÒ
+                    // ãŠå°‹ã­è€…
                     yield return wantedWindow.Open();
                     yield return new WaitWhile(() => wantedWindow.isActive);
                 }
                 else
                 {
                     itemOption.Cursor_Stop();
-                    // ƒIƒvƒVƒ‡ƒ“
-                    yield return manager.optionUI.Open();
-                    yield return new WaitWhile(() => manager.optionUI.isActive);
+                    // ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+                    yield return origin.optionUI.Open();
+                    yield return new WaitWhile(() => origin.optionUI.isActive);
                 }
 
                 UpdateCursor();
@@ -137,12 +143,12 @@ public class UIMainCommand : AppearUIBase
             yield return null;
         }
 
-        // •Â‚¶‚é
+        // é–‰ã˜ã‚‹
         yield return Close();
     }
 
     /// <summary>
-    /// ƒJ[ƒ\ƒ‹•\¦XV
+    /// ã‚«ãƒ¼ã‚½ãƒ«è¡¨ç¤ºæ›´æ–°
     /// </summary>
     private void UpdateCursor()
     {

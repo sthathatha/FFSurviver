@@ -1,28 +1,29 @@
-using System.Collections;
+ï»¿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// ƒƒgƒŠ[
+/// ãƒ­ãƒˆãƒªãƒ¼
 /// </summary>
 public class UILotteryWindow : AppearUIBase
 {
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
     public RuntimeAnimatorController cursor;
     public TMP_Text txtCost;
     public Image btnGet;
+    public AudioClip se_open;
 
-    /// <summary>ˆø‚­</summary>
+    /// <summary>å¼•ã</summary>
     public bool isGetLottery { get; private set; }
 
     #endregion
 
-    #region ‰Šú‰»
+    #region åˆæœŸåŒ–
 
     /// <summary>
-    /// •\¦’¼‘O‰Šú‰»
+    /// è¡¨ç¤ºç›´å‰åˆæœŸåŒ–
     /// </summary>
     protected override void InitOpen()
     {
@@ -30,7 +31,7 @@ public class UILotteryWindow : AppearUIBase
         isGetLottery = false;
         var game = GameMainSystem.Instance.prm_Game;
 
-        // ƒRƒXƒg•\¦
+        // ã‚³ã‚¹ãƒˆè¡¨ç¤º
         txtCost.SetText(game.LotteryCost.ToString());
         if (game.Exp >= game.LotteryCost)
             btnGet.color = GameConstant.ButtonEnableColor;
@@ -41,7 +42,7 @@ public class UILotteryWindow : AppearUIBase
     #endregion
 
     /// <summary>
-    /// ˆ—
+    /// å‡¦ç†
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator UpdateMenu()
@@ -49,14 +50,16 @@ public class UILotteryWindow : AppearUIBase
         yield return base.UpdateMenu();
         var game = GameMainSystem.Instance.prm_Game;
         //var expUI = GameMainSystem.Instance.txt_exp
+        var sound = ManagerSceneScript.GetInstance().soundManager;
 
         while (true)
         {
             if (GameInput.IsPress(GameInput.Buttons.MenuOK))
             {
-                // ƒRƒXƒg‘«‚è‚Ä‚¢‚ê‚Îˆø‚­
+                // ã‚³ã‚¹ãƒˆè¶³ã‚Šã¦ã„ã‚Œã°å¼•ã
                 if (game.Exp >= game.LotteryCost)
                 {
+                    sound.PlaySE(se_open);
                     game.Exp -= game.LotteryCost;
                     GameMainSystem.Instance.UpdateExpUI();
                     game.LotteryCostUp();
@@ -64,9 +67,14 @@ public class UILotteryWindow : AppearUIBase
                     isGetLottery = true;
                     break;
                 }
+                else
+                {
+                    sound.PlaySE(sound.commonSeError);
+                }
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuCancel))
             {
+                sound.PlaySE(sound.commonSeCancel);
                 break;
             }
 

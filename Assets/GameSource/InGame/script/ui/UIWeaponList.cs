@@ -52,11 +52,13 @@ public class UIWeaponList : AppearUIBase
     protected override IEnumerator UpdateMenu()
     {
         yield return base.UpdateMenu();
+        var sound = ManagerSceneScript.GetInstance().soundManager;
 
         while (true)
         {
             if (GameInput.IsPress(GameInput.Buttons.MenuCancel))
             {
+                sound.PlaySE(sound.commonSeCancel);
                 break;
             }
 

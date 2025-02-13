@@ -56,7 +56,7 @@ public class PlayerParameter
             }
             else if (!_noCount)
             {
-                // todo:コスト増加計算
+                // コスト増加計算
                 cost += costBase;
             }
 

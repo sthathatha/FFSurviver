@@ -72,22 +72,26 @@ public class UILotteryResult : AppearUIBase
     protected override IEnumerator UpdateMenu()
     {
         yield return base.UpdateMenu();
+        var sound = ManagerSceneScript.GetInstance().soundManager;
 
         while (true)
         {
             if (GameInput.IsPress(GameInput.Buttons.MenuRight))
             {
+                sound.PlaySE(sound.commonSeMove);
                 resultList.MoveNext();
                 UpdateCursor();
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuLeft))
             {
+                sound.PlaySE(sound.commonSeMove);
                 resultList.MoveBefore();
                 UpdateCursor();
             }
             else if (GameInput.IsPress(GameInput.Buttons.MenuOK))
             {
                 // 選択
+                sound.PlaySE(sound.commonSeSelect);
                 treasureList[resultList.selectIndex].ExecGetItem();
                 break;
             }
