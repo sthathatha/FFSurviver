@@ -148,7 +148,6 @@ public class PlayerScript : CharacterScript
     private void AttackControl()
     {
         var main = GameMainSystem.Instance;
-        var tmpData = GlobalData.GetTemporaryData();
         var game = main.prm_Game;
         var pprm = main.prm_Player;
         var center = GetComponent<Collider>().bounds.center;
@@ -160,8 +159,21 @@ public class PlayerScript : CharacterScript
         if (GameInput.IsPress(GameInput.Buttons.NormalAttack)
             && (state != PlayerState.Damage))
         {
+            // ウーラの場合敵を検索
+            if (GameConstant.GetTempPID() == GameConstant.PlayerID.Worra)
+            {
+                const float r = 3f;
+                const float dist = 10f;
+                var enemyMask = LayerMask.GetMask("Enemy");
+                if (Physics.SphereCast(center, r, direction, out RaycastHit hInfo, dist, enemyMask))
+                {
+                    // 見つけたらそっちに撃つ
+                    direction = hInfo.collider.bounds.center - center;
+                }
+            }
+
             var na = Instantiate(normal_attack, main.attackParent);
-            if (tmpData.GetGeneralDataInt(GameConstant.DATA_PLAYERID, 0) == (int)GameConstant.PlayerID.Koob)
+            if (GameConstant.GetTempPID() == GameConstant.PlayerID.Koob)
                 na.SetAttackRate(pprm.stat_magic.value);
             else
                 na.SetAttackRate(pprm.stat_melee.value);

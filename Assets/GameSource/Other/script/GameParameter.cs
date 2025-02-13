@@ -40,8 +40,8 @@ public class GameParameter
         Defeated_Boss3 = false;
         Defeated_Boss4 = false;
         Defeated_Boss5 = false;
-        LotteryCost = 20;
         lotteryCount = 0;
+        LotteryCostUp();
     }
 
     /// <summary>
@@ -52,6 +52,6 @@ public class GameParameter
         ++lotteryCount;
 
         // コストアップ計算
-        LotteryCost = 10 + Mathf.RoundToInt(Mathf.Pow(lotteryCount, 1.2f) * 10);
+        LotteryCost = Mathf.RoundToInt(18.79f * Mathf.Pow(2.71828f, 0.0624f * lotteryCount));
     }
 }

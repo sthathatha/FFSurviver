@@ -1,14 +1,14 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ƒtƒB[ƒ‹ƒhŒvZŒnƒƒ\ƒbƒh
+/// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰è¨ˆç®—ç³»ãƒ¡ã‚½ãƒƒãƒ‰
 /// </summary>
 public class FieldUtil
 {
-    /// <summary>ƒtƒB[ƒ‹ƒh‚Ì”¼ŒaƒTƒCƒY</summary>
-    public const float FIELD_CELL_R = 5f;
+    /// <summary>ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®åŠå¾„ã‚µã‚¤ã‚º</summary>
+    public const float FIELD_CELL_R = 500f;
 
     private static readonly Vector2Int NORMAL_RIGHT = new Vector2Int(1, 0);
     private static readonly Vector2Int NORMAL_RIGHTUP = new Vector2Int(1, 1);
@@ -18,7 +18,7 @@ public class FieldUtil
     private static readonly Vector2Int NORMAL_LEFTDOWN = new Vector2Int(-1, -1);
 
     /// <summary>
-    /// ƒtƒB[ƒ‹ƒhÀ•W‚©‚çƒ[ƒ‹ƒhÀ•W‚ğŒvZ
+    /// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‹ã‚‰ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’è¨ˆç®—
     /// </summary>
     /// <param name="x"></param>
     /// <param name="z"></param>
@@ -32,7 +32,7 @@ public class FieldUtil
     }
 
     /// <summary>
-    /// ƒ[ƒ‹ƒhÀ•W‚©‚çƒtƒB[ƒ‹ƒhÀ•W‚ğŒvZ
+    /// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‹ã‚‰ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’è¨ˆç®—
     /// </summary>
     /// <param name="x"></param>
     /// <param name="z"></param>
@@ -46,7 +46,7 @@ public class FieldUtil
     }
 
     /// <summary>
-    /// ‚Q’n“_‚Ì‹——£‚ğŒvZ
+    /// ï¼’åœ°ç‚¹ã®è·é›¢ã‚’è¨ˆç®—
     /// </summary>
     /// <param name="pos1"></param>
     /// <param name="pos2"></param>
@@ -57,18 +57,18 @@ public class FieldUtil
         int absX = Mathf.Abs(dist.x);
         int absY = Mathf.Abs(dist.y);
 
-        // •„†‚ª‹t‚Ìê‡‚Íâ‘Î’l‚Ì‡Œv
+        // ç¬¦å·ãŒé€†ã®å ´åˆã¯çµ¶å¯¾å€¤ã®åˆè¨ˆ
         if (dist.x > 0 && dist.y < 0 || dist.x < 0 && dist.y > 0)
         {
             return absX + absY;
         }
 
-        // ‚»‚êˆÈŠO‚Ì•ûŒü‚Í‘å‚«‚¢•û
+        // ãã‚Œä»¥å¤–ã®æ–¹å‘ã¯å¤§ãã„æ–¹
         return absX > absY ? absX : absY;
     }
 
     /// <summary>
-    /// üˆÍ‚Uƒ}ƒX‚ğæ“¾
+    /// å‘¨å›²ï¼–ãƒã‚¹ã‚’å–å¾—
     /// </summary>
     /// <returns></returns>
     public static List<Vector2Int> GetAroundLocations(Vector2Int _center)
@@ -87,12 +87,12 @@ public class FieldUtil
     }
 
     /// <summary>
-    /// ƒxƒNƒgƒ‹‚ğ‰ñ“]‚³‚¹‚½‚¢‚Ì‹ß‚¢‰ñ“]•ûŒü‚ğŒvZ
-    /// YÀ•W‚Í0‚Æ‚µ‚ÄY²‰ñ“]
+    /// ãƒ™ã‚¯ãƒˆãƒ«ã‚’å›è»¢ã•ã›ãŸã„æ™‚ã®è¿‘ã„å›è»¢æ–¹å‘ã‚’è¨ˆç®—
+    /// Yåº§æ¨™ã¯0ã¨ã—ã¦Yè»¸å›è»¢
     /// </summary>
     /// <param name="own"></param>
     /// <param name="target"></param>
-    /// <returns>1:¶‰ñ‚è@-1:‰Eü‚è</returns>
+    /// <returns>1:å·¦å›ã‚Šã€€-1:å³å‘¨ã‚Š</returns>
     public static int CalcNearRotation(Vector3 own, Vector3 target)
     {
         own.y = 0;
@@ -102,11 +102,11 @@ public class FieldUtil
         var ownRot = Quaternion.LookRotation(own, vY).eulerAngles.y;
         var targetRot = Quaternion.LookRotation(target, vY).eulerAngles.y;
 
-        // ©•ª‚Ì‚Ù‚¤‚ª¬‚³‚¢Šp“x‚É‚·‚é
+        // è‡ªåˆ†ã®ã»ã†ãŒå°ã•ã„è§’åº¦ã«ã™ã‚‹
         if (targetRot < ownRot) targetRot += 360f;
 
         var rot = targetRot - ownRot;
-        // 180“xˆÈ‰º‚È‚ç¶‰ñ‚è‚Å
+        // 180åº¦ä»¥ä¸‹ãªã‚‰å·¦å›ã‚Šã§
         return rot <= 180f ? 1 : -1;
     }
 }

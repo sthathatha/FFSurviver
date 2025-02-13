@@ -285,8 +285,8 @@ public class GameMainSystem : MainScriptBase
     public float GetEnemyRate()
     {
         const float b = 1f;
-        const float x = 50f;
-        const float y = 120f;
+        const float x = 30f;
+        const float y = 60f;
 
         // x秒間は固定
         if (inGameTime <= x) return b;
@@ -302,8 +302,8 @@ public class GameMainSystem : MainScriptBase
     public float GetBossRate()
     {
         const float b = 3f;
-        const float x = 200f;
-        const float y = 100f;
+        const float x = 100f;
+        const float y = 40f;
         // x秒間は固定
         if (inGameTime <= x) return b;
 
