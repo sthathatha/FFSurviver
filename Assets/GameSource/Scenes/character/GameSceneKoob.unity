@@ -187,34 +187,6 @@ PrefabInstance:
       propertyPath: m_AABB.m_Extent.z
       value: 0.33342886
       objectReference: {fileID: 0}
-    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
-      propertyPath: m_DirtyAABB
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
-      propertyPath: m_AABB.m_Center.x
-      value: 0.00000014901161
-      objectReference: {fileID: 0}
-    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
-      propertyPath: m_AABB.m_Center.y
-      value: 0.51541185
-      objectReference: {fileID: 0}
-    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
-      propertyPath: m_AABB.m_Center.z
-      value: 0.055727836
-      objectReference: {fileID: 0}
-    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
-      propertyPath: m_AABB.m_Extent.x
-      value: 0.36786664
-      objectReference: {fileID: 0}
-    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
-      propertyPath: m_AABB.m_Extent.y
-      value: 0.5159229
-      objectReference: {fileID: 0}
-    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
-      propertyPath: m_AABB.m_Extent.z
-      value: 0.14340995
-      objectReference: {fileID: 0}
     - target: {fileID: 4197815218522092563, guid: dbc1cdab8fa8dc74e8eb0ac7f21b7cbc, type: 3}
       propertyPath: m_DirtyAABB
       value: 0
@@ -310,6 +282,34 @@ PrefabInstance:
     - target: {fileID: 7140606858727328969, guid: dbc1cdab8fa8dc74e8eb0ac7f21b7cbc, type: 3}
       propertyPath: m_AABB.m_Extent.z
       value: 0.12543629
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
+      propertyPath: m_DirtyAABB
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: 0.00000014901161
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 0.51541185
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: 0.055727836
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 0.36786664
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 0.5159229
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331609379985136287, guid: b4f19381aa520894cb89520bf16e3965, type: 3}
+      propertyPath: m_AABB.m_Extent.z
+      value: 0.14340995
       objectReference: {fileID: 0}
     - target: {fileID: -2599908320530139495, guid: 7b7692c081a91e74e8bb5a87da42e6eb, type: 3}
       propertyPath: m_DirtyAABB
@@ -607,7 +607,7 @@ MonoBehaviour:
   atkToEnemy: 1
   atkToPlayer: 0
   isMagic: 1
-  attackPower: 15
+  attackPower: 6
   intervalRate: 1
   is_hit_disappear: 0
   disappear_time: 3

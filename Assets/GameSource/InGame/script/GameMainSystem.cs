@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 /// <summary>
 /// ゲーム管理
@@ -15,6 +14,12 @@ public class GameMainSystem : MainScriptBase
     public static GameMainSystem Instance { get; private set; }
 
     #region 定数
+
+    /// <summary>ザコ敵周期</summary>
+    private const float SMALL_ENEMY_INTERVAL = 15f;
+
+    /// <summary>ｘ個範囲内に１個だけ水フィールド</summary>
+    private const int WATER_FIELD_INTERVAL = 5;
 
     #endregion
 
@@ -35,6 +40,15 @@ public class GameMainSystem : MainScriptBase
     public UIInGameMenu inGameMenu;
 
     #endregion
+
+    /// <summary>ザコテンプレート</summary>
+    public EnemyScriptBase enemy_Eye1;
+    /// <summary>ザコテンプレート</summary>
+    public EnemyScriptBase enemy_Polygon1;
+    /// <summary>ザコテンプレート</summary>
+    public EnemyScriptBase enemy_Bakyura1;
+    /// <summary>ザコテンプレート</summary>
+    public EnemyScriptBase enemy_Willy1;
 
     /// <summary>ゲームパラメータ</summary>
     public GameParameter prm_Game { get; private set; }
@@ -79,6 +93,15 @@ public class GameMainSystem : MainScriptBase
     /// <summary>経過時間</summary>
     private float inGameTime;
 
+    /// <summary>雑魚敵出現判定用</summary>
+    private float enemyControlTime;
+
+    /// <summary>水フィールド位置</summary>
+    private int waterFieldNum;
+
+    /// <summary>地面に立っているか（空中ブロックに居る時false）</summary>
+    public bool isStandingBase { get; set; }
+
     #endregion
 
     #region 基底
@@ -105,6 +128,8 @@ public class GameMainSystem : MainScriptBase
         prm_Game.InitParam();
         prm_Player = new PlayerParameter();
         prm_Player.Init();
+
+        waterFieldNum = Util.RandomInt(0, WATER_FIELD_INTERVAL - 1);
 
         UpdateExpUI();
 
@@ -135,13 +160,14 @@ public class GameMainSystem : MainScriptBase
         yield return base.AfterFadeIn(init);
         state = GameState.Active;
 
+        // 開始時刻
+        inGameTime = 0f;
+        enemyControlTime = 0f;
+
         StartCoroutine(UpdateCoroutine());
 
         //todo:x秒毎にFPS表示
         StartCoroutine(Test_DisplayFPS());
-
-        // 開始時刻
-        inGameTime = 0f;
     }
 
     /// <summary>
@@ -174,6 +200,7 @@ public class GameMainSystem : MainScriptBase
             inGameTime += origin.inGameDeltaTime;
 
             RefreshFieldCell();
+            SmallEnemyControl(origin.inGameDeltaTime);
             yield return null;
         }
 
@@ -243,15 +270,17 @@ public class GameMainSystem : MainScriptBase
             // 読み込み
             if (init)
                 manager.LoadSubScene("GameSceneField01", loc.x, loc.y);
+            else if (IsWaterField(loc.x, loc.y))
+            {
+                // 水
+                manager.LoadSubScene("GameSceneFieldWater", loc.x, loc.y);
+            }
             else
             {
                 var randomScenes = new List<string>()
                 {
                     "GameSceneField01",
-                    "GameSceneField_polygon1",
-                    "GameSceneField_eye1",
-                    "GameSceneField_bakyura1",
-                    "GameSceneField_willy1",
+                    "GameSceneField02",
                 };
 
                 var idx = Util.RandomInt(0, randomScenes.Count - 1);
@@ -259,6 +288,83 @@ public class GameMainSystem : MainScriptBase
             }
         }
     }
+
+    /// <summary>
+    /// 水フィールド判定
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    private bool IsWaterField(int x, int y)
+    {
+        var yMod = y % WATER_FIELD_INTERVAL;
+        if (yMod < 0) yMod += WATER_FIELD_INTERVAL;
+        var xyMod = (x + y + y / WATER_FIELD_INTERVAL) % WATER_FIELD_INTERVAL;
+        if (xyMod < 0) xyMod += WATER_FIELD_INTERVAL;
+
+        return yMod == waterFieldNum && xyMod == 0;
+    }
+
+    #endregion
+
+    #region ザコ敵管理
+
+    /// <summary>
+    /// 雑魚敵管理
+    /// </summary>
+    private void SmallEnemyControl(float delta)
+    {
+        if (!isStandingBase) return;
+
+        enemyControlTime -= delta;
+        if (enemyControlTime <= 0)
+        {
+            var max = inGameTime > 480f ? 3 : 2;
+            StartCoroutine(SmallEnemyPopCoroutine(Util.RandomInt(0, max)));
+            enemyControlTime = SMALL_ENEMY_INTERVAL;
+        }
+    }
+
+    /// <summary>
+    /// 雑魚敵出現処理
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    private IEnumerator SmallEnemyPopCoroutine(int type)
+    {
+        const int popCount = 60;
+        const float addR = -Mathf.PI * 2f / popCount;
+        var rotQ = Quaternion.Euler(0, Mathf.Rad2Deg * addR, 0);
+        var rot = Quaternion.identity;
+        var baseDir = new Vector3(0, 0, FieldUtil.ENEMY_POP_DISTANCE);
+        var center = GetPlayerCenter();
+
+        for (var i = 0; i < popCount; ++i)
+        {
+            // キャラ生成
+
+            var enm = type switch
+            {
+                0 => Instantiate(enemy_Polygon1, smallEnemyParent),
+                1 => Instantiate(enemy_Bakyura1, smallEnemyParent),
+                2 => Instantiate(enemy_Eye1, smallEnemyParent),
+                _ => Instantiate(enemy_Willy1, smallEnemyParent),
+            };
+            var p = center - rot * baseDir;
+            p.y = enm.transform.position.y;
+            enm.transform.position = p;
+            enm.transform.rotation = rot;
+            enm.gameObject.SetActive(true);
+
+            // 回転
+            rot *= rotQ;
+            yield return null;
+        }
+    }
+
+    #endregion
+
+    #region ボス管理
 
     #endregion
 

@@ -10,12 +10,18 @@ public class FieldUtil
     /// <summary>フィールドの半径サイズ</summary>
     public const float FIELD_CELL_R = 500f;
 
-    private static readonly Vector2Int NORMAL_RIGHT = new Vector2Int(1, 0);
-    private static readonly Vector2Int NORMAL_RIGHTUP = new Vector2Int(1, 1);
-    private static readonly Vector2Int NORMAL_RIGHTDOWN = new Vector2Int(0, -1);
-    private static readonly Vector2Int NORMAL_LEFT = new Vector2Int(-1, 0);
-    private static readonly Vector2Int NORMAL_LEFTUP = new Vector2Int(0, 1);
-    private static readonly Vector2Int NORMAL_LEFTDOWN = new Vector2Int(-1, -1);
+    /// <summary>ザコ出現位置</summary>
+    public const float ENEMY_POP_DISTANCE = FIELD_CELL_R / 3f;
+
+    /// <summary>敵離れすぎの位置</summary>
+    public const float ENEMY_FAR_DISTANCE_SQ = FIELD_CELL_R * FIELD_CELL_R / 2f;
+
+    private static readonly Vector2Int NORMAL_RIGHT = new(1, 0);
+    private static readonly Vector2Int NORMAL_RIGHTUP = new(1, 1);
+    private static readonly Vector2Int NORMAL_RIGHTDOWN = new(0, -1);
+    private static readonly Vector2Int NORMAL_LEFT = new(-1, 0);
+    private static readonly Vector2Int NORMAL_LEFTUP = new(0, 1);
+    private static readonly Vector2Int NORMAL_LEFTDOWN = new(-1, -1);
 
     /// <summary>
     /// フィールド座標からワールド座標を計算

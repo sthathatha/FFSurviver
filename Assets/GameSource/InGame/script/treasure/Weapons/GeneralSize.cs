@@ -51,6 +51,7 @@ public class GeneralSize : WeaponItemBase
         else if (weaponId == WeaponManager.ID.ThunderBall)
         {
             slot.AsRollOption().Prm_attackSize *= SIZE_RATE;
+            slot.AsRollOption().UpdateSize();
         }
         else if (weaponId == WeaponManager.ID.Quake)
         {

@@ -39,17 +39,11 @@ EditorBuildSettings:
     path: Assets/GameSource/Scenes/field/GameSceneField01.unity
     guid: e276461ad1f04594ab541460ef759350
   - enabled: 1
-    path: Assets/GameSource/Scenes/field/GameSceneField_polygon1.unity
-    guid: d63d2cef4dcce7c47bace3624db05d91
+    path: Assets/GameSource/Scenes/field/GameSceneField02.unity
+    guid: bd9d98e03add6e145bff9812707eff71
   - enabled: 1
-    path: Assets/GameSource/Scenes/field/GameSceneField_eye1.unity
-    guid: 7e52cd64ee3cd78439c67be90dbffb73
-  - enabled: 1
-    path: Assets/GameSource/Scenes/field/GameSceneField_bakyura1.unity
-    guid: 66ceb5f0353be7b48abb0783d6ccdae7
-  - enabled: 1
-    path: Assets/GameSource/Scenes/field/GameSceneField_willy1.unity
-    guid: 985f0cb7c5911134c8c6785f5e518ba3
+    path: Assets/GameSource/Scenes/field/GameSceneFieldWater.unity
+    guid: a74a7167af6d7504391a965355ce183e
   - enabled: 1
     path: Assets/GameSource/Scenes/weapon/GameWeaponFireball.unity
     guid: 4dd8bf49f0f53cc43a8c065218c6e799

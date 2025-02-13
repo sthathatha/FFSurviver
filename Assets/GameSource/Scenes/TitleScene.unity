@@ -1167,7 +1167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.23584908, g: 0.13919798, b: 0.052287295, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2682,7 +2682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectParent: {fileID: 1600590603}
-  bgmClip: {fileID: 0}
+  bgmClip: {fileID: 8300000, guid: 81f0f50f81b83d343bfa07cdb978b925, type: 3}
   mainMenu: {fileID: 408792015}
   charaMenu: {fileID: 449056332}
 --- !u!1 &1955245429

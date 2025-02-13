@@ -297,6 +297,9 @@ public class PlayerScript : CharacterScript
                 if (groundHit && (old_y - newPos.y) > 0f)
                 {
                     Grounding(hitInfo.point);
+
+                    //
+                    GameMainSystem.Instance.isStandingBase = ground == null || ground.IsBaseGround;
                 }
             }
         }

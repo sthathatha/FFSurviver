@@ -55,7 +55,7 @@ public class EnemyScriptBase : CharacterScript
         // 離れすぎた時
         var pCenter = GameMainSystem.Instance.GetPlayerCenter();
         var distance = pCenter - transform.position;
-        if (distance.sqrMagnitude > 10000f) TooFarPlayer(pCenter);
+        if (distance.sqrMagnitude > FieldUtil.ENEMY_FAR_DISTANCE_SQ) TooFarPlayer(pCenter);
     }
 
     /// <summary>

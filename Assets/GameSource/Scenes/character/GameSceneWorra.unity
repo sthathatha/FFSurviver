@@ -596,7 +596,7 @@ MonoBehaviour:
   atkToEnemy: 1
   atkToPlayer: 0
   isMagic: 0
-  attackPower: 10
+  attackPower: 3
   intervalRate: 1
   is_hit_disappear: 1
   disappear_time: 1
