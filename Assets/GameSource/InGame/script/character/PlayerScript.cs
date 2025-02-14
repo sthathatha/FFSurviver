@@ -428,7 +428,7 @@ public class PlayerScript : CharacterScript
     /// <param name="other"></param>
     private void OnTriggerStay(Collider other)
     {
-        var atk = other.gameObject.GetComponent<AttackParameter>();
+        var atk = other.gameObject.GetComponentInParent<AttackParameter>();
         if (atk == null) return;
         if (!atk.atkToPlayer) return;
 

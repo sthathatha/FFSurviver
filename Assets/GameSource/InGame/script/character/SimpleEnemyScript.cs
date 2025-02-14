@@ -1,31 +1,35 @@
+ï»¿using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// ’Pƒ‚É‹ß‚Ã‚¢‚Ä‚­‚é‚¾‚¯‚Ì“G
+/// å˜ç´”ã«è¿‘ã¥ã„ã¦ãã‚‹ã ã‘ã®æ•µ
 /// </summary>
 public class SimpleEnemyScript : EnemyScriptBase
 {
-    #region ’è”
+    #region å®šæ•°
 
-    /// <summary>ˆ—•‰‰×ŒyŒ¸‚Ì‚½‚ßˆÚ“®ƒ`ƒFƒbƒN‚Í‚˜•b‚²‚Æ</summary>
+    /// <summary>å‡¦ç†è² è·è»½æ¸›ã®ãŸã‚ç§»å‹•ãƒã‚§ãƒƒã‚¯ã¯ï½˜ç§’ã”ã¨</summary>
     private const float MOVE_CHECK_INTERVAL = 1f;
 
     #endregion
 
-    #region ƒƒ“ƒo[
+    #region ãƒ¡ãƒ³ãƒãƒ¼
 
     public float float_height = 0.6f;
     public float move_speed = 5f;
     public float check_interval = MOVE_CHECK_INTERVAL;
 
-    /// <summary>ˆÚ“®•ûŒü”»’èƒ^ƒCƒ}[</summary>
+    /// <summary>é¡ã®å°æ€ªç‰©</summary>
+    public bool isMirrorMonster = false;
+
+    /// <summary>ç§»å‹•æ–¹å‘åˆ¤å®šã‚¿ã‚¤ãƒãƒ¼</summary>
     private float checkTimer = -1f;
     private Vector3 moveVector = Vector3.zero;
 
     #endregion
 
     /// <summary>
-    /// XV
+    /// æ›´æ–°
     /// </summary>
     protected override void UpdateCharacter()
     {
@@ -41,28 +45,28 @@ public class SimpleEnemyScript : EnemyScriptBase
         {
             checkTimer = check_interval;
 
-            // ƒvƒŒƒCƒ„[ˆÊ’u
+            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ä½ç½®
             var pPos = main.GetPlayerCenter();
             var dist = pPos - transform.position;
             dist.y = 0;
             if (dist.sqrMagnitude < 1f)
             {
-                // [•ª‹ß‚¢‚Í‰½‚à‚µ‚È‚¢
+                // å……åˆ†è¿‘ã„æ™‚ã¯ä½•ã‚‚ã—ãªã„
                 moveVector = Vector3.zero;
                 return;
             }
 
-            // ƒ‰ƒ“ƒ_ƒ€‰ñ“]•}30“x
+            // ãƒ©ãƒ³ãƒ€ãƒ å›è»¢å¹…Â±30åº¦
             var randRot = Quaternion.Euler(0, Util.RandomFloat(-30f, 30f), 0);
             dist = randRot * dist;
 
-            // ’PˆÊƒxƒNƒgƒ‹
+            // å˜ä½ãƒ™ã‚¯ãƒˆãƒ«
             dist = dist.normalized;
 
-            // ˆÚ“®ƒxƒNƒgƒ‹İ’è
+            // ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«è¨­å®š
             moveVector = dist * move_speed;
 
-            // ƒ‚ƒfƒ‹Œü‚«İ’è
+            // ãƒ¢ãƒ‡ãƒ«å‘ãè¨­å®š
             transform.rotation = Quaternion.LookRotation(dist, new Vector3(0, 1, 0));
         }
         else
@@ -71,29 +75,30 @@ public class SimpleEnemyScript : EnemyScriptBase
         }
 
 
-        // ˆÚ“®
+        // ç§»å‹•
         transform.position += moveVector * dt;
     }
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚©‚ç—£‚ê‚·‚¬‚½
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰é›¢ã‚Œã™ããŸæ™‚
     /// </summary>
     /// <param name="playerCenter"></param>
-    protected override void TooFarPlayer(Vector3 playerCenter)
+    protected override IEnumerator TooFarPlayer(Vector3 playerCenter)
     {
         base.TooFarPlayer(playerCenter);
 
-        // Á‚¦‚é
+        // æ¶ˆãˆã‚‹
         Destroy(gameObject);
+        yield break;
     }
 
     /// <summary>
-    /// €–S
+    /// æ­»äº¡æ™‚
     /// </summary>
     protected override void DamageDeath()
     {
         base.DamageDeath();
-
+        if (isMirrorMonster) GameMainSystem.Instance.AddMirrorBeat();
 
         Destroy(gameObject);
     }

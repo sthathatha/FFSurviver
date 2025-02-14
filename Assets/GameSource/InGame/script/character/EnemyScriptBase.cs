@@ -23,6 +23,9 @@ public class EnemyScriptBase : CharacterScript
     /// <summary>強さレート</summary>
     protected float strength_rate = 1f;
 
+    /// <summary>遠すぎる処理中</summary>
+    private bool farPlayerExec = false;
+
     #endregion
 
     #region 基底
@@ -52,19 +55,35 @@ public class EnemyScriptBase : CharacterScript
         base.UpdateCharacter();
         if (GameMainSystem.Instance.state != GameMainSystem.GameState.Active) return;
 
-        // 離れすぎた時
-        var pCenter = GameMainSystem.Instance.GetPlayerCenter();
-        var distance = pCenter - transform.position;
-        if (distance.sqrMagnitude > FieldUtil.ENEMY_FAR_DISTANCE_SQ) TooFarPlayer(pCenter);
+        if (!farPlayerExec)
+        {
+            // 離れすぎた時
+            var pCenter = GameMainSystem.Instance.GetPlayerCenter();
+            var distance = pCenter - transform.position;
+            if (distance.sqrMagnitude > FieldUtil.ENEMY_FAR_DISTANCE_SQ)
+            {
+                farPlayerExec = true;
+                StartCoroutine(TooFarPlayerBase(pCenter));
+            }
+        }
     }
 
     /// <summary>
     /// プレイヤーから離れすぎた時
     /// </summary>
     /// <param name="playerCenter"></param>
-    protected virtual void TooFarPlayer(Vector3 playerCenter)
+    /// <returns></returns>
+    private IEnumerator TooFarPlayerBase(Vector3 playerCenter)
     {
+        yield return TooFarPlayer(playerCenter);
+        farPlayerExec = false;
     }
+
+    /// <summary>
+    /// プレイヤーから離れすぎた時派生処理
+    /// </summary>
+    /// <param name="playerCenter"></param>
+    protected virtual IEnumerator TooFarPlayer(Vector3 playerCenter) { yield break; }
 
     /// <summary>
     /// 死亡時処理

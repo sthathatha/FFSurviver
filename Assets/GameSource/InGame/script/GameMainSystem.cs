@@ -21,6 +21,9 @@ public class GameMainSystem : MainScriptBase
     /// <summary>ｘ個範囲内に１個だけ水フィールド</summary>
     private const int WATER_FIELD_INTERVAL = 5;
 
+    /// <summary>鏡の小怪物をｘ体倒すとボス出現</summary>
+    private const int MIRROR_BOSS_BEATS = 200;
+
     #endregion
 
     #region 変数・メンバー
@@ -50,6 +53,33 @@ public class GameMainSystem : MainScriptBase
     /// <summary>ザコテンプレート</summary>
     public EnemyScriptBase enemy_Willy1;
 
+    /// <summary>鏡の怪物</summary>
+    public BossScriptBase boss_Mirror;
+    /// <summary>花の怪物</summary>
+    public BossScriptBase boss_Flower;
+    /// <summary>水の怪物</summary>
+    public BossScriptBase boss_Water;
+    /// <summary>月の怪物</summary>
+    public BossScriptBase boss_Moon;
+    /// <summary>つくよみちゃん</summary>
+    public BossScriptBase boss_Tukuyomi;
+
+    /// <summary>現在出現中のボス</summary>
+    private BossScriptBase boss_Active;
+
+    /// <summary>鏡の小怪物撃破数</summary>
+    private int mirror_BeatCount = 0;
+    /// <summary>の怪物出現フラグ</summary>
+    public BossPopFlag bossPop_Mirror { get; private set; }
+    /// <summary>鏡の怪物出現フラグ</summary>
+    public BossPopFlag bossPop_Flower { get; private set; }
+    /// <summary>花の怪物出現フラグ</summary>
+    public BossPopFlag bossPop_Water { get; private set; }
+    /// <summary>水の怪物出現フラグ</summary>
+    public BossPopFlag bossPop_Moon { get; private set; }
+    /// <summary>月の怪物出現フラグ</summary>
+    public BossPopFlag bossPop_Tukuyomi { get; private set; }
+
     /// <summary>ゲームパラメータ</summary>
     public GameParameter prm_Game { get; private set; }
     /// <summary>プレイヤーパラメータ</summary>
@@ -71,6 +101,9 @@ public class GameMainSystem : MainScriptBase
 
     /// <summary>雑魚敵を持つ空オブジェクト</summary>
     public Transform smallEnemyParent;
+
+    /// <summary>ボスを持つ空オブジェクト</summary>
+    public Transform bossEnemyParent;
 
     /// <summary>攻撃を持つ空オブジェクト</summary>
     public Transform attackParent;
@@ -128,6 +161,12 @@ public class GameMainSystem : MainScriptBase
         prm_Game.InitParam();
         prm_Player = new PlayerParameter();
         prm_Player.Init();
+
+        bossPop_Mirror = new BossPopFlag();
+        bossPop_Flower = new BossPopFlag();
+        bossPop_Water = new BossPopFlag();
+        bossPop_Moon = new BossPopFlag();
+        bossPop_Tukuyomi = new BossPopFlag();
 
         waterFieldNum = Util.RandomInt(0, WATER_FIELD_INTERVAL - 1);
         isStandingBase = true;
@@ -205,6 +244,7 @@ public class GameMainSystem : MainScriptBase
 
             RefreshFieldCell();
             SmallEnemyControl(origin.inGameDeltaTime);
+            BossPopControl();
             yield return null;
         }
 
@@ -323,7 +363,12 @@ public class GameMainSystem : MainScriptBase
         enemyControlTime -= delta;
         if (enemyControlTime <= 0)
         {
-            var max = inGameTime > 480f ? 3 : 2;
+            var max = inGameTime switch
+            {
+                > 480f => 3,
+                > 50f => 2,
+                _ => 1,
+            };
             StartCoroutine(SmallEnemyPopCoroutine(Util.RandomInt(0, max)));
             enemyControlTime = SMALL_ENEMY_INTERVAL;
         }
@@ -349,9 +394,9 @@ public class GameMainSystem : MainScriptBase
 
             var enm = type switch
             {
-                0 => Instantiate(enemy_Polygon1, smallEnemyParent),
-                1 => Instantiate(enemy_Bakyura1, smallEnemyParent),
-                2 => Instantiate(enemy_Eye1, smallEnemyParent),
+                0 => Instantiate(enemy_Bakyura1, smallEnemyParent),
+                1 => Instantiate(enemy_Eye1, smallEnemyParent),
+                2 => Instantiate(enemy_Polygon1, smallEnemyParent),
                 _ => Instantiate(enemy_Willy1, smallEnemyParent),
             };
             var p = center - rot * baseDir;
@@ -369,6 +414,62 @@ public class GameMainSystem : MainScriptBase
     #endregion
 
     #region ボス管理
+
+    #region フラグ管理クラス
+
+    /// <summary>
+    /// ボスフラグ管理
+    /// </summary>
+    public class BossPopFlag
+    {
+        private bool canPopFlg = false;
+        private bool popedFlg = false;
+
+        /// <summary>出現しろフラグセット</summary>
+        public void SetPop() { canPopFlg = true; }
+        /// <summary>出現するべきか判定</summary>
+        public bool WantPop() { return canPopFlg && !popedFlg; }
+        /// <summary>出現済みフラグセット</summary>
+        public void SetPoped() { popedFlg = true; }
+    }
+
+    #endregion
+
+    /// <summary>
+    /// 鏡の小怪物撃破
+    /// </summary>
+    public void AddMirrorBeat()
+    {
+        if (mirror_BeatCount < MIRROR_BOSS_BEATS)
+        {
+            mirror_BeatCount++;
+            if (mirror_BeatCount == MIRROR_BOSS_BEATS) bossPop_Mirror.SetPop();
+        }
+    }
+
+    /// <summary>
+    /// ボス撃破
+    /// </summary>
+    public void ActiveBossDefeat()
+    {
+        boss_Active = null;
+    }
+
+    /// <summary>
+    /// ボス出現管理
+    /// </summary>
+    private void BossPopControl()
+    {
+        if (boss_Active != null) return;
+
+        if (bossPop_Mirror.WantPop())
+        {
+            // 鏡の怪物
+            boss_Active = Instantiate(boss_Mirror, bossEnemyParent);
+            boss_Active.gameObject.SetActive(true);
+            bossPop_Mirror.SetPoped();
+        }
+    }
 
     #endregion
 

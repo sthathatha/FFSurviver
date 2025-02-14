@@ -51,7 +51,7 @@ public class AttackParameter : MonoBehaviour
             // 空中ブロックに居る時は攻撃当たらない
             if (!GameMainSystem.Instance.isStandingBase) return;
 
-            var enm = other.gameObject.GetComponent<EnemyScriptBase>();
+            var enm = other.gameObject.GetComponentInParent<EnemyScriptBase>();
             if (enm != null)
             {
                 isHitted = true;

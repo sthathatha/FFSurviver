@@ -83,21 +83,21 @@ public class GameConstant
         new InitStatusOne(10, 10, -1, 1),
         new InitStatusOne(25, 0, 25, 0),
         new InitStatusOne(100, 50, -1, 5),
-        new InitStatusOne(10, 3, 100, 10),
+        new InitStatusOne(10, 3, 82, 10),
         new InitStatusOne(1, 1, 3, 2000)
         );
     public static readonly InitStatus InitStatus_Eraps = new(
         new InitStatusOne(4, 5, -1, 5),
         new InitStatusOne(2, 2, -1, 5),
-        new InitStatusOne(200, 150, -1, 2),
-        new InitStatusOne(6, 2, 100, 20),
+        new InitStatusOne(400, 150, -1, 1),
+        new InitStatusOne(6, 2, 50, 12),
         new InitStatusOne(1, 1, 2, 4000)
         );
     public static readonly InitStatus InitStatus_Exa = new(
         new InitStatusOne(7, 7, -1, 4),
         new InitStatusOne(3, 4, -1, 5),
         new InitStatusOne(180, 120, -1, 4),
-        new InitStatusOne(12, 3, 100, 8),
+        new InitStatusOne(12, 3, 72, 8),
         new InitStatusOne(1, 1, 3, 1500)
         );
     public static readonly InitStatus InitStatus_Worra = new(
@@ -111,14 +111,14 @@ public class GameConstant
         new InitStatusOne(1, 3, -1, 10),
         new InitStatusOne(12, 11, -1, 2),
         new InitStatusOne(70, 40, -1, 8),
-        new InitStatusOne(6, 2, 100, 16),
+        new InitStatusOne(6, 2, 60, 16),
         new InitStatusOne(1, 1, 3, 2000)
         );
     public static readonly InitStatus InitStatus_You = new(
         new InitStatusOne(8, 6, -1, 4),
         new InitStatusOne(7, 5, -1, 5),
         new InitStatusOne(120, 60, -1, 6),
-        new InitStatusOne(18, 4, 100, 4),
+        new InitStatusOne(18, 4, 90, 4),
         new InitStatusOne(1, 1, 3, 2000)
         );
 
