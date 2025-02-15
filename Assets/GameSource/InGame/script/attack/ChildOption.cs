@@ -70,6 +70,9 @@ public class ChildOption : MonoBehaviour
     /// </summary>
     void Update()
     {
+        var main = GameMainSystem.Instance;
+        if (main.state != GameMainSystem.GameState.Active) return;
+
         var maxV = GameMainSystem.Instance.prm_Player.GetSpeedVelocity();
 
         var dist = parentOption.position - transform.position;

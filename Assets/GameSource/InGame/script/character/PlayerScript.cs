@@ -1,8 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// プレイヤー
@@ -22,6 +19,9 @@ public class PlayerScript : CharacterScript
 
     /// <summary>接地判定用Ray</summary>
     private Ray ground_ray;
+
+    /// <summary>身長</summary>
+    private float height;
 
     /// <summary>プレイヤー状態</summary>
     public enum PlayerState
@@ -60,6 +60,7 @@ public class PlayerScript : CharacterScript
         // 最初の取得など
         ui_hp = GameMainSystem.Instance.ui_hp;
         normal_attack.gameObject.SetActive(false);
+        height = 1.2f;
 
         var cam = ManagerSceneScript.GetInstance().GetCamera3D();
         cam.SetCameraDist(10f);
@@ -92,7 +93,8 @@ public class PlayerScript : CharacterScript
             return;
 
         // メニュー処理中は下の処理をしない
-        if (!MenuControl()) return;
+        if (!MenuControl())
+            return;
 
         AttackControl();
         MoveControl();
@@ -454,6 +456,7 @@ public class PlayerScript : CharacterScript
         base.DamageDeath();
 
         // ゲームオーバー処理
+        GameMainSystem.Instance.WaitGameover();
         state = PlayerState.Death;
         StartCoroutine(DeathCoroutine());
     }
@@ -507,7 +510,9 @@ public class PlayerScript : CharacterScript
         var stick = noInput ? Vector2.zero : GameInput.GetRightStick();
 
         var cam = ManagerSceneScript.GetInstance().GetCamera3D();
-        cam.SetTargetPos(GetComponent<Collider>().bounds.center);
+        var camTarget = transform.position;
+        camTarget.y += height / 2f; // Collider.bounds.centerを使うとモデルより１フレ遅れるためpositionで操作
+        cam.SetTargetPos(camTarget);
 
         // カメラリセット
         if (GameInput.IsPress(GameInput.Buttons.CameraReset))

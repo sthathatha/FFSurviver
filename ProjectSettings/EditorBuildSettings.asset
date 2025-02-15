@@ -36,6 +36,9 @@ EditorBuildSettings:
     path: Assets/GameSource/Scenes/character/GameSceneYou.unity
     guid: b20cea83ff9247545be221100d77bb04
   - enabled: 1
+    path: Assets/GameSource/Scenes/weapon/GameWeaponBossMirror.unity
+    guid: c2effcc99c0f1f84887551db3300d87f
+  - enabled: 1
     path: Assets/GameSource/Scenes/field/GameSceneField01.unity
     guid: e276461ad1f04594ab541460ef759350
   - enabled: 1

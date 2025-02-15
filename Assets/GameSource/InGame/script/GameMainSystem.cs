@@ -22,7 +22,7 @@ public class GameMainSystem : MainScriptBase
     private const int WATER_FIELD_INTERVAL = 5;
 
     /// <summary>鏡の小怪物をｘ体倒すとボス出現</summary>
-    private const int MIRROR_BOSS_BEATS = 200;
+    private const int MIRROR_BOSS_BEATS = 10; //200;
 
     #endregion
 
@@ -563,6 +563,14 @@ public class GameMainSystem : MainScriptBase
     public void UpdateExpUI()
     {
         txt_exp.SetText(prm_Game.Exp.ToString());
+    }
+
+    /// <summary>
+    /// ゲームオーバー処理
+    /// </summary>
+    public void WaitGameover()
+    {
+        state = GameState.Exiting;
     }
 
     #endregion

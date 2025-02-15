@@ -40,11 +40,8 @@ public class EffectOneShotAttack : AttackParameter
         // 攻撃判定を消す
         GetComponent<Collider>().enabled = false;
 
-        if (effect != null)
-        {
-            // エフェクトの終了を待つ
-            yield return new WaitWhile(() => effect.isPlaying);
-        }
+        // エフェクトの終了を待つ
+        yield return new WaitWhile(() => effect != null && effect.isPlaying);
 
         // 消える
         Destroy(gameObject);
