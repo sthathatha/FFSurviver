@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 /// <summary>
 /// 出現した位置で広がって消える

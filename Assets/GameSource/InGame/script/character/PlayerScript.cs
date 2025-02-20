@@ -46,6 +46,12 @@ public class PlayerScript : CharacterScript
     /// <summary>浮遊時間</summary>
     private float float_time = 0f;
 
+    /// <summary>最高到達点</summary>
+    private float jump_max_height = 0f;
+
+    /// <summary>水ボス出現する高さ</summary>
+    private const float WATER_BOSS_CHECK_HEIGHT = 19f;
+
     #endregion
 
     #region 基底
@@ -267,6 +273,9 @@ public class PlayerScript : CharacterScript
         }
         else if (state == PlayerState.Jump)
         {
+            // 高さチェック
+            if (jump_max_height < transform.position.y) jump_max_height = transform.position.y;
+
             if (GameInput.IsPress(GameInput.Buttons.Jump))
             {
                 // スペースキーで二段ジャンプ
@@ -298,10 +307,10 @@ public class PlayerScript : CharacterScript
                 // 物を踏んだら着地
                 if (groundHit && (old_y - newPos.y) > 0f)
                 {
-                    Grounding(hitInfo.point);
-
-                    //
+                    // 一番下の地面
                     GameMainSystem.Instance.isStandingBase = ground == null || ground.IsBaseGround;
+
+                    Grounding(hitInfo.point);
                 }
             }
         }
@@ -350,12 +359,21 @@ public class PlayerScript : CharacterScript
         anim?.SetBool("FreeFall", false);
         anim?.SetBool("Grounded", true);
 
-        var wpn = GameMainSystem.Instance.weaponManager;
+        var game = GameMainSystem.Instance;
+        var wpn = game.weaponManager;
         if (wpn.HaveWeapon(WeaponManager.ID.Quake))
         {
             var sys = wpn.GetWeaponSlot(WeaponManager.ID.Quake).AsQuake();
             sys.CreateQuake();
         }
+
+        // 水フィールドのボス出現チェック
+        // 最下地面　＆　ジャンプ高さが充分ならメインに通知
+        if (jump_max_height >= WATER_BOSS_CHECK_HEIGHT && game.isStandingBase)
+        {
+            game.HighJumpGrounding(hitPos);
+        }
+        jump_max_height = 0f;
     }
 
     #endregion

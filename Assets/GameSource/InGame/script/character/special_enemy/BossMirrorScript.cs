@@ -94,7 +94,7 @@ public class BossMirrorScript : BossScriptBase
         GameMainSystem.Instance.prm_Game.Defeated_Boss1 = true;
 
         // 武器クラス削除
-        ManagerSceneScript.GetInstance().DeleteSubScene(attackSystem);
+        attackSystem.WaitDestroy();
         attackSystem = null;
 
         //todo:消える演出

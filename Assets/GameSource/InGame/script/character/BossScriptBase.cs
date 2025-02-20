@@ -94,6 +94,7 @@ public class BossScriptBase : EnemyScriptBase
 
     /// <summary>
     /// 離れすぎた時復活する位置を計算
+    /// yは各自で決定する
     /// </summary>
     /// <returns></returns>
     public Vector3 GetAppearPoint()

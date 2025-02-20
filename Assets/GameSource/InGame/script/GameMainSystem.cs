@@ -16,10 +16,10 @@ public class GameMainSystem : MainScriptBase
     #region 定数
 
     /// <summary>ザコ敵周期</summary>
-    private const float SMALL_ENEMY_INTERVAL = 15f;
+    private const float SMALL_ENEMY_INTERVAL = 2f;
 
     /// <summary>ｘ個範囲内に１個だけ水フィールド</summary>
-    private const int WATER_FIELD_INTERVAL = 5;
+    private const int WATER_FIELD_INTERVAL = 2;//todo:水フィールド密度
 
     /// <summary>鏡の小怪物をｘ体倒すとボス出現</summary>
     private const int MIRROR_BOSS_BEATS = 10; //200;
@@ -381,17 +381,15 @@ public class GameMainSystem : MainScriptBase
     /// <returns></returns>
     private IEnumerator SmallEnemyPopCoroutine(int type)
     {
-        const int popCount = 60;
-        const float addR = -Mathf.PI * 2f / popCount;
-        var rotQ = Quaternion.Euler(0, Mathf.Rad2Deg * addR, 0);
-        var rot = Quaternion.identity;
+        int popCount = Util.RandomInt(10, 20);
+        var rotQ = Quaternion.Euler(0, Util.RandomFloat(0, 359f), 0);
         var baseDir = new Vector3(0, 0, FieldUtil.ENEMY_POP_DISTANCE);
-        var center = GetPlayerCenter();
+        var center = GetPlayerCenter() + rotQ * baseDir;
 
         for (var i = 0; i < popCount; ++i)
         {
             // キャラ生成
-
+            var rand = new Vector3(Util.RandomFloat(-10f, 10f), 0f, Util.RandomFloat(-10f, 10f));
             var enm = type switch
             {
                 0 => Instantiate(enemy_Bakyura1, smallEnemyParent),
@@ -399,14 +397,12 @@ public class GameMainSystem : MainScriptBase
                 2 => Instantiate(enemy_Polygon1, smallEnemyParent),
                 _ => Instantiate(enemy_Willy1, smallEnemyParent),
             };
-            var p = center - rot * baseDir;
+            var p = center + rand;
             p.y = enm.transform.position.y;
             enm.transform.position = p;
-            enm.transform.rotation = rot;
+            enm.transform.rotation = rotQ;
             enm.gameObject.SetActive(true);
 
-            // 回転
-            rot *= rotQ;
             yield return null;
         }
     }
@@ -448,6 +444,20 @@ public class GameMainSystem : MainScriptBase
     }
 
     /// <summary>
+    /// 水の怪物、高いところから着地チェック
+    /// </summary>
+    /// <param name="pos"></param>
+    public void HighJumpGrounding(Vector3 pos)
+    {
+        var nowLoc = FieldUtil.GetFieldLoc(pos.x, pos.z);
+        if (IsWaterField(nowLoc.x, nowLoc.y))
+        {
+            // 水ならフラグオン
+            bossPop_Water.SetPop();
+        }
+    }
+
+    /// <summary>
     /// ボス撃破
     /// </summary>
     public void ActiveBossDefeat()
@@ -468,6 +478,25 @@ public class GameMainSystem : MainScriptBase
             boss_Active = Instantiate(boss_Mirror, bossEnemyParent);
             boss_Active.gameObject.SetActive(true);
             bossPop_Mirror.SetPoped();
+        }
+        else if (bossPop_Flower.WantPop())
+        {
+            //todo:花の怪物
+        }
+        else if (bossPop_Water.WantPop())
+        {
+            // 水の怪物
+            boss_Active = Instantiate(boss_Water, bossEnemyParent);
+            boss_Active.gameObject.SetActive(true);
+            bossPop_Water.SetPoped();
+        }
+        else if (bossPop_Moon.WantPop())
+        {
+            //todo:月の怪物
+        }
+        else if (bossPop_Tukuyomi.WantPop())
+        {
+            //todo:つくよみちゃん
         }
     }
 

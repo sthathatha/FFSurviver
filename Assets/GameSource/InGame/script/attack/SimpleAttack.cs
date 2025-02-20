@@ -51,7 +51,11 @@ public class SimpleAttack : AttackParameter
     /// <param name="direction"></param>
     public void Shoot(Vector3 startPos, Vector3 direction)
     {
-        transform.rotation = Quaternion.LookRotation(direction, new Vector3(0, 1, 0));
+        // floatのゼロは＝でチェックできるらしい
+        if (direction != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(direction, new Vector3(0, 1, 0));
+        }
 
         valid_time = disappear_time;
         transform.position = startPos;

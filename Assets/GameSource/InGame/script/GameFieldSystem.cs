@@ -1,30 +1,35 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ƒQ[ƒ€ƒtƒB[ƒ‹ƒhŠÇ—
+/// ã‚²ãƒ¼ãƒ ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ç®¡ç†
 /// </summary>
 public class GameFieldSystem : SubScriptBase
 {
-    /// <summary>G‹›“GeƒIƒuƒWƒFƒNƒg</summary>
-    public Transform smallEnemies;
+    /// <summary>è¶³å ´ã®ãƒ©ãƒ³ãƒ€ãƒ å¹…</summary>
+    private const float PLATFORM_RAND_RANGE = 30f;
 
-    /// <summary>’†SÀ•W</summary>
+    /// <summary>åºŠã®è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ</summary>
+    public Transform platforms;
+
+    /// <summary>ä¸­å¿ƒåº§æ¨™</summary>
     public Vector2Int fieldCell { get; private set; }
 
     /// <summary>
-    /// ¶¬
+    /// ç”Ÿæˆæ™‚
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator InitStart()
     {
         objectParent.SetActive(false);
         yield return base.InitStart();
+
+        RandomPlatform();
     }
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     /// <param name="paramList"></param>
     /// <returns></returns>
@@ -34,26 +39,31 @@ public class GameFieldSystem : SubScriptBase
 
         yield return base.InitCoroutine(paramList);
 
-        // ’†S‚ğİ’è
+        // ä¸­å¿ƒã‚’è¨­å®š
         objectParent.transform.position = FieldUtil.GetBasePosition(fieldCell.x, fieldCell.y);
         objectParent.SetActive(true);
-
-        // G‹›“G‚ğƒƒCƒ“ƒV[ƒ“‚ÉˆÚ“®
-        if (smallEnemies != null)
-        {
-            for (var i = smallEnemies.childCount - 1; i >= 0; --i)
-            {
-                smallEnemies.GetChild(i).SetParent(GameMainSystem.Instance.smallEnemyParent, true);
-            }
-        }
     }
 
     /// <summary>
-    /// Á‚·
+    /// æ¶ˆã™
     /// </summary>
     public void ReleaseField()
     {
         Sleep();
         base.DeleteScene();
+    }
+
+    /// <summary>
+    /// è¶³å ´ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«å‹•ã‹ã™
+    /// </summary>
+    private void RandomPlatform()
+    {
+        foreach (var p in platforms.GetComponentsInChildren<GameGround>())
+        {
+            var ppos = p.transform.localPosition;
+            ppos.x = Util.RandomFloat(-PLATFORM_RAND_RANGE, PLATFORM_RAND_RANGE);
+            ppos.z = Util.RandomFloat(-PLATFORM_RAND_RANGE, PLATFORM_RAND_RANGE);
+            p.transform.localPosition = ppos;
+        }
     }
 }

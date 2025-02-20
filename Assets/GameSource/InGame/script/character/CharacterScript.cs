@@ -115,6 +115,9 @@ public class CharacterScript : MonoBehaviour
     /// <param name="param"></param>
     public void AttackTrigger(AttackParameter param)
     {
+        // もう死んでいる
+        if (hp <= 0) return;
+
         if (!atkHistories.Any(h => h.atk == param))
         {
             // 履歴になければダメージ受ける
