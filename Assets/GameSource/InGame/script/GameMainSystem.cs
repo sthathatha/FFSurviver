@@ -19,10 +19,13 @@ public class GameMainSystem : MainScriptBase
     private const float SMALL_ENEMY_INTERVAL = 2f;
 
     /// <summary>ｘ個範囲内に１個だけ水フィールド</summary>
-    private const int WATER_FIELD_INTERVAL = 2;//todo:水フィールド密度
+    private const int WATER_FIELD_INTERVAL = 4;
 
     /// <summary>鏡の小怪物をｘ体倒すとボス出現</summary>
-    private const int MIRROR_BOSS_BEATS = 10; //200;
+    private const int MIRROR_BOSS_BEATS = 200;
+
+    /// <summary>花の怪物が出る時間</summary>
+    private const float FLOWER_BOSS_TIME = 40f; //540f; //9分
 
     #endregion
 
@@ -168,7 +171,7 @@ public class GameMainSystem : MainScriptBase
         bossPop_Moon = new BossPopFlag();
         bossPop_Tukuyomi = new BossPopFlag();
 
-        waterFieldNum = Util.RandomInt(0, WATER_FIELD_INTERVAL - 1);
+        waterFieldNum = Util.RandomInt(1, WATER_FIELD_INTERVAL - 1);
         isStandingBase = true;
 
         UpdateExpUI();
@@ -241,6 +244,8 @@ public class GameMainSystem : MainScriptBase
         while (playerScript.gameObject.activeInHierarchy)
         {
             inGameTime += origin.inGameDeltaTime;
+            // 花の怪物
+            if (!bossPop_Flower.canPopFlg && inGameTime >= FLOWER_BOSS_TIME) bossPop_Flower.SetPop();
 
             RefreshFieldCell();
             SmallEnemyControl(origin.inGameDeltaTime);
@@ -312,9 +317,7 @@ public class GameMainSystem : MainScriptBase
                 continue;
 
             // 読み込み
-            if (init)
-                manager.LoadSubScene("GameSceneField01", loc.x, loc.y);
-            else if (IsWaterField(loc.x, loc.y))
+            if (IsWaterField(loc.x, loc.y))
             {
                 // 水
                 manager.LoadSubScene("GameSceneFieldWater", loc.x, loc.y);
@@ -381,7 +384,7 @@ public class GameMainSystem : MainScriptBase
     /// <returns></returns>
     private IEnumerator SmallEnemyPopCoroutine(int type)
     {
-        int popCount = Util.RandomInt(10, 20);
+        int popCount = Util.RandomInt(5, 20);
         var rotQ = Quaternion.Euler(0, Util.RandomFloat(0, 359f), 0);
         var baseDir = new Vector3(0, 0, FieldUtil.ENEMY_POP_DISTANCE);
         var center = GetPlayerCenter() + rotQ * baseDir;
@@ -389,7 +392,7 @@ public class GameMainSystem : MainScriptBase
         for (var i = 0; i < popCount; ++i)
         {
             // キャラ生成
-            var rand = new Vector3(Util.RandomFloat(-10f, 10f), 0f, Util.RandomFloat(-10f, 10f));
+            var rand = new Vector3(Util.RandomFloat(-10f, 10f), 0f, Util.RandomFloat(-20f, 20f));
             var enm = type switch
             {
                 0 => Instantiate(enemy_Bakyura1, smallEnemyParent),
@@ -418,7 +421,7 @@ public class GameMainSystem : MainScriptBase
     /// </summary>
     public class BossPopFlag
     {
-        private bool canPopFlg = false;
+        public bool canPopFlg { get; private set; } = false;
         private bool popedFlg = false;
 
         /// <summary>出現しろフラグセット</summary>
@@ -481,7 +484,10 @@ public class GameMainSystem : MainScriptBase
         }
         else if (bossPop_Flower.WantPop())
         {
-            //todo:花の怪物
+            // 花の怪物
+            boss_Active = Instantiate(boss_Flower, bossEnemyParent);
+            boss_Active.gameObject.SetActive(true);
+            bossPop_Flower.SetPoped();
         }
         else if (bossPop_Water.WantPop())
         {

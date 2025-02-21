@@ -10,17 +10,17 @@ public class BossWaterScript : BossScriptBase
     #region 定数
 
     /// <summary>連続発射</summary>
-    const int ATK_REPEAT = 2;
+    const int ATK_REPEAT = 3;
 
     /// <summary>攻撃間隔短</summary>
-    const float ATK_INTERVAL1 = 2f;
+    const float ATK_INTERVAL1 = 6f;
     /// <summary>連続攻撃の次</summary>
     const float ATK_INTERVAL2 = 6f;
 
     /// <summary>消える時間</summary>
     const float DOWN_TIME = 0.3f;
     /// <summary>出てから降りる時間</summary>
-    const float ACTIVE_TIME = 30f;
+    const float ACTIVE_TIME = 40f;
     /// <summary>出てくる時間</summary>
     const float UP_TIME = 0.3f;
 
@@ -201,13 +201,15 @@ public class BossWaterScript : BossScriptBase
             _ => 1,
         };
         var dist = transform.position - centerPos;
-        var rot = Quaternion.Euler(0, Mathf.PI * 2f / (dmyCount + 1), 0);
+        var rot = Quaternion.Euler(0, 360f / (dmyCount + 1), 0);
         for (var i = 0; i < dmyCount; i++)
         {
             dist = rot * dist;
             // ダミー
             var dmy = Instantiate(dummyTemplate, GameMainSystem.Instance.attackParent);
             dmy.transform.position = centerPos + dist;
+            dmy.gameObject.SetActive(true);
+            dummies.Add(dmy);
         }
 
         // Y座標

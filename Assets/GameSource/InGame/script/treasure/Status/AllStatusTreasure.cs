@@ -22,6 +22,19 @@ public class AllStatusTreasure : TreasureItemBase
     /// <returns></returns>
     public override bool CanGet()
     {
+        var wpn = GameMainSystem.Instance.weaponManager;
+
+        // 武器が埋まってなければ出ない
+        if (wpn.GetHaveCount() < WeaponManager.SLOT_COUNT) return false;
+
+        // 武器全部MAXでなければ出ない
+        for (var i = 0; i < WeaponManager.SLOT_COUNT; ++i)
+        {
+            var slot = wpn.GetSlot(i);
+            if (slot.id == WeaponManager.ID.ChildOption && slot.lv == 4) return false;
+            if (slot.lv == 10) return false;
+        }
+
         return true;
     }
 

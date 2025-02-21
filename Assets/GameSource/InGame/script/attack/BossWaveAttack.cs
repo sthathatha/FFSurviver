@@ -9,14 +9,14 @@ public class BossWaveAttack : AttackParameter
     #region パラメータ
 
     /// <summary>最初サイズ</summary>
-    const float startScale = 100f;
+    const float startScale = FieldUtil.ENEMY_POP_DISTANCE - 5f;
     /// <summary>終了サイズ</summary>
     const float endScale = 1f;
 
     /// <summary>一番下のY</summary>
     const float min_y = -8f;
     /// <summary>一番上のY</summary>
-    const float max_y = 0f;
+    const float max_y = -1.5f;
 
     /// <summary>上がる時間</summary>
     const float upTime = 0.2f;
@@ -70,15 +70,20 @@ public class BossWaveAttack : AttackParameter
     private void UpdateScale(float time)
     {
         var sRate = Util.GetClampF(time / totalTime, 0f, 1f);
+
+        // サイズ
         var s = Util.CalcBetweenFloat(sRate, startScale, endScale);
-
-        var yRate = 0f;
-        if (yRate > upTime + mainTime) yRate = Util.GetClampF((time - upTime - mainTime) / downTime, 0f, 1f);
-        else if (yRate > upTime) yRate = 1f;
-        else yRate = 1f - Util.GetClampF(time / upTime, 0f, 1f);
-        var y = Util.CalcBetweenFloat(yRate, min_y, max_y);
-
         transform.localScale = new Vector3(s, 1f, s);
+
+        // 高さ
+        var yRate = 0f;
+        // 消えていく
+        if (yRate > upTime + mainTime) yRate = 1f - Util.GetClampF((time - upTime - mainTime) / downTime, 0f, 1f);
+        // アクティブ
+        else if (yRate > upTime) yRate = 1f;
+        // 出てきてる
+        else yRate = Util.GetClampF(time / upTime, 0f, 1f);
+        var y = Util.CalcBetweenFloat(yRate, min_y, max_y);
         var pos = transform.position;
         pos.y = y;
         transform.position = pos;

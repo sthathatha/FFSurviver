@@ -6,5 +6,5 @@
 public class FloatSystem : GameWeaponSystemBase
 {
     /// <summary>有効時間</summary>
-    public float validTime = 2f;
+    public float validTime = 1f;
 }

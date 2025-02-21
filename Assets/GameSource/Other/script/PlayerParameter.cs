@@ -122,6 +122,6 @@ public class PlayerParameter
     {
         var tmp = stat_speed.value;
 
-        return 4f + tmp / 7f;
+        return 5f + tmp / 6f;
     }
 }
