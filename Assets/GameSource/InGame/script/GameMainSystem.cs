@@ -25,7 +25,7 @@ public class GameMainSystem : MainScriptBase
     private const int MIRROR_BOSS_BEATS = 200;
 
     /// <summary>花の怪物が出る時間</summary>
-    private const float FLOWER_BOSS_TIME = 40f; //540f; //9分
+    private const float FLOWER_BOSS_TIME = 540f; //9分
 
     #endregion
 

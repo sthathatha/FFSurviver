@@ -207,6 +207,7 @@ public class BossWaterScript : BossScriptBase
             dist = rot * dist;
             // ダミー
             var dmy = Instantiate(dummyTemplate, GameMainSystem.Instance.attackParent);
+            dmy.SetAttackRate(strength_rate);
             dmy.transform.position = centerPos + dist;
             dmy.gameObject.SetActive(true);
             dummies.Add(dmy);

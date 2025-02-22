@@ -235,6 +235,7 @@ public class BossFlowerScript : BossScriptBase
 
         // タネ作成
         var seed = Instantiate(atkTemplate, GameMainSystem.Instance.attackParent);
+        seed.SetAttackRate(strength_rate);
         seed.Shoot(seedTarget - seedDir, seedDir, seedWait);
 
         // カウント
