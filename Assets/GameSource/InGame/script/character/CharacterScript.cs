@@ -137,7 +137,7 @@ public class CharacterScript : MonoBehaviour
     /// </summary>
     private void DamageControl()
     {
-        var manager = ManagerSceneScript.GetInstance().GetComponent<OriginManager>();
+        var manager = OriginManager.Instance;
 
         foreach (var h in atkHistories)
         {

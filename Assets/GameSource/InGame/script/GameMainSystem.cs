@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
@@ -27,6 +26,17 @@ public class GameMainSystem : MainScriptBase
     /// <summary>花の怪物が出る時間</summary>
     private const float FLOWER_BOSS_TIME = 540f; //9分
 
+    /// <summary>昼の時間</summary>
+    private const float NOON_TIME = 240f; //30f;
+    /// <summary>昼用を変更するフェード時間</summary>
+    private const float NOON_CHANGE_TIME = 5f;
+    /// <summary>フェードを除いたアクティブ時間</summary>
+    private const float NOON_ACTIVE_TIME = NOON_TIME - NOON_CHANGE_TIME;
+
+    /// <summary>昼の光源色</summary>
+    private readonly Color NOON_LIGHT = new Color(1f, 0.95f, 0.86f);
+    /// <summary>夜の光源色</summary>
+    private readonly Color NIGHT_LIGHT = new Color(0.3f, 0.3f, 0.3f);
     #endregion
 
     #region 変数・メンバー
@@ -111,6 +121,9 @@ public class GameMainSystem : MainScriptBase
     /// <summary>攻撃を持つ空オブジェクト</summary>
     public Transform attackParent;
 
+    /// <summary>光源</summary>
+    public Light gameLight;
+
     /// <summary>プレイヤーについて動く空オブジェクト</summary>
     public Transform playerBodyParent
     {
@@ -137,6 +150,17 @@ public class GameMainSystem : MainScriptBase
 
     /// <summary>地面に立っているか（空中ブロックに居る時false）</summary>
     public bool isStandingBase { get; set; }
+    /// <summary>
+    /// 昼の時間帯　3分50秒から夜に切り替わる
+    /// </summary>
+    private bool isNoonTime
+    {
+        get
+        {
+            var tim = inGameTime % (NOON_TIME * 2f);
+            return tim < NOON_ACTIVE_TIME || tim >= (NOON_TIME + NOON_ACTIVE_TIME);
+        }
+    }
 
     #endregion
 
@@ -211,6 +235,8 @@ public class GameMainSystem : MainScriptBase
         enemyControlTime = 0f;
 
         StartCoroutine(UpdateCoroutine());
+
+        StartCoroutine(NightControl());
 
         //todo:x秒毎にFPS表示
         StartCoroutine(Test_DisplayFPS());
@@ -350,6 +376,58 @@ public class GameMainSystem : MainScriptBase
         if (xyMod < 0) xyMod += WATER_FIELD_INTERVAL;
 
         return yMod == waterFieldNum && xyMod == 0;
+    }
+
+    #endregion
+
+    #region 昼夜管理
+
+    /// <summary>
+    /// 昼夜管理
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator NightControl()
+    {
+        const float NOON_VAL = 1f;
+        const float NIGHT_VAL = 0.01f;
+        const string CTL_ITEM = "_AtmosphereThickness";
+        var origin = OriginManager.Instance;
+        var sky = RenderSettings.skybox;
+        var skyColor = new DeltaFloat();
+        var lightColor = new DeltaColor();
+
+        while (true)
+        {
+            yield return new WaitWhile(() => isNoonTime);
+            // 夜にフェードする
+            skyColor.Set(sky.GetFloat(CTL_ITEM));
+            skyColor.MoveTo(NIGHT_VAL, NOON_CHANGE_TIME, DeltaFloat.MoveType.BOTH);
+            lightColor.Set(gameLight.color);
+            lightColor.MoveTo(NIGHT_LIGHT, NOON_CHANGE_TIME, DeltaFloat.MoveType.BOTH);
+            while (skyColor.IsActive())
+            {
+                yield return null;
+                skyColor.Update(origin.inGameDeltaTime);
+                sky.SetFloat(CTL_ITEM, skyColor.Get());
+                lightColor.Update(origin.inGameDeltaTime);
+                gameLight.color = lightColor.Get();
+            }
+
+            yield return new WaitWhile(() => !isNoonTime);
+            // 昼にフェードする
+            skyColor.Set(sky.GetFloat(CTL_ITEM));
+            skyColor.MoveTo(NOON_VAL, NOON_CHANGE_TIME, DeltaFloat.MoveType.BOTH);
+            lightColor.Set(gameLight.color);
+            lightColor.MoveTo(NOON_LIGHT, NOON_CHANGE_TIME, DeltaFloat.MoveType.BOTH);
+            while (skyColor.IsActive())
+            {
+                yield return null;
+                skyColor.Update(origin.inGameDeltaTime);
+                sky.SetFloat(CTL_ITEM, skyColor.Get());
+                lightColor.Update(origin.inGameDeltaTime);
+                gameLight.color = lightColor.Get();
+            }
+        }
     }
 
     #endregion

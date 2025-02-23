@@ -8780,7 +8780,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 0.95, b: 0.84, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -11370,6 +11370,7 @@ MonoBehaviour:
   smallEnemyParent: {fileID: 50170438}
   bossEnemyParent: {fileID: 1496540885}
   attackParent: {fileID: 44412674}
+  gameLight: {fileID: 1091838698}
 --- !u!1 &1476166947
 GameObject:
   m_ObjectHideFlags: 0
