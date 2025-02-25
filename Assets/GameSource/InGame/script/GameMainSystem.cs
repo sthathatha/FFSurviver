@@ -27,7 +27,7 @@ public class GameMainSystem : MainScriptBase
     private const float FLOWER_BOSS_TIME = 540f; //9分
 
     /// <summary>昼の時間</summary>
-    private const float NOON_TIME = 240f; //30f;
+    private const float NOON_TIME = 30f; //240f;
     /// <summary>昼用を変更するフェード時間</summary>
     private const float NOON_CHANGE_TIME = 5f;
     /// <summary>フェードを除いたアクティブ時間</summary>
@@ -57,6 +57,8 @@ public class GameMainSystem : MainScriptBase
 
     #endregion
 
+    #region 敵テンプレート
+
     /// <summary>ザコテンプレート</summary>
     public EnemyScriptBase enemy_Eye1;
     /// <summary>ザコテンプレート</summary>
@@ -77,6 +79,10 @@ public class GameMainSystem : MainScriptBase
     /// <summary>つくよみちゃん</summary>
     public BossScriptBase boss_Tukuyomi;
 
+    #endregion
+
+    #region ボス管理
+
     /// <summary>現在出現中のボス</summary>
     private BossScriptBase boss_Active;
 
@@ -92,6 +98,10 @@ public class GameMainSystem : MainScriptBase
     public BossPopFlag bossPop_Moon { get; private set; }
     /// <summary>月の怪物出現フラグ</summary>
     public BossPopFlag bossPop_Tukuyomi { get; private set; }
+
+    #endregion
+
+    #region ゲーム内容管理
 
     /// <summary>ゲームパラメータ</summary>
     public GameParameter prm_Game { get; private set; }
@@ -111,6 +121,10 @@ public class GameMainSystem : MainScriptBase
         Exiting,
     }
     public GameState state { get; private set; } = GameState.Loading;
+
+    #endregion
+
+    #region その他オブジェクト
 
     /// <summary>雑魚敵を持つ空オブジェクト</summary>
     public Transform smallEnemyParent;
@@ -133,11 +147,25 @@ public class GameMainSystem : MainScriptBase
         }
     }
 
+    /// <summary>月表示の親</summary>
+    public Transform moonParent;
+
+    /// <summary>月背景</summary>
+    public MoonObject moonBlack;
+    /// <summary>月１</summary>
+    public MoonObject moon1;
+    /// <summary>月２</summary>
+    public MoonObject moon2;
+
     /// <summary>武器管理</summary>
     public WeaponManager weaponManager { get; private set; }
 
     /// <summary>くじ引き管理</summary>
     public TreasureManager treasureManager { get; private set; }
+
+    #endregion
+
+    #region その多変数
 
     /// <summary>経過時間</summary>
     private float inGameTime;
@@ -161,6 +189,13 @@ public class GameMainSystem : MainScriptBase
             return tim < NOON_ACTIVE_TIME || tim >= (NOON_TIME + NOON_ACTIVE_TIME);
         }
     }
+
+    /// <summary>月1を視界に</summary>
+    private bool moon1InView = false;
+    /// <summary>月2を視界に</summary>
+    private bool moon2InView = false;
+
+    #endregion
 
     #endregion
 
@@ -199,6 +234,11 @@ public class GameMainSystem : MainScriptBase
         isStandingBase = true;
 
         UpdateExpUI();
+
+        // 昼リセット
+        const string CTL_ITEM = "_AtmosphereThickness";
+        var sky = RenderSettings.skybox;
+        sky.SetFloat(CTL_ITEM, 1f);
 
         // カメラリセット
         manager.GetCamera3D().SetRotateTime(new Vector3(0, -0.15f, 1f));
@@ -273,6 +313,9 @@ public class GameMainSystem : MainScriptBase
             // 花の怪物
             if (!bossPop_Flower.canPopFlg && inGameTime >= FLOWER_BOSS_TIME) bossPop_Flower.SetPop();
 
+            // 月の怪物
+            moonParent.transform.position = playerScript.transform.position;
+
             RefreshFieldCell();
             SmallEnemyControl(origin.inGameDeltaTime);
             BossPopControl();
@@ -329,7 +372,6 @@ public class GameMainSystem : MainScriptBase
 
         // 現在の位置から距離１までのフィールドを読み込み
         var createLocList = FieldUtil.GetAroundLocations(player_loc);
-        //var createLocList = new List<Vector2Int>();
         createLocList.Add(player_loc);
         foreach (var loc in createLocList)
         {
@@ -383,6 +425,15 @@ public class GameMainSystem : MainScriptBase
     #region 昼夜管理
 
     /// <summary>
+    /// プレイヤー移動してる呼び出し
+    /// </summary>
+    public void PlayerMove()
+    {
+        moon1InView = false;
+        moon2InView = false;
+    }
+
+    /// <summary>
     /// 昼夜管理
     /// </summary>
     /// <returns></returns>
@@ -413,6 +464,29 @@ public class GameMainSystem : MainScriptBase
                 gameLight.color = lightColor.Get();
             }
 
+            // 月の怪物　未発生なら月を表示
+            if (!bossPop_Moon.popedFlg)
+            {
+                moon1.Fade(true);
+                moon2.Fade(true);
+                yield return new WaitWhile(() => moon1.IsMoving());
+
+                while (!isNoonTime)
+                {
+                    yield return null;
+                    if (moon1.IsInView()) moon1InView = true;
+                    if (moon2.IsInView()) moon2InView = true;
+
+                    if (moon1InView && moon2InView && boss_Active == null)
+                    {
+                        // 動かずに両方視界に入れたら動き出す
+                        bossPop_Moon.SetPop();
+                        // 他のボスとの兼ね合い考えて、月が出るまで夜明けない
+                        yield return new WaitUntil(() => bossPop_Moon.popedFlg);
+                        break;
+                    }
+                }
+            }
             yield return new WaitWhile(() => !isNoonTime);
             // 昼にフェードする
             skyColor.Set(sky.GetFloat(CTL_ITEM));
@@ -426,6 +500,13 @@ public class GameMainSystem : MainScriptBase
                 sky.SetFloat(CTL_ITEM, skyColor.Get());
                 lightColor.Update(origin.inGameDeltaTime);
                 gameLight.color = lightColor.Get();
+            }
+
+            // 月の怪物　未発生なら月を非表示
+            if (!bossPop_Moon.popedFlg)
+            {
+                moon1.Fade(false);
+                moon2.Fade(false);
             }
         }
     }
@@ -500,7 +581,7 @@ public class GameMainSystem : MainScriptBase
     public class BossPopFlag
     {
         public bool canPopFlg { get; private set; } = false;
-        private bool popedFlg = false;
+        public bool popedFlg { get; private set; } = false;
 
         /// <summary>出現しろフラグセット</summary>
         public void SetPop() { canPopFlg = true; }
@@ -553,7 +634,14 @@ public class GameMainSystem : MainScriptBase
     {
         if (boss_Active != null) return;
 
-        if (bossPop_Mirror.WantPop())
+        if (bossPop_Moon.WantPop())
+        {
+            // 月の怪物最優先
+            boss_Active = Instantiate(boss_Moon, bossEnemyParent);
+            boss_Active.gameObject.SetActive(true);
+            bossPop_Moon.SetPoped();
+        }
+        else if (bossPop_Mirror.WantPop())
         {
             // 鏡の怪物
             boss_Active = Instantiate(boss_Mirror, bossEnemyParent);
@@ -573,10 +661,6 @@ public class GameMainSystem : MainScriptBase
             boss_Active = Instantiate(boss_Water, bossEnemyParent);
             boss_Active.gameObject.SetActive(true);
             bossPop_Water.SetPoped();
-        }
-        else if (bossPop_Moon.WantPop())
-        {
-            //todo:月の怪物
         }
         else if (bossPop_Tukuyomi.WantPop())
         {

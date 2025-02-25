@@ -273,6 +273,9 @@ public class PlayerScript : CharacterScript
         }
         else if (state == PlayerState.Jump)
         {
+            // 動いたらゲームに通知
+            GameMainSystem.Instance.PlayerMove();
+
             // 高さチェック
             if (jump_max_height < transform.position.y) jump_max_height = transform.position.y;
 
@@ -398,6 +401,9 @@ public class PlayerScript : CharacterScript
             rigid.linearVelocity = new Vector3(0, vy, 0);
             return;
         }
+
+        // 動いたらゲームに通知
+        GameMainSystem.Instance.PlayerMove();
 
         // カメラ回転のy成分
         var cam = ManagerSceneScript.GetInstance().GetCamera3D();

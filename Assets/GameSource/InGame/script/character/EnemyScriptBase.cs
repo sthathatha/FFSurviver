@@ -44,7 +44,7 @@ public class EnemyScriptBase : CharacterScript
         hp = hp_max;
 
         var atk = GetComponent<AttackParameter>();
-        atk.SetAttackRate(strength_rate);
+        atk?.SetAttackRate(strength_rate);
     }
 
     /// <summary>

@@ -422,6 +422,10 @@ PrefabInstance:
       value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 1898215446349702483, guid: 67c3d74caa46d9e4a98a9090d03ed3a5, type: 3}
+      propertyPath: far clip plane
+      value: 1200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1898215446349702483, guid: 67c3d74caa46d9e4a98a9090d03ed3a5, type: 3}
       propertyPath: m_projectionMatrixMode
       value: 1
       objectReference: {fileID: 0}
