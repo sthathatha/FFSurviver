@@ -27,7 +27,7 @@ public class GameMainSystem : MainScriptBase
     private const float FLOWER_BOSS_TIME = 540f; //9分
 
     /// <summary>昼の時間</summary>
-    private const float NOON_TIME = 30f; //240f;
+    private const float NOON_TIME = 240f;
     /// <summary>昼用を変更するフェード時間</summary>
     private const float NOON_CHANGE_TIME = 5f;
     /// <summary>フェードを除いたアクティブ時間</summary>
@@ -633,6 +633,16 @@ public class GameMainSystem : MainScriptBase
     private void BossPopControl()
     {
         if (boss_Active != null) return;
+
+        // 全ボス倒したらつくよみちゃんPOP
+        if (!bossPop_Tukuyomi.canPopFlg &&
+            prm_Game.Defeated_Boss1 &&
+            prm_Game.Defeated_Boss2 &&
+            prm_Game.Defeated_Boss3 &&
+            prm_Game.Defeated_Boss4)
+        {
+            bossPop_Tukuyomi.SetPop();
+        }
 
         if (bossPop_Moon.WantPop())
         {

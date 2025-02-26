@@ -47,4 +47,19 @@ public class OriginManager : MonoBehaviour
         if (inGameTimeSpeed > 0f) inGameDeltaTime = inGameTimeSpeed * manager.validDeltaTime;
         else inGameDeltaTime = 0f;
     }
+
+    /// <summary>
+    /// yield returnに使うゲーム内用の待機
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    public IEnumerator WaitIngameTime(float time)
+    {
+        var t = time;
+        while (t > 0f)
+        {
+            yield return null;
+            t -= inGameDeltaTime;
+        }
+    }
 }

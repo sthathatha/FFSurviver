@@ -159,6 +159,7 @@ public class BossWaterScript : BossScriptBase
     protected override IEnumerator DeathAnim()
     {
         yield return base.DeathAnim();
+        DeleteAllDummy();
         GameMainSystem.Instance.prm_Game.Defeated_Boss3 = true;
 
         //todo:消える演出
