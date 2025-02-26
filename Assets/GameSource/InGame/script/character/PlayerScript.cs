@@ -69,7 +69,8 @@ public class PlayerScript : CharacterScript
         height = 1.2f;
 
         var cam = ManagerSceneScript.GetInstance().GetCamera3D();
-        cam.SetCameraDist(10f);
+        cam.dist_max = 12f;
+        cam.SetCameraDistTime(12f);
         CameraControl(true);
 
         ground_ray = new Ray();
