@@ -522,6 +522,9 @@ public class GameMainSystem : MainScriptBase
     {
         if (!isStandingBase) return;
 
+        // つくよみちゃん出現中は追加されない
+        if (bossPop_Tukuyomi.popedFlg && !prm_Game.Defeated_Boss5) return;
+
         enemyControlTime -= delta;
         if (enemyControlTime <= 0)
         {
@@ -674,7 +677,10 @@ public class GameMainSystem : MainScriptBase
         }
         else if (bossPop_Tukuyomi.WantPop())
         {
-            //todo:つくよみちゃん
+            // つくよみちゃん
+            boss_Active = Instantiate(boss_Tukuyomi, bossEnemyParent);
+            boss_Active.gameObject.SetActive(true);
+            bossPop_Tukuyomi.SetPoped();
         }
     }
 
