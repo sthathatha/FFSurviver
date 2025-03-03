@@ -281,6 +281,7 @@ MonoBehaviour:
   atkToPlayer: 0
   isMagic: 1
   attackPower: 1
+  intervalRate: 1
   is_hit_disappear: 0
   disappear_time: 2
   speed: 15
@@ -422,10 +423,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7747002053765534775, guid: af6c1e3f046eecd4d81330aeb285600f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7747002053765534775, guid: af6c1e3f046eecd4d81330aeb285600f, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af6c1e3f046eecd4d81330aeb285600f, type: 3}

@@ -333,6 +333,7 @@ MonoBehaviour:
   isMagic: 1
   attackPower: 3
   intervalRate: 0.7
+  effectObject: {fileID: 2034260060}
 --- !u!1001 &2034260058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -401,14 +402,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: CFXR Electrified 3
       objectReference: {fileID: 0}
+    - target: {fileID: 9027514048236820045, guid: effb650189dc5714e9e9801b1cfb3991, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6566140890059193891, guid: effb650189dc5714e9e9801b1cfb3991, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: effb650189dc5714e9e9801b1cfb3991, type: 3}
 --- !u!4 &2034260059 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9027514048236820042, guid: effb650189dc5714e9e9801b1cfb3991, type: 3}
+  m_PrefabInstance: {fileID: 2034260058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2034260060 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9027514048236820045, guid: effb650189dc5714e9e9801b1cfb3991, type: 3}
   m_PrefabInstance: {fileID: 2034260058}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807

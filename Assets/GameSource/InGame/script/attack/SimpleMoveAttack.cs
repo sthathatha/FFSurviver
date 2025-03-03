@@ -9,6 +9,9 @@ public class SimpleMoveAttack : AttackParameter
     /// <summary>当たったらそこで止まるか</summary>
     public bool on_hit_stop = false;
 
+    /// <summary>移動方向にRotateするか</summary>
+    public bool rot_to_move = true;
+
     /// <summary>位置</summary>
     private DeltaVector3 deltaPos = null;
 
@@ -25,7 +28,8 @@ public class SimpleMoveAttack : AttackParameter
         deltaPos.Set(start);
         deltaPos.MoveTo(target, time, moveType);
 
-        transform.rotation = Quaternion.LookRotation(target - start, new Vector3(0, 1, 0));
+        if (rot_to_move)
+            transform.rotation = Quaternion.LookRotation(target - start, new Vector3(0, 1, 0));
         transform.position = deltaPos.Get();
         gameObject.SetActive(true);
         StartCoroutine(UpdateCoroutine());

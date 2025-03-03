@@ -165,7 +165,7 @@ public class BossMoonScript : BossScriptBase
         else
         {
             // 球を落とす
-            ballAttack.CreateNew(CreateRandomPos(posIdx));
+            ballAttack.CreateNew(CreateRandomPos(posIdx), strength_rate);
             atkCount++;
             actionTimer = ATK_INTERVAL1;
         }

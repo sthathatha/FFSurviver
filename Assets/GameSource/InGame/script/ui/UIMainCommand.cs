@@ -143,6 +143,14 @@ public class UIMainCommand : AppearUIBase
             yield return null;
         }
 
+        // 閉じる前に攻撃力変更を雷球に反映
+        var wpn = GameMainSystem.Instance.weaponManager;
+        if (wpn.HaveWeapon(WeaponManager.ID.ThunderBall))
+        {
+            var thunder = wpn.GetWeaponSlot(WeaponManager.ID.ThunderBall).AsRollOption();
+            thunder.UpdateAttackParam();
+        }
+
         // 閉じる
         yield return Close();
     }

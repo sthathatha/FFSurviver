@@ -99,6 +99,9 @@ public class RollOptionSystem : GameWeaponSystemBase
     {
         if (attacks == null || attacks.Count == 0) return;
 
+        // カメラ方向
+        var camR = ManagerSceneScript.GetInstance().GetCamera3D().transform.rotation;
+
         // 個数によって差分決定
         var theta = Mathf.PI * 2f / attacks.Count;
 
@@ -107,10 +110,22 @@ public class RollOptionSystem : GameWeaponSystemBase
         // １個ずつ場所決定
         foreach (var atk in attacks)
         {
-            var p = Quaternion.Euler(0, -r * Mathf.Rad2Deg, 0) * basePos;
+            var rq = Quaternion.Euler(0, -r * Mathf.Rad2Deg, 0);
+            var p = rq * basePos;
             atk.transform.localPosition = p;
 
             r += theta;
+
+            // 手前のやつ非表示
+            var camRotSub = Quaternion.Angle(camR, rq);
+            if (camRotSub > 100f)
+            {
+                if (atk.IsShowEffect) atk.ShowEffect(false);
+            }
+            else
+            {
+                if (!atk.IsShowEffect) atk.ShowEffect(true);
+            }
         }
     }
 
@@ -122,6 +137,20 @@ public class RollOptionSystem : GameWeaponSystemBase
         foreach (var atk in attacks)
         {
             atk.transform.localScale = new Vector3(Prm_attackSize, Prm_attackSize, Prm_attackSize);
+        }
+    }
+
+    /// <summary>
+    /// 攻撃力を反映
+    /// </summary>
+    public void UpdateAttackParam()
+    {
+        var plr = GameMainSystem.Instance.playerScript;
+        var pprm = GameMainSystem.Instance.prm_Player;
+
+        foreach (var atk in attacks)
+        {
+            SetAttackParam(atk, pprm.stat_magic.value);
         }
     }
 }

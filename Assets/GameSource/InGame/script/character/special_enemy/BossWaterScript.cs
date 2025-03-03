@@ -260,6 +260,7 @@ public class BossWaterScript : BossScriptBase
 
         // 攻撃
         var wave = Instantiate(atkTemplate, GameMainSystem.Instance.attackParent);
+        wave.SetAttackRate(strength_rate);
         wave.Shoot(centerPos);
 
         attackCount++;

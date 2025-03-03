@@ -16,7 +16,7 @@ public class BossWaveAttack : AttackParameter
     /// <summary>一番下のY</summary>
     const float min_y = -8f;
     /// <summary>一番上のY</summary>
-    const float max_y = -2.2f;
+    const float max_y = -2f;
 
     /// <summary>上がる時間</summary>
     const float upTime = 0.2f;

@@ -20,9 +20,11 @@ public class BossMoonAttack : AttackParameter
     /// 新規作成
     /// </summary>
     /// <param name="p"></param>
-    public void CreateNew(Vector3 p)
+    /// <param name="str_rate"></param>
+    public void CreateNew(Vector3 p, float str_rate)
     {
         var n = Instantiate(this, GameMainSystem.Instance.attackParent);
+        n.SetAttackRate(str_rate);
         n.Shoot(p);
     }
 

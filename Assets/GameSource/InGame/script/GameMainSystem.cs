@@ -18,7 +18,7 @@ public class GameMainSystem : MainScriptBase
     private const float SMALL_ENEMY_INTERVAL = 2f;
 
     /// <summary>ｘ個範囲内に１個だけ水フィールド</summary>
-    private const int WATER_FIELD_INTERVAL = 4;
+    private const int WATER_FIELD_INTERVAL = 3;
 
     /// <summary>鏡の小怪物をｘ体倒すとボス出現</summary>
     private const int MIRROR_BOSS_BEATS = 200;
