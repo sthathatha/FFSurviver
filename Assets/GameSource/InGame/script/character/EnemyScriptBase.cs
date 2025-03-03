@@ -1,7 +1,4 @@
-﻿using NUnit.Framework;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -93,7 +90,7 @@ public class EnemyScriptBase : CharacterScript
         base.DamageDeath();
 
         // 経験値を取得
-        var exp = Mathf.RoundToInt(Mathf.Pow(strength_rate, 0.8f) * exp_base);
+        var exp = Mathf.RoundToInt(Mathf.Pow(strength_rate, 0.7f) * exp_base);
         GameMainSystem.Instance.AddExp(exp);
     }
 

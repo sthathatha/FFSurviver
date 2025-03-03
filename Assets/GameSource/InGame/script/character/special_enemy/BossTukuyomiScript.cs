@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 /// <summary>
 /// つくよみちゃん
@@ -32,6 +30,12 @@ public class BossTukuyomiScript : BossScriptBase
     /// <summary>駒</summary>
     public SimpleAttack atkTemplate;
 
+    /// <summary>セリフ表示UI</summary>
+    public UISerif serifUI;
+
+    /// <summary>専用BGM</summary>
+    public AudioClip battle_bgm;
+
     #endregion
 
     #region 変数
@@ -49,6 +53,10 @@ public class BossTukuyomiScript : BossScriptBase
     /// <returns></returns>
     protected override IEnumerator InitCharacter()
     {
+        // BGM止める
+        var sound = ManagerSceneScript.GetInstance().soundManager;
+        StartCoroutine(sound.FadeOutMainBgm(false));
+
         yield return base.InitCharacter();
         var game = GameMainSystem.Instance;
         var origin = OriginManager.Instance;
@@ -56,12 +64,21 @@ public class BossTukuyomiScript : BossScriptBase
 
         ShowModel(false);
 
-        //todo:登場セリフ表示
+        // 登場セリフ表示
+        yield return serifUI.ShowText(Strings.Tukuyomi_Serif_Start1);
+        yield return origin.WaitIngameTime(6f);
+        yield return serifUI.ChangeText(Strings.Tukuyomi_Serif_Start2);
+        yield return origin.WaitIngameTime(6f);
+        yield return serifUI.ChangeText(Strings.Tukuyomi_Serif_Start3);
+        yield return origin.WaitIngameTime(6f);
+        yield return serifUI.ChangeText(Strings.Tukuyomi_Serif_Start4);
+        yield return origin.WaitIngameTime(3f);
+        yield return serifUI.Close();
 
         // 空中から降りてくる
         var py = new DeltaFloat();
-        py.Set(50f);
-        py.MoveTo(0f, 5f, DeltaFloat.MoveType.DECEL);
+        py.Set(30f);
+        py.MoveTo(0f, 3f, DeltaFloat.MoveType.DECEL);
         // カメラ方向に少し前
         var p = game.GetPlayerCenter();
         var camDist = p - ManagerSceneScript.GetInstance().GetCamera3D().gameObject.transform.position;
@@ -91,6 +108,9 @@ public class BossTukuyomiScript : BossScriptBase
         // 動作作成
         updateCor = UpdateCoroutine();
         StartCoroutine(updateCor);
+
+        // 専用BGM
+        sound.PlayMainBgm(SoundManager.MainBgmType.Clip, battle_bgm);
     }
 
     /// <summary>
@@ -99,6 +119,9 @@ public class BossTukuyomiScript : BossScriptBase
     /// <returns></returns>
     protected override IEnumerator DeathAnim()
     {
+        var game = GameMainSystem.Instance;
+        var sound = ManagerSceneScript.GetInstance().soundManager;
+        var origin = OriginManager.Instance;
         // 更新コルーチン削除
         if (updateCor != null)
         {
@@ -109,8 +132,21 @@ public class BossTukuyomiScript : BossScriptBase
         yield return base.DeathAnim();
         ShowModel(false);
 
-        //todo:退場セリフ
+        // 退場セリフ
+        yield return serifUI.ShowText(Strings.Tukuyomi_Serif_End1);
+        yield return origin.WaitIngameTime(6f);
+        yield return serifUI.ChangeText(Strings.Tukuyomi_Serif_End2);
+        yield return origin.WaitIngameTime(6f);
+        yield return serifUI.ChangeText(Strings.Tukuyomi_Serif_End3);
+        yield return origin.WaitIngameTime(6f);
+        yield return serifUI.Close();
 
+        // 終了
+        game.prm_Game.Defeated_Boss5 = true;
+
+        // BGM復帰
+        yield return sound.FadeOutMainBgm(false);
+        sound.PlayMainBgm(SoundManager.MainBgmType.Clip, game.GetBgm().Item2);
     }
 
     #endregion

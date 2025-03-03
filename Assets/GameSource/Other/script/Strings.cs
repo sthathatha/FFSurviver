@@ -18,11 +18,11 @@ public class Strings
     public const string Wanted_Name_Boss1 = "鏡の怪物";
     public const string Wanted_Detail_Boss1 = "小さな怪物をたくさん倒すと現れる。その巨体に押しつぶされるとひとたまりもない。";
     public const string Wanted_Name_Boss2 = "花の怪物";
-    public const string Wanted_Detail_Boss2 = "１箇所に長時間とどまり続けると遠くからこっそり攻撃してくるクソ花。近づくと逃げる。";
+    public const string Wanted_Detail_Boss2 = "いつの間にか現れて遠くからこっそり攻撃してくるクソ花。近づくと逃げる。";
     public const string Wanted_Name_Boss3 = "水の怪物";
     public const string Wanted_Detail_Boss3 = "高すぎるところから水に飛び込むと、棲み処を荒らされた事に怒り襲いかかってくる。";
     public const string Wanted_Name_Boss4 = "月の怪物";
-    public const string Wanted_Detail_Boss4 = "夜はアイツの縄張りだ。立ち止まってはならない。振り向いてはならない。それに気づいた時、それはお前に気づく。";
+    public const string Wanted_Detail_Boss4 = "夜はアイツの縄張りだ。立ち止まってはならない。振り向いてはならない。それを見つけた時、それはお前を見つける。";
     public const string Wanted_Name_Boss5_X = "？？？？？？？";
     public const string Wanted_Name_Boss5 = "つくよみちゃん";
     public const string Wanted_Detail_Boss5 = "全ての怪物を倒した後に現れる。何かを探しているらしい。";
@@ -84,7 +84,13 @@ public class Strings
 
     #region つくよみちゃんセリフ
 
-
+    public const string Tukuyomi_Serif_Start1 = "古の時代、神々がパンドラに持たせた箱は\n不完全なものでした";
+    public const string Tukuyomi_Serif_Start2 = "その内で膨らみ続けた災厄は\n僅かな隙から溢れ出し一瞬で世界を包みました";
+    public const string Tukuyomi_Serif_Start3 = "せめて世界の外へ漏れ出さないよう抑えながら\n封じ込める方法を探していましたが";
+    public const string Tukuyomi_Serif_Start4 = "あなたならあるいは…";
+    public const string Tukuyomi_Serif_End1 = "完全な箱に求められるのは頑強さではなく\n如何なるモノも形を変えて受け入れる柔軟さ";
+    public const string Tukuyomi_Serif_End2 = "憤怒、嫉妬、強欲…幾多の災いを内に飼いながら\nその最奥の希望の光は決して失わない";
+    public const string Tukuyomi_Serif_End3 = "あなた方人間こそが\n正しく完全なパンドラの箱たりえるのかもしれません";
 
     #endregion
 

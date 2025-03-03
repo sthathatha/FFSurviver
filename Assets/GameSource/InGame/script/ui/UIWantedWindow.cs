@@ -123,7 +123,7 @@ public class UIWantedWindow : AppearUIBase
                 txtDescription.SetText(Strings.Wanted_Detail_Boss4);
                 break;
             default:
-                if (game.Defeated_Boss1)
+                if (game.Defeated_Boss5)
                     txtName.SetText(Strings.Wanted_Name_Boss5);
                 else
                     txtName.SetText(Strings.Wanted_Name_Boss5_X);

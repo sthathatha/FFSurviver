@@ -51,6 +51,7 @@ public class GameMainSystem : MainScriptBase
 
     /// <summary>FPS表示</summary>
     public TMP_Text txt_fps;
+    public TMP_Text txt_fps_tanni;
 
     /// <summary>メニュー</summary>
     public UIInGameMenu inGameMenu;
@@ -279,7 +280,9 @@ public class GameMainSystem : MainScriptBase
         StartCoroutine(NightControl());
 
         //todo:x秒毎にFPS表示
-        StartCoroutine(Test_DisplayFPS());
+        //StartCoroutine(Test_DisplayFPS());
+        txt_fps.gameObject.SetActive(false);
+        txt_fps_tanni.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -312,6 +315,9 @@ public class GameMainSystem : MainScriptBase
             inGameTime += origin.inGameDeltaTime;
             // 花の怪物
             if (!bossPop_Flower.canPopFlg && inGameTime >= FLOWER_BOSS_TIME) bossPop_Flower.SetPop();
+
+            ////todo:つくよみちゃんテスト
+            //if (!bossPop_Tukuyomi.canPopFlg && inGameTime >= 20f) bossPop_Tukuyomi.SetPop();
 
             // 月の怪物
             moonParent.transform.position = playerScript.transform.position;
