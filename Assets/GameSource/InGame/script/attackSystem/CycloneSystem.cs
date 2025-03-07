@@ -39,11 +39,11 @@ public class CycloneSystem : BaseSearchWeapon
             // 向き
             var direction = target.bounds.center - selfPos;
 
-            // ファイアボール生成
+            // 生成
             var na = Instantiate(template, main.attackParent);
             na.gameObject.SetActive(false);
 
-            SetAttackParam(na, pprm.stat_magic.value);
+            SetAttackParam(na);
             na.Shoot(selfPos, direction);
         }
     }

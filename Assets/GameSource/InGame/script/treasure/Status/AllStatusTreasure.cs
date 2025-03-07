@@ -47,11 +47,11 @@ public class AllStatusTreasure : TreasureItemBase
         var pprm = GameMainSystem.Instance.prm_Player;
 
         // 全ステータスのコスト掛け算レアリティ
-        var rare = pprm.stat_melee.cost == 0 ? 1 : pprm.stat_melee.cost
-            * pprm.stat_magic.cost == 0 ? 1 : pprm.stat_magic.cost
-            * pprm.stat_maxHp.cost == 0 ? 1 : pprm.stat_maxHp.cost
-            * pprm.stat_speed.cost == 0 ? 1 : pprm.stat_speed.cost
-            * pprm.stat_jump.cost == 0 ? 1 : pprm.stat_jump.cost
+        var rare = (pprm.stat_melee.cost == 0 ? 1 : pprm.stat_melee.cost)
+            * (pprm.stat_magic.cost == 0 ? 1 : pprm.stat_magic.cost)
+            * (pprm.stat_maxHp.cost == 0 ? 1 : pprm.stat_maxHp.cost)
+            * (pprm.stat_speed.cost == 0 ? 1 : pprm.stat_speed.cost)
+            * (pprm.stat_jump.cost == 0 ? 1 : pprm.stat_jump.cost)
             ;
 
         return rare;

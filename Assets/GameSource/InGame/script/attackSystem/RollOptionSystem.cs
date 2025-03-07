@@ -53,7 +53,7 @@ public class RollOptionSystem : GameWeaponSystemBase
         {
             // 作成
             var atk = Instantiate(template, plr.body_parent, false);
-            SetAttackParam(atk, pprm.stat_magic.value);
+            SetAttackParam(atk);
             atk.gameObject.SetActive(true);
 
             attacks.Add(atk);
@@ -150,7 +150,7 @@ public class RollOptionSystem : GameWeaponSystemBase
 
         foreach (var atk in attacks)
         {
-            SetAttackParam(atk, pprm.stat_magic.value);
+            SetAttackParam(atk);
         }
     }
 }

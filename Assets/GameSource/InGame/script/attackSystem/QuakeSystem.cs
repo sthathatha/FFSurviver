@@ -21,7 +21,7 @@ public class QuakeSystem : GameWeaponSystemBase
         var na = Instantiate(template, main.attackParent);
         na.gameObject.SetActive(false);
 
-        SetAttackParam(na, pprm.stat_melee.value);
+        SetAttackParam(na);
         na.Shoot(center, Vector3.zero);
     }
 }

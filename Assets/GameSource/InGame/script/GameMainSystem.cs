@@ -236,6 +236,10 @@ public class GameMainSystem : MainScriptBase
 
         UpdateExpUI();
 
+        // FPS非表示
+        txt_fps.gameObject.SetActive(false);
+        txt_fps_tanni.gameObject.SetActive(false);
+
         // 昼リセット
         const string CTL_ITEM = "_AtmosphereThickness";
         var sky = RenderSettings.skybox;
@@ -281,8 +285,6 @@ public class GameMainSystem : MainScriptBase
 
         //todo:x秒毎にFPS表示
         //StartCoroutine(Test_DisplayFPS());
-        txt_fps.gameObject.SetActive(false);
-        txt_fps_tanni.gameObject.SetActive(false);
     }
 
     /// <summary>

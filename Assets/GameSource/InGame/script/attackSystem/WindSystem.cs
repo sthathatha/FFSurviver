@@ -21,7 +21,7 @@ public class WindSystem : BaseTimerWeapon
 
         // 現在の中心から広がる
         var atk = Instantiate(template, game.attackParent);
-        SetAttackParam(atk, pprm.stat_magic.value);
+        SetAttackParam(atk);
         atk.Shoot(selfPos);
     }
 }

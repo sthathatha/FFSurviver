@@ -197,7 +197,7 @@ MonoBehaviour:
   atkToPlayer: 0
   isMagic: 1
   attackPower: 1
-  intervalRate: 0.3
+  intervalRate: 0.6
   startScale: 0.5
   maxScale: 2
   expandTime: 0.05

@@ -101,10 +101,17 @@ public class GameWeaponSystemBase : SubScriptBase
     /// 攻撃パラメータ設定
     /// </summary>
     /// <param name="prm">攻撃クラス</param>
-    /// <param name="power"></param>
-    protected void SetAttackParam(AttackParameter prm, int power)
+    /// <param name="power">攻撃倍率　0の時はプレイヤーパラメータを自動設定</param>
+    protected void SetAttackParam(AttackParameter prm, int power = 0)
     {
-        prm.SetAttackRate(power * Prm_attackRate);
+        var pprm = GameMainSystem.Instance.prm_Player;
+        var p = 0;
+        if (power == 0)
+            p = prm.isMagic ? pprm.stat_magic.value : pprm.stat_melee.value;
+        else
+            p = power;
+
+        prm.SetAttackRate(p * Prm_attackRate);
         prm.scaleRate = Prm_attackSize;
         if (prm is not ExpandAttack)
         {

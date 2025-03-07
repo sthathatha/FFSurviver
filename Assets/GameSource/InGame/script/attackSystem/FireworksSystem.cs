@@ -42,7 +42,7 @@ public class FireworksSystem : BaseTimerWeapon
     {
         var pprm = GameMainSystem.Instance.prm_Player;
         var atk = Instantiate(template, GameMainSystem.Instance.attackParent);
-        SetAttackParam(atk, pprm.stat_melee.value);
+        SetAttackParam(atk);
         atk.Shoot(selfPos, rot);
     }
 }

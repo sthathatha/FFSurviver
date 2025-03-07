@@ -43,7 +43,7 @@ public class FireballSystem : BaseSearchWeapon
             var na = Instantiate(fireBall, main.attackParent);
             na.gameObject.SetActive(false);
 
-            SetAttackParam(na, pprm.stat_magic.value);
+            SetAttackParam(na);
             na.Shoot(selfPos, direction);
         }
     }

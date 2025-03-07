@@ -39,7 +39,7 @@ public class MeteorSystem : BaseSearchWeapon
             // メテオ生成
             var na = Instantiate(meteorTemplate, main.attackParent);
 
-            SetAttackParam(na, pprm.stat_magic.value);
+            SetAttackParam(na);
             na.Shoot(target.transform.position);
         }
     }
