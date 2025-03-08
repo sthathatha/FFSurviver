@@ -435,6 +435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normal_attack: {fileID: 960454090}
   body_parent: {fileID: 1956938271}
+  se_attack: {fileID: 8300000, guid: 1616697a9090b3a45a18b15968f26880, type: 3}
 --- !u!1 &960454086
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,12 @@ public class BossScriptBase : EnemyScriptBase
     /// <summary>ボス</summary>
     public UIHpGauge uiHp;
 
+    /// <summary>死亡エフェクト</summary>
+    public GameObject deathEffect = null;
+
+    /// <summary>死亡SE</summary>
+    public AudioClip deathSe = null;
+
     /// <summary>
     /// 状態
     /// </summary>
@@ -82,6 +88,26 @@ public class BossScriptBase : EnemyScriptBase
         uiHp.gameObject.SetActive(false);
         GameMainSystem.Instance.ActiveBossDefeat();
         Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// 死亡エフェクトを再生
+    /// </summary>
+    protected void DeathEffectPlay()
+    {
+        if (deathEffect != null)
+        {
+            var eff = Instantiate(deathEffect, GameMainSystem.Instance.attackParent);
+            eff.transform.position = transform.position;
+            eff.SetActive(true);
+        }
+
+        // SEも？
+        if (deathSe != null)
+        {
+            var sound = ManagerSceneScript.GetInstance().soundManager;
+            sound.PlaySE(deathSe);
+        }
     }
 
     /// <summary>

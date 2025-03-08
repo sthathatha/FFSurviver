@@ -131,6 +131,10 @@ public class BossTukuyomiScript : BossScriptBase
 
         yield return base.DeathAnim();
         ShowModel(false);
+        DeathEffectPlay();
+
+        // ランキング登録
+        game.TukuyomiClear();
 
         // 退場セリフ
         yield return serifUI.ShowText(Strings.Tukuyomi_Serif_End1);

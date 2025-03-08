@@ -123,6 +123,8 @@ public class BossMoonScript : BossScriptBase
         p.y = -25f;
         transform.position = p;
 
+        DeathEffectPlay();
+
         // 目をフェードアウト
         moon1.Fade(false);
         moon2.Fade(false);

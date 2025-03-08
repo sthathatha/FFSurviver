@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using unityroom.Api;
 
 /// <summary>
 /// ゲーム管理
@@ -52,6 +54,9 @@ public class GameMainSystem : MainScriptBase
     /// <summary>FPS表示</summary>
     public TMP_Text txt_fps;
     public TMP_Text txt_fps_tanni;
+
+    /// <summary>プレイ時間表示</summary>
+    public TMP_Text txt_playtime;
 
     /// <summary>メニュー</summary>
     public UIInGameMenu inGameMenu;
@@ -315,6 +320,15 @@ public class GameMainSystem : MainScriptBase
         while (playerScript.gameObject.activeInHierarchy)
         {
             inGameTime += origin.inGameDeltaTime;
+
+            // プレイ時間を表示
+            var sec = Mathf.FloorToInt(inGameTime);
+            var minute = sec / 60;
+            sec %= 60;
+            var hour = minute / 60;
+            minute %= 60;
+            txt_playtime.SetText($"{hour:00}:{minute:00}:{sec:00}");
+
             // 花の怪物
             if (!bossPop_Flower.canPopFlg && inGameTime >= FLOWER_BOSS_TIME) bossPop_Flower.SetPop();
 
@@ -792,6 +806,15 @@ public class GameMainSystem : MainScriptBase
     public void WaitGameover()
     {
         state = GameState.Exiting;
+    }
+
+    /// <summary>
+    /// つくよみちゃん撃破
+    /// </summary>
+    public void TukuyomiClear()
+    {
+        // ランキング登録
+        UnityroomApiClient.Instance.SendScore(1, inGameTime, ScoreboardWriteMode.HighScoreAsc);
     }
 
     #endregion

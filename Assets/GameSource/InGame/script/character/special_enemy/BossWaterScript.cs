@@ -163,6 +163,7 @@ public class BossWaterScript : BossScriptBase
         GameMainSystem.Instance.prm_Game.Defeated_Boss3 = true;
 
         //todo:消える演出
+        DeathEffectPlay();
     }
 
     /// <summary>

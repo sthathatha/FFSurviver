@@ -98,6 +98,7 @@ public class BossMirrorScript : BossScriptBase
         attackSystem = null;
 
         //todo:消える演出
+        DeathEffectPlay();
     }
 
     /// <summary>

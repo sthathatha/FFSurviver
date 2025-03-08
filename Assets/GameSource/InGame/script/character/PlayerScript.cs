@@ -17,6 +17,9 @@ public class PlayerScript : CharacterScript
     /// <summary>自分について動く攻撃用</summary>
     public Transform body_parent;
 
+    /// <summary>通常攻撃SE</summary>
+    public AudioClip se_attack = null;
+
     /// <summary>接地判定用Ray</summary>
     private Ray ground_ray;
 
@@ -160,6 +163,7 @@ public class PlayerScript : CharacterScript
         var game = main.prm_Game;
         var pprm = main.prm_Player;
         var center = GetComponent<Collider>().bounds.center;
+        var sound = ManagerSceneScript.GetInstance().soundManager;
 
         // キャラの向き
         var direction = transform.rotation * new Vector3(0, 0, 1);
@@ -188,6 +192,12 @@ public class PlayerScript : CharacterScript
                 na.SetAttackRate(pprm.stat_melee.value);
             na.gameObject.SetActive(false);
             na.Shoot(center, direction);
+
+            // 通常攻撃SE
+            if (se_attack != null)
+            {
+                sound.PlaySE(se_attack);
+            }
         }
     }
 

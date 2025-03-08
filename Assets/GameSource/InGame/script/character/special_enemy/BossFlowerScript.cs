@@ -114,6 +114,7 @@ public class BossFlowerScript : BossScriptBase
         GameMainSystem.Instance.prm_Game.Defeated_Boss2 = true;
 
         //todo:消える演出
+        DeathEffectPlay();
     }
 
     /// <summary>
