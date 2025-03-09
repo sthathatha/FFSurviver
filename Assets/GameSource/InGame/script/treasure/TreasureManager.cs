@@ -82,7 +82,7 @@ public class TreasureManager
         var canGetList = itemDataList.Where(t => t.CanGet()).ToList();
         var ret = new List<TreasureItemBase>();
         var maxRare = canGetList.Max(t => t.GetRarelity());
-        var rateList = canGetList.Select(t => maxRare - t.GetRarelity() + 1).ToList();
+        var rateList = canGetList.Select(t => maxRare - t.GetRarelity() + (maxRare / 20) + 1).ToList();
 
         var indexes = Util.RandomIndexList(rateList, 3);
 

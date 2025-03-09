@@ -1,4 +1,5 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// シェリフスター
@@ -31,8 +32,8 @@ public class AllStatusTreasure : TreasureItemBase
         for (var i = 0; i < WeaponManager.SLOT_COUNT; ++i)
         {
             var slot = wpn.GetSlot(i);
-            if (slot.id == WeaponManager.ID.ChildOption && slot.lv == 4) return false;
-            if (slot.lv == 10) return false;
+            if (slot.lv < 4) return false;
+            if (slot.id != WeaponManager.ID.ChildOption && slot.lv < 10) return false;
         }
 
         return true;
@@ -46,13 +47,13 @@ public class AllStatusTreasure : TreasureItemBase
     {
         var pprm = GameMainSystem.Instance.prm_Player;
 
-        // 全ステータスのコスト掛け算レアリティ
+        // 全ステータスのコスト掛け算
         var rare = (pprm.stat_melee.cost == 0 ? 1 : pprm.stat_melee.cost)
-            * (pprm.stat_magic.cost == 0 ? 1 : pprm.stat_magic.cost)
-            * (pprm.stat_maxHp.cost == 0 ? 1 : pprm.stat_maxHp.cost)
-            * (pprm.stat_speed.cost == 0 ? 1 : pprm.stat_speed.cost)
-            * (pprm.stat_jump.cost == 0 ? 1 : pprm.stat_jump.cost)
-            ;
+                * (pprm.stat_magic.cost == 0 ? 1 : pprm.stat_magic.cost)
+                * (pprm.stat_maxHp.cost == 0 ? 1 : pprm.stat_maxHp.cost)
+                * (pprm.stat_speed.cost == 0 ? 1 : pprm.stat_speed.cost)
+                * (pprm.stat_jump.cost == 0 ? 1 : pprm.stat_jump.cost)
+                ;
 
         return rare;
     }
